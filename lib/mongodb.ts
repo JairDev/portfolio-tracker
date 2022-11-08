@@ -1,41 +1,44 @@
 import { Db, MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
 const MONGO_URI = process.env.DB_URL;
 const MONGODB_DB = process.env.MONGODB_DB;
 
-let cachedClient: MongoClient;
-let cachedDb: Db;
+let cached = global.mongoose;
 
-export async function connectToDataBase() {
-  if (cachedClient && cachedDb) {
-    return {
-      client: cachedClient,
-      db: cachedDb,
-    };
-  }
-
-  const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
-
-  if (!MONGO_URI) {
-    throw new Error("Define the MONGODB_URI environmental variable");
-  }
-
-  if (!MONGODB_DB) {
-    throw new Error("Define the MONGODB_DB environmental variable");
-  }
-
-  let client = new MongoClient(MONGO_URI);
-  await client.connect();
-  let db = client.db(MONGODB_DB);
-
-  cachedClient = client;
-  cachedDb = db;
-
-  return {
-    client: cachedClient,
-    db: cachedDb,
-  };
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
+
+if (!MONGO_URI) {
+  throw new Error(
+    "Please define the MONGODB_URI environment variable inside .env.local"
+  );
+}
+export async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    };
+
+    cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+      console.log("connect db");
+      return mongoose;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
+}
+
+export default dbConnect;

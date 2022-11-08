@@ -1,12 +1,44 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import bcrypt from "bcrypt";
+import session from "../../lib/sessions";
+import dbConnect from "../../lib/mongodb";
+import User from "../../models/User";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  // const body = JSON.parse(req.body);
+export default async function withSession(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  await dbConnect();
+
+  const { email, password } = req.body;
+
   if (req.method === "POST") {
-    console.log(req.body);
-    console.log(process.env.DB_URL);
-    res.status(200).send({
-      message: "Hello",
-    });
+    const isEmail = await User.findOne({ email: email });
+
+    if (isEmail?.email === email) {
+      // throw Error;
+      // throw new Error("The email has already been used.");
+      // throw "The email has already been used.";
+      res.status(403).send({ message: "The email has already been used." });
+    }
+    try {
+      const hashPassword = await bcrypt.hash(password, 10);
+      const user = await new User({
+        email,
+        password: hashPassword,
+      });
+
+      const userSave = await user.save();
+      // req.session.set("user", { id: user._id, email: user.email });
+
+      res.status(200).send({
+        message: "User Created Succesfully",
+      });
+    } catch (error) {
+      // res.status(403).json({ message: (error as Error).message });
+      // res.status(403).json({ message: "The email has already been used." });
+      // console.log(error.message);
+      throw error.message;
+    }
   }
 }
