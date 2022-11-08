@@ -13,15 +13,15 @@ export default async function withSession(
   const { email, password } = req.body;
 
   if (req.method === "POST") {
-    const isEmail = await User.findOne({ email: email });
-
-    if (isEmail?.email === email) {
-      // throw Error;
-      // throw new Error("The email has already been used.");
-      // throw "The email has already been used.";
-      res.status(403).send({ message: "The email has already been used." });
-    }
     try {
+      const isEmail = await User.findOne({ email: email });
+
+      if (isEmail?.email === email) {
+        throw Error;
+        // throw new Error("The email has already been used.");
+        // throw "The email has already been used.";
+        // res.status(403).send({ message: "The email has already been used." });
+      }
       const hashPassword = await bcrypt.hash(password, 10);
       const user = await new User({
         email,
@@ -36,9 +36,9 @@ export default async function withSession(
       });
     } catch (error) {
       // res.status(403).json({ message: (error as Error).message });
-      // res.status(403).json({ message: "The email has already been used." });
-      // console.log(error.message);
-      throw error.message;
+      console.log(error);
+      res.status(403).json({ message: "The email has already been used." });
+      // throw error.message;
     }
   }
 }
