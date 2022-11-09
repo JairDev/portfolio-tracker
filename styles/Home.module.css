@@ -116,7 +116,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .card,
+  /* .card,
   .footer {
     border-color: #222;
   }
@@ -125,5 +125,5 @@
   }
   .logo img {
     filter: invert(1);
-  }
+  } */
 }
