@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: { children?: React.ReactNode }) {
   const theme = useTheme();
-  console.log(theme);
+  // console.log(theme);
   return (
     <div className="layout">
       <NavBar />

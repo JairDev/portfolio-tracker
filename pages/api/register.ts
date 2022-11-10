@@ -11,7 +11,7 @@ export default async function withSession(
   await dbConnect();
 
   const { email, password } = req.body;
-
+  console.log("email", email);
   if (req.method === "POST") {
     try {
       const isEmail = await User.findOne({ email: email });

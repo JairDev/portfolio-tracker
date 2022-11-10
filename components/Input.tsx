@@ -1,13 +1,19 @@
 import { TextField } from "@mui/material";
 
-export default function Input({ label }) {
+interface InputProps {
+  label: string;
+  type: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function Input({ label, type, onChange }: InputProps) {
   return (
     <TextField
-      id="outlined-required"
       label={label}
-      // defaultValue="jhondoe@mail.com"
       placeholder="jhondoe@mail.com"
       sx={{ width: "100%" }}
+      onChange={onChange}
+      type={type}
     />
   );
 }

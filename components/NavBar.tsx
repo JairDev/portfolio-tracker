@@ -93,7 +93,8 @@ export default function NavBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  {/* <Typography textAlign="center">{page}</Typography> */}
+                  <Link href={page}>{page}</Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,13 +123,17 @@ export default function NavBar() {
           </Typography>
           <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, display: "block" }}
-              >
-                {page}
-              </Button>
+              // <Button
+              //   key={page}
+              //   onClick={handleCloseNavMenu}
+              //   sx={{ my: 2, display: "block" }}
+              // >
+              //   {page}
+              // </Button>
+              <MenuItem key={page} onClick={handleCloseNavMenu}>
+                {/* <Typography textAlign="center">{page}</Typography> */}
+                <Link href={page.toLowerCase()}>{page}</Link>
+              </MenuItem>
             ))}
           </Box>
 
