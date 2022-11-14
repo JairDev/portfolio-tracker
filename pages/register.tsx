@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault();
     // console.log(password);
     const registerUser = async () => {
-      console.log(email);
+      // console.log(email);
       const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -28,10 +28,6 @@ export default function Login() {
       console.log(result);
     };
     registerUser().catch((error) => console.log(error));
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
   };
 
   return (

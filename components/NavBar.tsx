@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
+import Router from "next/router";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
 const settings = ["mail@mail.com", "Logout"];
@@ -38,6 +39,15 @@ export default function NavBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const logOut = async () => {
+    console.log("e");
+    localStorage.clear();
+    await fetch("api/singout", {
+      method: "POST",
+    });
+    Router.push("/");
   };
 
   return (
@@ -118,9 +128,7 @@ export default function NavBar() {
               // color: "inherit",
               textDecoration: "none",
             }}
-          >
-            LOGO
-          </Typography>
+          ></Typography>
           <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               // <Button
@@ -147,6 +155,7 @@ export default function NavBar() {
               {/* <Button variant="contained">
               </Button> */}
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -169,6 +178,7 @@ export default function NavBar() {
                 </MenuItem>
               ))}
             </Menu>
+            <Button onClick={logOut}>Log out</Button>
           </Box>
         </Toolbar>
       </Container>

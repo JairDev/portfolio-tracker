@@ -17,10 +17,7 @@ export default async function withSession(
       const isEmail = await User.findOne({ email: email });
 
       if (isEmail?.email === email) {
-        throw Error;
-        // throw new Error("The email has already been used.");
-        // throw "The email has already been used.";
-        // res.status(403).send({ message: "The email has already been used." });
+        res.status(403).json({ message: "The email has already been used." });
       }
       const hashPassword = await bcrypt.hash(password, 10);
       const user = await new User({
@@ -28,17 +25,13 @@ export default async function withSession(
         password: hashPassword,
       });
 
-      const userSave = await user.save();
-      // req.session.set("user", { id: user._id, email: user.email });
+      await user.save();
 
       res.status(200).send({
         message: "User Created Succesfully",
       });
     } catch (error) {
-      // res.status(403).json({ message: (error as Error).message });
       console.log(error);
-      res.status(403).json({ message: "The email has already been used." });
-      // throw error.message;
     }
   }
 }
