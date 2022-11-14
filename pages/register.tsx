@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Link from "next/link";
 import Input from "../components/Input";
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

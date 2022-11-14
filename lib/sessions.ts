@@ -39,5 +39,3 @@ declare module "iron-session" {
     };
   }
 }
-
-export default sessionOptions;
