@@ -10,9 +10,7 @@ export default function Register() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(password);
     const registerUser = async () => {
-      // console.log(email);
       const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -25,7 +23,6 @@ export default function Register() {
         }),
       });
       const result = await res.json();
-      console.log(result);
     };
     registerUser().catch((error) => console.log(error));
   };

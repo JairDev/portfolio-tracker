@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
-import session from "../../lib/sessions";
 import dbConnect from "../../lib/mongodb";
 import User from "../../models/User";
 
@@ -11,7 +10,6 @@ export default async function withSession(
   await dbConnect();
 
   const { email, password } = req.body;
-  console.log("email", email);
   if (req.method === "POST") {
     try {
       const isEmail = await User.findOne({ email: email });

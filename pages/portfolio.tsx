@@ -20,7 +20,6 @@ export const getServerSideProps = withSessionSsr(
       });
 
       const { user } = await res.json();
-      // console.log(user);
       return {
         props: {
           user,

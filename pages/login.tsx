@@ -10,11 +10,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(e);
     e.preventDefault();
-    // console.log(password);
     const loginUser = async () => {
-      console.log(email);
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -27,8 +24,6 @@ export default function Login() {
         }),
       });
       const result = await res.json();
-      // console.log(result);
-      // localStorage.setItem("token", result.token);
       Router.push("/portfolio");
     };
     loginUser().catch((error) => console.log(error));

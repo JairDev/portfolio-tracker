@@ -1,4 +1,3 @@
-import { withIronSessionApiRoute } from "iron-session/next";
 import { withSessionRoute } from "../../lib/sessions";
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../lib/mongodb";

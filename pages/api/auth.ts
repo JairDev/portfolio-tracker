@@ -9,11 +9,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const initState = { authenticated: false, user: null };
   try {
     const token = req.headers.authorization?.split(" ")[1] as string;
-    // console.log(token);
     const decodeToken = jwt.verify(token, serverRuntimeConfig.secret);
     const user = decodeToken;
-    // console.log("decode", decodeToken);
-    // req.user = user;
     if (!user) {
       res.status(400).json(initState);
     }
