@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
@@ -11,7 +13,6 @@ import Input from "../components/Input";
 import BoxAuth from "../components/BoxAuth/BoxAuth";
 
 import { validationSchema } from "../schema/yup";
-import { useEffect, useState } from "react";
 
 export default function Register() {
   const [successMessage, setSuccessMessage] = useState(null);
@@ -31,6 +32,7 @@ export default function Register() {
       const res = await fetch("api/register", {
         method: "POST",
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),

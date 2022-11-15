@@ -5,28 +5,9 @@ import { withSessionSsr } from "../lib/sessions";
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const api_server = "http://localhost:3000";
-    try {
-      let userSession = req.session.user;
-      // const { token } = userSession;
-      // console.log("port", token);
-      const res = await fetch(`${api_server}/api/auth`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+    let userSession = req?.session?.user;
 
-          Authorization: `Bearer ${userSession?.token}`,
-        },
-      });
-
-      const { user } = await res.json();
-      return {
-        props: {
-          user,
-        },
-      };
-    } catch (error) {
-      console.log(error);
+    if (!userSession) {
       return {
         redirect: {
           destination: "/login",
@@ -34,6 +15,22 @@ export const getServerSideProps = withSessionSsr(
         },
       };
     }
+    const res = await fetch(`${api_server}/api/auth`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+
+        Authorization: `Bearer ${userSession?.token}`,
+      },
+    });
+
+    const { user } = await res.json();
+    return {
+      props: {
+        user,
+      },
+    };
   }
 );
 

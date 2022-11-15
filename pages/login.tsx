@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 import Link from "next/link";
 
@@ -7,17 +11,43 @@ import { useFormik } from "formik";
 
 import Input from "../components/Input";
 import BoxAuth from "../components/BoxAuth/BoxAuth";
+
 import { validationSchema } from "../schema/yup";
 
 export default function Login() {
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const data = {
+        email: values.email,
+        password: values.password,
+      };
+      const res = await fetch("api/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      console.log(result);
+      if (res.ok) {
+        setSuccessMessage(result.message);
+      } else {
+        setErrorMessage(result.message);
+      }
+      setTimeout(() => {
+        setSuccessMessage(null);
+        setErrorMessage(null);
+      }, 1500);
     },
   });
 
@@ -32,6 +62,18 @@ export default function Login() {
       }}
     >
       <BoxAuth>
+        {errorMessage && (
+          <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {errorMessage}
+          </Alert>
+        )}
+        {successMessage && (
+          <Alert sx={{ position: "absolute", top: "-70px" }} severity="success">
+            <AlertTitle>Success</AlertTitle>
+            {successMessage}
+          </Alert>
+        )}
         <form onSubmit={formik.handleSubmit}>
           <Box
             sx={{
@@ -62,7 +104,7 @@ export default function Login() {
               helperText={formik.touched.password && formik.errors.password}
               type="password"
             />
-            <Button type="submit">Sign up</Button>
+            <Button type="submit">Sign in</Button>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
             <Typography>{"Don't have an account?"}</Typography>
