@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 interface InputProps {
   id: string;
@@ -19,17 +19,19 @@ export default function Input({
   type,
 }: InputProps) {
   return (
-    <TextField
-      id={id}
-      name={name}
-      label={label}
-      value={value}
-      placeholder="jhondoe@mail.com"
-      sx={{ width: "100%" }}
-      onChange={onChange}
-      error={error}
-      helperText={helperText}
-      type={type}
-    />
+    <Box sx={{ width: "100%" }}>
+      <TextField
+        id={id}
+        name={name}
+        label={label}
+        value={value}
+        placeholder="jhondoe@mail.com"
+        sx={{ width: "100%" }}
+        onChange={onChange}
+        error={error}
+        helperText={helperText}
+        type={type}
+      />
+    </Box>
   );
 }

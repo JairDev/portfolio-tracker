@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import Input from "../components/Input";
+import BoxAuth from "../components/BoxAuth/BoxAuth";
 
 const validationSchema = yup.object({
   email: yup
@@ -42,7 +43,7 @@ export default function Register() {
         height: "60vh",
       }}
     >
-      <Box sx={{ padding: "1.5rem", maxWidth: "400px", width: "100%" }}>
+      <BoxAuth>
         <form onSubmit={formik.handleSubmit}>
           <Box
             sx={{
@@ -53,41 +54,34 @@ export default function Register() {
               alignItems: "center",
             }}
           >
-            <Box sx={{ width: "100%" }}>
-              <Input
-                id="email"
-                name="email"
-                label="Email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                type="text"
-              />
-            </Box>
-            <Box sx={{ width: "100%" }}>
-              <Input
-                id="password"
-                name="password"
-                label="Password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                type="password"
-              />
-            </Box>
+            <Input
+              id="email"
+              name="email"
+              label="Email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              type="text"
+            />
+            <Input
+              id="password"
+              name="password"
+              label="Password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              type="password"
+            />
             <Button type="submit">Sign up</Button>
           </Box>
+          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Typography>Already have an account?</Typography>
+            <Link href="register">Sign in</Link>
+          </Box>
         </form>
-
-        <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Typography>Already have an account?</Typography>
-          <Link href="register">Sign in</Link>
-        </Box>
-      </Box>
+      </BoxAuth>
     </Box>
   );
 }
