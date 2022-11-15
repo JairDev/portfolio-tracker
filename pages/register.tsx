@@ -5,21 +5,9 @@ import Link from "next/link";
 
 import { useFormik } from "formik";
 
-import * as yup from "yup";
-
 import Input from "../components/Input";
 import BoxAuth from "../components/BoxAuth/BoxAuth";
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: yup
-    .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-});
+import { validationSchema } from "../schema/yup";
 
 export default function Register() {
   const formik = useFormik({
