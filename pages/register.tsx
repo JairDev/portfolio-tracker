@@ -66,7 +66,7 @@ export default function Register() {
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
             <Typography>Already have an account?</Typography>
-            <Link href="register">Sign in</Link>
+            <Link href="login">Sign in</Link>
           </Box>
         </form>
       </BoxAuth>

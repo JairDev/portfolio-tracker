@@ -1,10 +1,14 @@
 import { Box, TextField } from "@mui/material";
+import { FormikTouched, FormikErrors } from "formik";
 
 interface InputProps {
   id: string;
   name: string;
   label: string;
   type: string;
+  value: string;
+  error: any;
+  helperText: any;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

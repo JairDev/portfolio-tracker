@@ -65,8 +65,8 @@ export default function Login() {
             <Button type="submit">Sign up</Button>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Typography>Already have an account?</Typography>
-            <Link href="register">Sign in</Link>
+            <Typography>{"Don't have an account?"}</Typography>
+            <Link href="register">Sign up</Link>
           </Box>
         </form>
       </BoxAuth>
