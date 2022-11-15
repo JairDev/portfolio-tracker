@@ -1,5 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 import Link from "next/link";
 
@@ -7,17 +9,43 @@ import { useFormik } from "formik";
 
 import Input from "../components/Input";
 import BoxAuth from "../components/BoxAuth/BoxAuth";
+
 import { validationSchema } from "../schema/yup";
+import { useEffect, useState } from "react";
 
 export default function Register() {
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const data = {
+        email: values.email,
+        password: values.password,
+      };
+      const res = await fetch("api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+
+      if (res.ok) {
+        setSuccessMessage(result.message);
+      } else {
+        setErrorMessage(result.message);
+      }
+      setTimeout(() => {
+        setSuccessMessage(null);
+        setErrorMessage(null);
+      }, 1500);
     },
   });
 
@@ -32,6 +60,18 @@ export default function Register() {
       }}
     >
       <BoxAuth>
+        {errorMessage && (
+          <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {errorMessage}
+          </Alert>
+        )}
+        {successMessage && (
+          <Alert sx={{ position: "absolute", top: "-70px" }} severity="success">
+            <AlertTitle>Success</AlertTitle>
+            {successMessage}
+          </Alert>
+        )}
         <form onSubmit={formik.handleSubmit}>
           <Box
             sx={{
