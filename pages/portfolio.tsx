@@ -6,7 +6,6 @@ export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const api_server = "http://localhost:3000";
     let userSession = req?.session?.user;
-
     if (!userSession) {
       return {
         redirect: {

@@ -89,6 +89,7 @@ export default function Register() {
               name="email"
               label="Email"
               value={formik.values.email}
+              placeHolder="jhondoe@example.com"
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}

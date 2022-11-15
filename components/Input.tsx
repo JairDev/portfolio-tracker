@@ -7,6 +7,7 @@ interface InputProps {
   label: string;
   type: string;
   value: string;
+  placeHolder?: string | undefined;
   error: any;
   helperText: any;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,6 +18,7 @@ export default function Input({
   name,
   label,
   value,
+  placeHolder,
   onChange,
   error,
   helperText,
@@ -29,7 +31,7 @@ export default function Input({
         name={name}
         label={label}
         value={value}
-        placeholder="jhondoe@mail.com"
+        placeholder={placeHolder}
         sx={{ width: "100%" }}
         onChange={onChange}
         error={error}

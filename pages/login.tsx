@@ -13,6 +13,7 @@ import Input from "../components/Input";
 import BoxAuth from "../components/BoxAuth/BoxAuth";
 
 import { validationSchema } from "../schema/yup";
+import Router from "next/router";
 
 export default function Login() {
   const [successMessage, setSuccessMessage] = useState(null);
@@ -48,6 +49,10 @@ export default function Login() {
         setSuccessMessage(null);
         setErrorMessage(null);
       }, 1500);
+
+      if (result.isLogin) {
+        Router.push("portfolio");
+      }
     },
   });
 
@@ -89,6 +94,7 @@ export default function Login() {
               name="email"
               label="Email"
               value={formik.values.email}
+              placeHolder="jhondoe@example.com"
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}

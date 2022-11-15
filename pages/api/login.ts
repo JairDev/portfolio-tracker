@@ -12,6 +12,7 @@ export default withSessionRoute(loginRoute);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
+  const initState = { user: null, isLogin: false };
 
   const { email, password } = req.body;
 
@@ -23,7 +24,9 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       }
       const checkPassword = await bcrypt.compare(password, isUser.password);
       if (!checkPassword) {
-        res.status(400).send({ message: "Passwords does not match" });
+        res
+          .status(400)
+          .send({ message: "Passwords does not match", ...initState });
       }
       const token = jwt.sign(
         {
@@ -37,12 +40,14 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
         token,
       };
       await req.session.save();
-      res
-        .status(200)
-        .send({ message: "Login Successful", email: isUser.email, token });
+      res.status(200).send({
+        message: "Login Successful",
+        isLogin: true,
+        user: isUser.email,
+      });
     } catch (error) {
       console.log(error);
-      res.status(403).send({ message: "User not found" });
+      res.status(403).send({ message: "User not found", ...initState });
     }
   }
 }
