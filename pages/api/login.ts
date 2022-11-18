@@ -12,17 +12,17 @@ export default withSessionRoute(loginRoute);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
-  const initState = { user: null, isLogin: false };
+  const initState = { authenticated: false, user: null };
 
   const { email, password } = req.body;
 
   if (req.method === "POST") {
     try {
-      const isUser = await User.findOne({ email: email });
-      if (!isUser) {
+      const user = await User.findOne({ email: email });
+      if (!user) {
         throw Error;
       }
-      const checkPassword = await bcrypt.compare(password, isUser.password);
+      const checkPassword = await bcrypt.compare(password, user.password);
       if (!checkPassword) {
         res
           .status(400)
@@ -30,20 +30,23 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       }
       const token = jwt.sign(
         {
-          userId: isUser._id,
-          userEmail: isUser.email,
+          userId: user._id,
+          userEmail: user.email,
         },
         serverRuntimeConfig.secret,
         { expiresIn: "24h" }
       );
       req.session.user = {
         token,
+        id: user._id,
+        email: user.email,
       };
       await req.session.save();
       res.status(200).send({
         message: "Login Successful",
-        isLogin: true,
-        user: isUser.email,
+        authenticated: true,
+        id: user._id,
+        email: user.email,
       });
     } catch (error) {
       console.log(error);

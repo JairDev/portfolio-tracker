@@ -1,78 +1,46 @@
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import { withSessionSsr } from "../lib/sessions";
+import NavBar from "../components/NavBar";
+import { withGetServerSideProps } from "../utils/getServerSideProps";
 
-export const getServerSideProps = withSessionSsr(
-  async function getServerSideProps({ req }) {
-    const api_server = "http://localhost:3000";
-    let userSession = req?.session?.user;
-    if (!userSession) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
+export const getServerSideProps = withSessionSsr(withGetServerSideProps);
+
+interface PortfolioProps {
+  message: string;
+  authenticated: boolean;
+  user: {
+    userId: string;
+    userEmail: string;
+    iat: number;
+    exp: number;
+  };
+}
+
+export default function Porfolio({ data }: { data: PortfolioProps }) {
+  const { authenticated, user } = data;
+
+  const handleClick = () => {
+    if (!authenticated) {
+      Router.push("login");
     }
-    const res = await fetch(`${api_server}/api/auth`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+  };
 
-        Authorization: `Bearer ${userSession?.token}`,
-      },
-    });
-
-    const { user } = await res.json();
-    return {
-      props: {
-        user,
-      },
-    };
+  if (authenticated) {
+    return (
+      <div>
+        <h1>User authorized</h1>
+        <p>Hola</p>
+        <p>{user.userEmail}</p>
+      </div>
+    );
   }
-);
-
-export default function Porfolio({ user }) {
-  // const [user, setUser] = useState(null);
-  // const [authenticated, setAuthenticated] = useState(false);
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   // console.log(token);
-  //   if (!token) {
-  //     Router.push("/login");
-  //   }
-  //   async function getUser() {
-  //     try {
-  //       const res = await fetch("/api/auth", {
-  //         method: "POST",
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       const result = await res.json();
-  //       // console.log(result.user);
-  //       setUser(result?.user?.userEmail);
-  //       setAuthenticated(true);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   getUser().catch((error) => console.log(error));
-  // }, []);
-
-  // if (!user) {
-  //   return <div>Portfolio Auth Content</div>;
-  // }
 
   return (
     <div>
-      <h1>User authorized</h1>
-      <p>Hola</p>
-      <p>{user.userEmail}</p>
+      <p>PortFolio Tracker</p>
+      <p>Sign up now!</p>
+      <button onClick={handleClick}>Create Portfolio</button>
     </div>
   );
 }

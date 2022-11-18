@@ -19,7 +19,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       .json({ message: "auth success", authenticated: true, user });
   } catch (error) {
     res.status(401).json({
-      initState,
+      ...initState,
       error,
     });
   }

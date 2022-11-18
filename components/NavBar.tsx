@@ -14,6 +14,9 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import Router from "next/router";
+import Layout from "./Layout";
+import useSWR from "swr";
+import useUser from "../lib/useUser";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
 const settings = ["mail@mail.com", "Logout"];
@@ -25,21 +28,28 @@ export default function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const { email, authenticated } = useUser({
+    redirectTo: "",
+    redirectIfFound: false,
+  });
+
+  React.useEffect(() => {
+    console.log("nav", email);
+    console.log("nav", authenticated);
+  });
 
   const logOut = async () => {
     console.log("e");
@@ -58,7 +68,7 @@ export default function NavBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="home"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -150,7 +160,13 @@ export default function NavBar() {
               {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton> */}
-              <Link href="login">Login</Link>
+
+              {authenticated ? (
+                <Button onClick={logOut}>Log out</Button>
+              ) : (
+                <Link href="login">Login</Link>
+              )}
+              {/* <Link href="login">Login</Link> */}
 
               {/* <Button variant="contained">
               </Button> */}
@@ -178,7 +194,7 @@ export default function NavBar() {
                 </MenuItem>
               ))}
             </Menu>
-            <Button onClick={logOut}>Log out</Button>
+            {/* <Button onClick={logOut}>Log out</Button> */}
           </Box>
         </Toolbar>
       </Container>

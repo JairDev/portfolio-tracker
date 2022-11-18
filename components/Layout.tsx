@@ -6,9 +6,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: { children?: React.ReactNode }) {
-  const theme = useTheme();
-  // console.log(theme);
+export default function Layout({ children }: LayoutProps) {
   return (
     <div className="layout">
       <NavBar />
