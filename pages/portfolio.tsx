@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import Router from "next/router";
 import { withSessionSsr } from "../lib/sessions";
-import NavBar from "../components/NavBar";
-import { withGetServerSideProps } from "../utils/getServerSideProps";
+import { withGetServerSideProps } from "../lib/getServerSideProps";
 
 export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 

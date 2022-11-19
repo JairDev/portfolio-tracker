@@ -17,40 +17,41 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { email, password } = req.body;
 
   if (req.method === "POST") {
-    try {
-      const user = await User.findOne({ email: email });
-      if (!user) {
-        throw Error;
-      }
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      res.status(403).send({ message: "User not found", ...initState });
+    }
+    if (user) {
       const checkPassword = await bcrypt.compare(password, user.password);
+
       if (!checkPassword) {
         res
           .status(400)
           .send({ message: "Passwords does not match", ...initState });
       }
-      const token = jwt.sign(
-        {
-          userId: user._id,
-          userEmail: user.email,
-        },
-        serverRuntimeConfig.secret,
-        { expiresIn: "24h" }
-      );
-      req.session.user = {
-        token,
-        id: user._id,
-        email: user.email,
-      };
-      await req.session.save();
-      res.status(200).send({
-        message: "Login Successful",
-        authenticated: true,
-        id: user._id,
-        email: user.email,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(403).send({ message: "User not found", ...initState });
+
+      if (checkPassword) {
+        const token = jwt.sign(
+          {
+            userId: user._id,
+            userEmail: user.email,
+          },
+          serverRuntimeConfig.secret,
+          { expiresIn: "24h" }
+        );
+        req.session.user = {
+          token,
+          id: user._id,
+          email: user.email,
+        };
+        await req.session.save();
+        res.status(200).send({
+          message: "Login Successful",
+          authenticated: true,
+          id: user._id,
+          email: user.email,
+        });
+      }
     }
   }
 }

@@ -17,11 +17,14 @@ import Router from "next/router";
 import Layout from "./Layout";
 import useSWR from "swr";
 import useUser from "../lib/useUser";
+import { useTheme } from "@mui/material/styles";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
-const settings = ["mail@mail.com", "Logout"];
+const settings = ["mail@mail.com"];
 
 export default function NavBar() {
+  const { palette } = useTheme();
+  // console.log(palette);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -46,13 +49,30 @@ export default function NavBar() {
     redirectIfFound: false,
   });
 
+  const [isAuth, setIsAuth] = React.useState(false);
+  const [isMount, setIsMount] = React.useState(false);
+
   React.useEffect(() => {
-    console.log("nav", email);
-    console.log("nav", authenticated);
-  });
+    // console.log("nav", email);
+    // console.log("nav", authenticated);
+    // console.log("mount");
+    if (authenticated) {
+      // setIsAuth(true);
+      console.log(authenticated);
+    }
+    setTimeout(() => {
+      setIsMount(true);
+      console.log("time");
+    }, 1000);
+    if (authenticated) {
+      console.log("time auth");
+
+      setIsAuth(true);
+    }
+  }, [authenticated]);
 
   const logOut = async () => {
-    console.log("e");
+    // console.log("e");
     localStorage.clear();
     await fetch("api/singout", {
       method: "POST",
@@ -156,21 +176,13 @@ export default function NavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton> */}
+            {isMount && !isAuth && <Link href="login">Login</Link>}
 
-              {authenticated ? (
-                <Button onClick={logOut}>Log out</Button>
-              ) : (
-                <Link href="login">Login</Link>
-              )}
-              {/* <Link href="login">Login</Link> */}
-
-              {/* <Button variant="contained">
-              </Button> */}
-            </Tooltip>
+            {isMount && isAuth && (
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt={email} src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            )}
 
             <Menu
               sx={{ mt: "45px" }}
@@ -188,13 +200,9 @@ export default function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <Typography textAlign="center">{email}</Typography>
+              <Button onClick={logOut}>Log out</Button>
             </Menu>
-            {/* <Button onClick={logOut}>Log out</Button> */}
           </Box>
         </Toolbar>
       </Container>
