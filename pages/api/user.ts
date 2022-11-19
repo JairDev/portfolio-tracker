@@ -11,6 +11,7 @@ async function user(req: NextApiRequest, res: NextApiResponse) {
       id: userSession.id,
       email: userSession.email,
     });
+  } else {
+    res.status(404).json({ authenticated: false, user: null });
   }
-  res.status(404).json({ authenticated: false, user: null });
 }

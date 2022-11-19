@@ -8,7 +8,6 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
@@ -18,6 +17,7 @@ import Layout from "./Layout";
 import useSWR from "swr";
 import useUser from "../lib/useUser";
 import { useTheme } from "@mui/material/styles";
+import { Button } from "./Button/Button";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
 const settings = ["mail@mail.com"];
@@ -72,7 +72,7 @@ export default function NavBar() {
   }, [authenticated]);
 
   const logOut = async () => {
-    // console.log("e");
+    console.log("e");
     localStorage.clear();
     await fetch("api/singout", {
       method: "POST",
@@ -201,7 +201,7 @@ export default function NavBar() {
               onClose={handleCloseUserMenu}
             >
               <Typography textAlign="center">{email}</Typography>
-              <Button onClick={logOut}>Log out</Button>
+              <Button onClick={logOut} text="Logout" />
             </Menu>
           </Box>
         </Toolbar>

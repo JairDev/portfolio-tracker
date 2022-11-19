@@ -11,8 +11,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers.authorization?.split(" ")[1] as string;
     const decodeToken = jwt.verify(token, serverRuntimeConfig.secret);
     const user = decodeToken;
+    console.log("auth", user);
     if (!user) {
-      res.status(400).json(initState);
+      res.status(404).json(initState);
     }
     res
       .status(200)
