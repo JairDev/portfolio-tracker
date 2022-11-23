@@ -9,12 +9,12 @@ import Link from "next/link";
 
 import { useFormik } from "formik";
 
-import Input from "../components/Input";
-import BoxAuth from "../components/BoxAuth/BoxAuth";
+import Input from "components/Input";
+import BoxAuth from "components/BoxAuth/BoxAuth";
 
-import { validationSchema } from "../schema/yup";
-import useUser from "../lib/useUser";
-import fetchJson from "../lib/fetchJson";
+import { validationSchema } from "schema/yup";
+import useUser from "lib/useUser";
+import fetchJson from "lib/fetchJson";
 
 export default function Login() {
   const [successMessage, setSuccessMessage] = useState(null);
@@ -36,6 +36,7 @@ export default function Login() {
         password: values.password,
       };
       const res = mutateUser(
+        "api/user",
         await fetchJson("api/login", {
           method: "POST",
           headers: {

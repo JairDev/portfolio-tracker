@@ -1,10 +1,10 @@
-import { withSessionRoute } from "../../lib/sessions";
+import { withSessionRoute } from "lib/sessions";
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "../../lib/mongodb";
+import dbConnect from "lib/mongodb";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import getConfig from "next/config";
-import User from "../../models/User";
+import User from "models/User";
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -12,7 +12,7 @@ export default withSessionRoute(loginRoute);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
-  const initState = { authenticated: false, user: null };
+  const initState = { authenticated: false, userId: null, userEmail: null };
 
   const { email, password } = req.body;
 
@@ -23,7 +23,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     }
     if (user) {
       const checkPassword = await bcrypt.compare(password, user.password);
-
       if (!checkPassword) {
         res
           .status(400)
@@ -39,17 +38,18 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
           serverRuntimeConfig.secret,
           { expiresIn: "24h" }
         );
+
         req.session.user = {
           token,
-          id: user._id,
-          email: user.email,
+          userId: user._id,
+          userEmail: user.email,
         };
         await req.session.save();
         res.status(200).send({
           message: "Login Successful",
           authenticated: true,
-          id: user._id,
-          email: user.email,
+          userId: user._id,
+          userEmail: user.email,
         });
       }
     }

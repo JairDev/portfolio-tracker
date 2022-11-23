@@ -18,6 +18,7 @@ import useSWR from "swr";
 import useUser from "../lib/useUser";
 import { useTheme } from "@mui/material/styles";
 import { Button } from "./Button/Button";
+import NavBarProfile from "./NavBarProfile";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
 const settings = ["mail@mail.com"];
@@ -28,67 +29,22 @@ export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const { email, authenticated } = useUser({
-    redirectTo: "",
-    redirectIfFound: false,
-  });
-
-  const [isAuth, setIsAuth] = React.useState(false);
-  const [isMount, setIsMount] = React.useState(false);
-
-  React.useEffect(() => {
-    // console.log("nav", email);
-    // console.log("nav", authenticated);
-    // console.log("mount");
-    if (authenticated) {
-      // setIsAuth(true);
-      console.log(authenticated);
-    }
-    setTimeout(() => {
-      setIsMount(true);
-      console.log("time");
-    }, 1000);
-    if (authenticated) {
-      console.log("time auth");
-
-      setIsAuth(true);
-    }
-  }, [authenticated]);
-
-  const logOut = async () => {
-    console.log("e");
-    localStorage.clear();
-    await fetch("api/singout", {
-      method: "POST",
-    });
-    Router.push("/");
-  };
 
   return (
-    <AppBar position="static" sx={{ background: "none" }}>
+    <AppBar position="static" sx={{ background: "none", boxShadow: "none" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="home"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -133,7 +89,6 @@ export default function NavBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  {/* <Typography textAlign="center">{page}</Typography> */}
                   <Link href={page}>{page}</Link>
                 </MenuItem>
               ))}
@@ -161,30 +116,24 @@ export default function NavBar() {
           ></Typography>
           <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              // <Button
-              //   key={page}
-              //   onClick={handleCloseNavMenu}
-              //   sx={{ my: 2, display: "block" }}
-              // >
-              //   {page}
-              // </Button>
               <MenuItem key={page} onClick={handleCloseNavMenu}>
-                {/* <Typography textAlign="center">{page}</Typography> */}
                 <Link href={page.toLowerCase()}>{page}</Link>
               </MenuItem>
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            {isMount && !isAuth && <Link href="login">Login</Link>}
+          {/* <Box sx={{ flexGrow: 0 }}> */}
+          {/* {isMount && !isAuth && <Link href="login">Login</Link>} */}
 
-            {isMount && isAuth && (
+          {/* {isMount && isAuth && (
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={email} src="/static/images/avatar/2.jpg" />
               </IconButton>
-            )}
+            )} */}
 
-            <Menu
+          {/* {loading && <div>Cargando...</div>} */}
+
+          {/* <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
@@ -202,8 +151,10 @@ export default function NavBar() {
             >
               <Typography textAlign="center">{email}</Typography>
               <Button onClick={logOut} text="Logout" />
-            </Menu>
-          </Box>
+            </Menu> */}
+          {/* </Box> */}
+
+          <NavBarProfile />
         </Toolbar>
       </Container>
     </AppBar>

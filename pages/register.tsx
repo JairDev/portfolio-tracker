@@ -9,10 +9,10 @@ import Link from "next/link";
 
 import { useFormik } from "formik";
 
-import Input from "../components/Input";
-import BoxAuth from "../components/BoxAuth/BoxAuth";
+import Input from "components/Input";
+import BoxAuth from "components/BoxAuth/BoxAuth";
 
-import { validationSchema } from "../schema/yup";
+import { validationSchema } from "schema/yup";
 
 export default function Register() {
   const [successMessage, setSuccessMessage] = useState(null);

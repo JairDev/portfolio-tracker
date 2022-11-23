@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
-import dbConnect from "../../lib/mongodb";
-import User from "../../models/User";
+import dbConnect from "lib/mongodb";
+import User from "models/User";
 
 export default async function withSession(
   req: NextApiRequest,

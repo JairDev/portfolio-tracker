@@ -36,8 +36,8 @@ declare module "iron-session" {
   interface IronSessionData {
     user?: {
       token?: string;
-      id?: string;
-      email?: string;
+      userId?: string;
+      userEmail?: string;
     };
   }
 }

@@ -1,6 +1,6 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
-import { withSessionRoute } from "../../lib/sessions";
+import { withSessionRoute } from "lib/sessions";
 
 export default withSessionRoute(signOut);
 

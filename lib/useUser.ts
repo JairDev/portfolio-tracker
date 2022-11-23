@@ -11,5 +11,5 @@ export default function useUser({ redirectTo = "", redirectIfFound = false }) {
       Router.push(redirectTo);
     }
   });
-  return { ...user, mutateUser };
+  return { ...user, mutateUser, loading: !user };
 }
