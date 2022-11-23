@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useFormik } from "formik";
 
 import Input from "components/Input";
-import BoxAuth from "components/BoxAuth/BoxAuth";
+import BoxAuth from "components/BoxAuth";
 
 import { validationSchema } from "schema/yup";
 

@@ -5,17 +5,32 @@ import * as createPalette from "@mui/material/styles/createPalette";
 
 declare module "@mui/material/styles" {
   interface Palette {
-    bgApp: string;
+    mainBack?: string;
+    primaryButton?: string;
+    cardTrendBack?: string;
+    mainFontColor?: string;
+    labelFontColor?: string;
+    erroColor?: string;
   }
 
   // allow configuration using `createTheme`
   interface PaletteOptions {
-    bgApp?: string;
+    mainBack?: string;
+    primaryButton?: string;
+    cardTrendBack?: string;
+    mainFontColor?: string;
+    labelFontColor?: string;
+    erroColor?: string;
   }
 }
 
 export const theme = createTheme({
   palette: {
-    bgApp: "#5F4EA5",
+    mainBack: "#5F4EA5",
+    primaryButton: "#0FAE96",
+    cardTrendBack: "rgba(255, 255, 255, 0.02)",
+    mainFontColor: "#ECF1F0",
+    labelFontColor: "#B6B6B6",
+    erroColor: "#EF4444",
   },
 });

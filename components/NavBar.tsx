@@ -7,17 +7,10 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
-import Router from "next/router";
-import Layout from "./Layout";
-import useSWR from "swr";
-import useUser from "../lib/useUser";
 import { useTheme } from "@mui/material/styles";
-import { Button } from "./Button/Button";
 import NavBarProfile from "./NavBarProfile";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
@@ -121,39 +114,6 @@ export default function NavBar() {
               </MenuItem>
             ))}
           </Box>
-
-          {/* <Box sx={{ flexGrow: 0 }}> */}
-          {/* {isMount && !isAuth && <Link href="login">Login</Link>} */}
-
-          {/* {isMount && isAuth && (
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={email} src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            )} */}
-
-          {/* {loading && <div>Cargando...</div>} */}
-
-          {/* <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <Typography textAlign="center">{email}</Typography>
-              <Button onClick={logOut} text="Logout" />
-            </Menu> */}
-          {/* </Box> */}
-
           <NavBarProfile />
         </Toolbar>
       </Container>

@@ -9,9 +9,9 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import Typography from "@mui/material/Typography";
 
-import useUser from "../lib/useUser";
-import { Button } from "./Button/Button";
-import fetchJson from "../lib/fetchJson";
+import useUser from "lib/useUser";
+import { Button } from "./Button";
+import fetchJson from "lib/fetchJson";
 
 export default function NavBarProfile() {
   const router = useRouter();
