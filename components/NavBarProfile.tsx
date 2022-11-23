@@ -15,7 +15,7 @@ import fetchJson from "../lib/fetchJson";
 
 export default function NavBarProfile() {
   const router = useRouter();
-  const { userEmail, authenticated, loading } = useUser({});
+  const { userEmail, authenticated, loading, mutateUser } = useUser({});
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -29,9 +29,12 @@ export default function NavBarProfile() {
     setAnchorElUser(null);
   };
   const logOut = async () => {
-    await fetchJson("api/singout", {
-      method: "POST",
-    });
+    mutateUser(
+      "api/user",
+      await fetchJson("api/singout", {
+        method: "POST",
+      })
+    );
     router.replace(router.asPath);
   };
 
