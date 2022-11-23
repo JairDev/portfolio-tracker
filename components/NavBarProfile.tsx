@@ -28,7 +28,9 @@ export default function NavBarProfile() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   const logOut = async () => {
+    setAnchorElUser(null);
     mutateUser(
       "api/user",
       await fetchJson("api/singout", {
