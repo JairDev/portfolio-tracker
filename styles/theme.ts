@@ -26,7 +26,7 @@ declare module "@mui/material/styles" {
 
 export const theme = createTheme({
   palette: {
-    mainBack: "#5F4EA5",
+    mainBack: "#11011E",
     primaryButton: "#0FAE96",
     cardTrendBack: "rgba(255, 255, 255, 0.02)",
     mainFontColor: "#ECF1F0",
