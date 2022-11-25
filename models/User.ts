@@ -11,6 +11,12 @@ const UserSchema = new mongoose.Schema({
     require: [true, "Please provide a Password!"],
     unique: false,
   },
+  coins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Coin",
+    },
+  ],
 });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);
