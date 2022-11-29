@@ -5,13 +5,10 @@ const CoinSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  price: {
+  avgPrice: {
     type: Number,
   },
-  holdings: {
-    type: Number,
-  },
-  amount: {
+  holding: {
     type: Number,
   },
 });

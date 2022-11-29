@@ -3,13 +3,14 @@ import bcrypt from "bcrypt";
 import dbConnect from "lib/mongodb";
 import User from "models/User";
 
-export default async function withSession(
+export default async function registerRoute(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await dbConnect();
 
   const { email, password } = req.body;
+
   if (req.method === "POST") {
     try {
       const isEmail = await User.findOne({ email: email });

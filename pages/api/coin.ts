@@ -5,17 +5,16 @@ import User from "models/User";
 export default async function coinApi(req, res) {
   await dbConnect();
 
-  const { name, price, holdings, amount } = req.body;
+  const { name, avgPrice, holding } = req.body;
 
   const coin = await new Coin({
     name,
-    price,
-    holdings,
-    amount,
+    avgPrice,
+    holding,
   });
 
   const result = await coin.save();
-  console.log(result);
+  console.log(coin);
   await User.findByIdAndUpdate(
     "6373d00cd6777c8937dc643a",
     { $push: { coins: result._id } },

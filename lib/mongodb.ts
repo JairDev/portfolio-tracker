@@ -17,6 +17,7 @@ if (!MONGO_URI) {
 }
 export async function dbConnect() {
   if (cached.conn) {
+    // console.log("cached");
     return cached.conn;
   }
 

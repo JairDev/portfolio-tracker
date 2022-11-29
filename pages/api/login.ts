@@ -12,6 +12,7 @@ export default withSessionRoute(loginRoute);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
+
   const initState = { authenticated: false, userId: null, userEmail: null };
 
   const { email, password } = req.body;

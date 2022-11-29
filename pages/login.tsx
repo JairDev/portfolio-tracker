@@ -48,6 +48,7 @@ export default function Login() {
         false
       );
       const { authenticated, message } = await res;
+      console.log(authenticated);
       if (authenticated) {
         setSuccessMessage(message);
       } else {

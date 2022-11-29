@@ -16,7 +16,7 @@ import fetchJson from "lib/fetchJson";
 export default function NavBarProfile() {
   const router = useRouter();
   const { userEmail, authenticated, loading, mutateUser } = useUser({});
-
+  // console.log(userEmail, authenticated);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
