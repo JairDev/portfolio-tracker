@@ -25,32 +25,35 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-function TableComponent() {
+function TableComponent({ arr = [] }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Rank</TableCell>
+            {/* <TableCell>Rank</TableCell> */}
             <TableCell>Name</TableCell>
-            <TableCell align="right">Last Price</TableCell>
-            <TableCell align="right">Change</TableCell>
-            <TableCell align="right">Market Stats</TableCell>
+            <TableCell>Last Price</TableCell>
+            <TableCell align="right">Avg. Price</TableCell>
+            <TableCell align="right">Holdings</TableCell>
+            <TableCell align="right">Amount</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {arr.map((coin) => (
             <TableRow
-              key={row.name}
+              key={coin.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {coin.name}
               </TableCell>
-              <TableCell>{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell>{coin.usd}</TableCell>
+              <TableCell align="right">{coin.avgPrice}</TableCell>
+              <TableCell align="right">{coin.holding}</TableCell>
+              <TableCell align="right">
+                {coin.avgPrice * coin.holding}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -13,18 +13,22 @@ interface JwtPayload {
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  const initState = { authenticated: false, userId: null, userEmail: null };
+  const initState = {
+    authenticated: false,
+    userId: null,
+    userEmail: null,
+    coins: [],
+  };
+  console.log(req.session);
 
   try {
     const token = req.headers.authorization?.split(" ")[1] as string;
-
     const decodeToken = jwt.verify(
       token,
       serverRuntimeConfig.secret
     ) as JwtPayload;
 
     const user = decodeToken;
-
     const { coins } = await getAllUserData(user.userId);
 
     res.status(200).json({

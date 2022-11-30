@@ -39,7 +39,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
           serverRuntimeConfig.secret,
           { expiresIn: "24h" }
         );
-
         req.session.user = {
           token,
           userId: user._id,

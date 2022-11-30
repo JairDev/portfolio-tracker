@@ -3,19 +3,33 @@ import { withSessionSsr } from "lib/sessions";
 import { withGetServerSideProps } from "lib/getServerSideProps";
 import { useEffect, useState } from "react";
 import useUser from "lib/useUser";
+import { Table } from "components/Table";
 
+interface CoinsLastPrice {
+  _id: string;
+  name: string;
+  avgPrice: number;
+  holding: number;
+  __v: number;
+}
 export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
 interface PortfolioProps {
   message: string;
   authenticated: boolean;
   userEmail: string;
+  coins: Array<CoinsLastPrice>;
+  // coinData: {
+  //   [key: string]: {
+  //     usd: string;
+  //   };
+  // };
 }
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { authenticated, userEmail, coins, coinData } = data;
   const [userData, setUserData] = useState([]);
-
+  // console.log(userEmail, authenticated);
   const handleClick = () => {
     if (!authenticated) {
       Router.push("login");
@@ -23,36 +37,16 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
-    // console.log(userId);
-    // async function getData() {
-    //   const res = await fetch("api/getCoins", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ id: userId }),
-    //   });
-    //   const result = await res.json();
-    //   // console.log(result);
-    // }
-    // getData();
-    console.log(data);
-    const result = data.coins.map((coin, i) => {
-      // console.log(coin.avgPrice * coin.holding);
-      const price = coinData[i][coin.name];
-      console.log(price);
-      // console.log(coin);
-      const newObj = { ...coin, ...price };
-      // console.log(newObj[coin.name].usd);
-      return newObj;
+    // console.log(coins);
+    const result = coins.map((coin, i) => {
+      const lastPrice = coinData[i][coin.name];
+      // console.log(lastPrice);
+      const newObject = { ...coin, ...lastPrice };
+      return newObject;
     });
-    console.log(result);
+    // console.log(result);
     setUserData(result);
-    // const price = data.dataCoinPrice.map((coinPrice) => {
-    //   // console.log(coinPrice);
-    // });
-  }, []);
+  }, [coinData, coins]);
 
   if (!authenticated) {
     return (
@@ -69,7 +63,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       <h1>User authorized</h1>
       <p>Hola</p>
       <p>{userEmail}</p>
-      {userData &&
+      {/* {userData &&
         userData.map((coin) => (
           <div key={coin.name}>
             <div>Name</div>
@@ -83,7 +77,8 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
             <div>Amount</div>
             <div>{coin.avgPrice * coin.holding}</div>
           </div>
-        ))}
+        ))} */}
+      <Table arr={userData} />
     </div>
   );
 }
