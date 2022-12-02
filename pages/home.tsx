@@ -4,6 +4,7 @@ import Head from "next/head";
 import styles from "styles/Home.module.css";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
+import MarketTrendCard from "components/MarketTrendCard";
 // import Typography from "@mui/joy/Typography";
 
 export default function Home() {
@@ -33,7 +34,10 @@ export default function Home() {
           </Box>
         </Box>
         <Box>
-          <Typography>Market Trend</Typography>
+          <Typography variant="h5">Market Trend</Typography>
+          <Box>
+            <MarketTrendCard />
+          </Box>
         </Box>
       </main>
       {/* <ArticleCard /> */}
