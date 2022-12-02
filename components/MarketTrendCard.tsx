@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 
 export default function MarketTrendCard() {
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
+    <Card>
+      <CardContent sx={{ padding: "8px 0px " }}>
         <Box sx={{ display: "flex" }}>
           <Typography sx={{ fontSize: 14 }} gutterBottom>
             Bitcoin BTC
@@ -20,14 +20,14 @@ export default function MarketTrendCard() {
         <Box sx={{ display: "flex" }}>
           <Box>
             <Typography sx={{ mb: 1.5 }}>$234234</Typography>
-            <Typography variant="body2">1.44%</Typography>
+            <Typography>1.44%</Typography>
           </Box>
-          <Typography variant="body2">Graphic</Typography>
+          <Typography>Graphic</Typography>
         </Box>
       </CardContent>
-      <CardActions>
+      {/* <CardActions>
         <Button size="small">Learn More</Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }

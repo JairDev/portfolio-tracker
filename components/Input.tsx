@@ -25,7 +25,7 @@ export default function Input({
   type,
 }: InputProps) {
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box>
       <TextField
         id={id}
         name={name}
