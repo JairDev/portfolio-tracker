@@ -1,4 +1,6 @@
 import * as React from "react";
+import { default as NextLink } from "next/link";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,16 +11,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import Link from "next/link";
 import { useTheme } from "@mui/material/styles";
+import Link from "@mui/material/Link";
+
 import NavBarProfile from "./NavBarProfile";
 
 const pages = ["Home", "Portfolio", "Market", "News", "Converter"];
 const settings = ["mail@mail.com"];
 
 export default function NavBar() {
-  const { palette } = useTheme();
-  // console.log(palette);
+  const { palette, spacing, shape } = useTheme();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -30,7 +33,10 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ background: "none", boxShadow: "none" }}>
+    <AppBar
+      position="static"
+      sx={{ background: "none", boxShadow: "none", paddingTop: spacing(2) }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           <Typography
@@ -44,11 +50,11 @@ export default function NavBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "inherit",
+              // color: palette.mainFontColor,
               textDecoration: "none",
             }}
           >
-            LOGO
+            CoinMarketApp
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -78,6 +84,7 @@ export default function NavBar() {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
+                // color: "inherit",
               }}
             >
               {pages.map((page) => (
@@ -107,10 +114,23 @@ export default function NavBar() {
               textDecoration: "none",
             }}
           ></Typography>
-          <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: { xs: "none", md: "flex" },
+            }}
+          >
             {pages.map((page) => (
               <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Link href={page.toLowerCase()}>{page}</Link>
+                <Link
+                  component={NextLink}
+                  underline="none"
+                  href={page.toLowerCase()}
+                  color="text.primary"
+                  // sx={{ color: palette.mainFontColor }}
+                >
+                  {page}
+                </Link>
               </MenuItem>
             ))}
           </Box>

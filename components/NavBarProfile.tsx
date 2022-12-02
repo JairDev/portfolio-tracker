@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import Link from "next/link";
+import { default as NextLink } from "next/link";
 import Router, { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
@@ -8,14 +8,22 @@ import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import { useTheme } from "@mui/material/styles";
 
 import useUser from "lib/useUser";
 import { Button } from "./Button";
 import fetchJson from "lib/fetchJson";
 import useSWR from "swr";
 
+// import Button from "@mui/material/Button";
+
 export default function NavBarProfile() {
   const router = useRouter();
+  const { palette, spacing, shape } = useTheme();
+  const theme = useTheme();
+  console.log(theme);
+  // console.log(palette.primaryButton);
   const { userEmail, authenticated, loading, mutateUser } = useUser({});
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -46,7 +54,25 @@ export default function NavBarProfile() {
   }
 
   if (!authenticated) {
-    return <Link href="login">Login</Link>;
+    return (
+      <Link
+        component={NextLink}
+        underline="none"
+        color="text.primary"
+        sx={{
+          bgcolor: "primary.main",
+          // background: "primary",
+          // color: palette.mainFontColor,
+          padding: spacing(2, 4),
+          borderRadius: shape.borderRadius,
+        }}
+        href="/login"
+      >
+        Login
+      </Link>
+      // <Button text="Login" />
+      // <Button variant="contained">Contained</Button>
+    );
   }
 
   return (

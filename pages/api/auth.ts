@@ -19,7 +19,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     userEmail: null,
     coins: [],
   };
-  console.log(req.session);
 
   try {
     const token = req.headers.authorization?.split(" ")[1] as string;

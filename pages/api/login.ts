@@ -14,7 +14,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
 
   const initState = { authenticated: false, userId: null, userEmail: null };
-
   const { email, password } = req.body;
 
   if (req.method === "POST") {

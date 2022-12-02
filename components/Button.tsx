@@ -5,7 +5,7 @@ interface ButtonProps {
   text: string;
   icon?: boolean;
   iconType?: React.ReactNode;
-  onClick: () => Promise<void>;
+  onClick?: () => Promise<void>;
 }
 
 function ButtonComponent({ text, icon, iconType, onClick }: ButtonProps) {
