@@ -27,7 +27,7 @@ interface PortfolioProps {
 }
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
-  const { authenticated, userEmail, coins, coinData } = data;
+  const { authenticated, userEmail, userId, coins, coinData } = data;
   const [userData, setUserData] = useState([]);
   // console.log(userEmail, authenticated);
   const handleClick = () => {
@@ -37,7 +37,11 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
+    console.log(coins);
+
+    // console.log(coinData);
     // console.log(coins);
+    // console.log(data);
     const result = coins.map((coin, i) => {
       const lastPrice = coinData[i][coin.name];
       // console.log(lastPrice);
@@ -45,7 +49,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       return newObject;
     });
     // console.log(result);
-    setUserData(result);
+    // setUserData(result);
   }, [coinData, coins]);
 
   if (!authenticated) {

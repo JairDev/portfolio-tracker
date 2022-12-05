@@ -13,7 +13,10 @@ export default function Layout({ children }: LayoutProps) {
   const { palette, spacing, shape } = useTheme();
 
   return (
-    <Container maxWidth={false} sx={{ bgcolor: "background.paper" }}>
+    <Container
+      maxWidth={false}
+      sx={{ bgcolor: "background.paper", minHeight: "100vh" }}
+    >
       <Container>
         <NavBar />
         {children}

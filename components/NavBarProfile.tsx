@@ -22,7 +22,7 @@ export default function NavBarProfile() {
   const router = useRouter();
   const { palette, spacing, shape } = useTheme();
   const theme = useTheme();
-  console.log(theme);
+  // console.log(theme);
   // console.log(palette.primaryButton);
   const { userEmail, authenticated, loading, mutateUser } = useUser({});
 

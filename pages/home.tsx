@@ -9,6 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { Button } from "components/Button";
 import Input from "components/Input";
+import StepCard from "components/StepCard";
 
 export default function Home() {
   const { spacing } = useTheme();
@@ -77,7 +78,7 @@ export default function Home() {
             <Table />
           </Box>
         </Box>
-        <Box>
+        <Box sx={{ display: "flex" }}>
           <Box>
             <Typography variant="h4">How To Get Started</Typography>
             <Typography variant="subtitle1">
@@ -85,6 +86,11 @@ export default function Home() {
               cryptocurrency
             </Typography>
             <Button text="Register Now" />
+          </Box>
+          <Box>
+            <StepCard />
+            <StepCard />
+            <StepCard />
           </Box>
         </Box>
       </main>
