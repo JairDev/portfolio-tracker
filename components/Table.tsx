@@ -22,9 +22,10 @@ interface TablePropsArray {
 }
 
 function TableComponent({ data = [] }: TablePropsArray) {
-  console.log(data);
+  // console.log(data);
   const router = useRouter();
   const { userEmail } = useUser({});
+  const [profit, setProfit] = React.useState("");
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
 
   const handleDeleteClick = async (
@@ -54,10 +55,20 @@ function TableComponent({ data = [] }: TablePropsArray) {
     });
 
     const resultDeleteCoin = await resDeleteCoin.json();
-    console.log(resultDeleteCoin);
+    // console.log(resultDeleteCoin);
 
     router.replace(router.asPath);
   };
+
+  React.useEffect(() => {
+    console.log(data);
+    data.map((coin) => {
+      const multiply = coin.avgPrice * coin.holding;
+      const result = Number.parseFloat(coin.usd - multiply).toFixed(2);
+      console.log(result);
+      setProfit(result.toString());
+    });
+  });
 
   return (
     <TableContainer component={Paper}>
@@ -81,6 +92,9 @@ function TableComponent({ data = [] }: TablePropsArray) {
             </TableCell>
             <TableCell sx={{ borderBottom: borderStyle }} align="right">
               Amount
+            </TableCell>
+            <TableCell sx={{ borderBottom: borderStyle }} align="right">
+              Profit/Loss
             </TableCell>
             <TableCell
               sx={{ borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}
@@ -111,7 +125,10 @@ function TableComponent({ data = [] }: TablePropsArray) {
                 {coin.holding}
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                {coin.avgPrice * coin.holding}
+                {coin.usd * coin.holding}
+              </TableCell>
+              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                {profit}
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="right">
                 <button onClick={(e) => handleDeleteClick(e, coin._id)}>

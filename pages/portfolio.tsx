@@ -35,8 +35,10 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   const [coinName, setCoinName] = useState("");
   const [coinAvgPrice, setCoinAvgPrice] = useState("");
   const [coinHolding, setCoinHolding] = useState("");
-  console.log(coinData);
-  console.log("coins", coins);
+  const [totalAmount, setTotalAmount] = useState("");
+
+  // console.log(coinData);
+  // console.log("coins", coins);
   const [userData, setUserData] = useState(Array<CoinsLastPrice>);
 
   const handleClick = () => {
@@ -80,7 +82,16 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       const newObject = { ...coin, ...lastPrice };
       return newObject;
     });
-    console.log("result", result);
+    const reduce = result.reduce((prev, current) => {
+      const amount = current.usd * current.holding;
+      console.log(amount);
+      // const total = Number.parseFloat(prev + current.holding).toFixed(2);
+      return prev + amount;
+    }, 0);
+
+    setTotalAmount(reduce.toString());
+    // console.log("reduce", reduce);
+    // console.log("result", result);
     setUserData(result);
   }, [coinData, coins]);
 
@@ -104,23 +115,43 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       <Box sx={{ width: "20%" }}>
         <Box sx={{ display: "flex" }}>
           <Box>
-            <Typography>Portafolio principal</Typography>
-            <Typography>$20.000</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              Portafolio principal
+            </Typography>
+
+            <Typography>${totalAmount}</Typography>
           </Box>
         </Box>
         <Box sx={{ marginTop: "8px" }}>
-          <Typography>Crear portafolio</Typography>
+          <Typography sx={{ fontWeight: "bold" }}>Crear portafolio</Typography>
         </Box>
       </Box>
 
       <Box sx={{ width: "80%" }}>
         <Box>
-          <Typography>Current Balance</Typography>
-          <Typography>$20000</Typography>
+          <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
+          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
+            ${totalAmount}
+          </Typography>
         </Box>
         <Box sx={{ marginTop: "80px" }}>
-          <Typography>Tus activos</Typography>
-          <Table data={userData} />
+          {userData.length > 0 && (
+            <Typography
+              variant="h5"
+              sx={{ marginBottom: "16px", fontWeight: "bold" }}
+            >
+              Tus activos
+            </Typography>
+          )}
+
+          {userData.length > 0 ? (
+            <Table data={userData} />
+          ) : (
+            <Typography>Este portafolio está vació</Typography>
+          )}
+
+          {/* <Table data={userData} /> */}
+
           <Box sx={{ marginTop: "16px" }}>
             <form onSubmit={handleSubmit}>
               <Box
