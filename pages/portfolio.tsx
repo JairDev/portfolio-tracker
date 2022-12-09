@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Table } from "components/Table";
 import fetchJson from "lib/fetchJson";
 import { Box, Typography } from "@mui/material";
+import { Button } from "components/Button";
+import BasicModal from "components/Modal";
 
 interface CoinsLastPrice {
   _id: string;
@@ -36,6 +38,9 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   const [coinAvgPrice, setCoinAvgPrice] = useState("");
   const [coinHolding, setCoinHolding] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
+  const [open, setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // console.log(coinData);
   // console.log("coins", coins);
@@ -43,6 +48,11 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
 
   const handleClick = () => {
     Router.push("login");
+  };
+
+  const handleClickAddCoin = () => {
+    console.log("w");
+    setOpen(true);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -128,11 +138,21 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       </Box>
 
       <Box sx={{ width: "80%" }}>
-        <Box>
-          <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
-          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-            ${totalAmount}
-          </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box>
+            <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
+            <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
+              ${totalAmount}
+            </Typography>
+          </Box>
+          <Box>
+            <Button
+              onClick={handleClickAddCoin}
+              text="Añadir nueva moneda"
+              variant="contained"
+            />
+          </Box>
+          <BasicModal open={open} handleClose={handleClose} />
         </Box>
         <Box sx={{ marginTop: "80px" }}>
           {userData.length > 0 && (
@@ -150,10 +170,8 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
             <Typography>Este portafolio está vació</Typography>
           )}
 
-          {/* <Table data={userData} /> */}
-
           <Box sx={{ marginTop: "16px" }}>
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}>
               <Box
                 sx={{
                   maxWidth: "350px",
@@ -173,7 +191,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
                   <button>Crear portafolio</button>
                 </Box>
               </Box>
-            </form>
+            </form> */}
           </Box>
         </Box>
       </Box>
