@@ -17,6 +17,14 @@ a {
   /* color: black; */
 }
 
+.container {
+  /* border: 1px solid red; */
+  background: #11011e;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     /* color-scheme: dark; */

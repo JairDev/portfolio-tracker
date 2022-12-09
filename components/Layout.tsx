@@ -1,26 +1,40 @@
 import React from "react";
 import NavBar from "./NavBar";
-import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
-import { theme } from "../styles/theme";
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { palette, spacing, shape } = useTheme();
-
   return (
-    <Container
-      maxWidth={false}
-      sx={{ bgcolor: "background.paper", minHeight: "100vh" }}
-    >
-      <Container>
+    <div className="container">
+      <Box
+        sx={{
+          background: "rgba(255, 0, 200, 0.253)",
+          borderRadius: "50%",
+          position: "absolute",
+          top: "0%",
+          right: "0%",
+          width: "60%",
+          height: "60%",
+          filter: "blur(200px)",
+          zIndex: "0",
+        }}
+      ></Box>
+      <Container
+        sx={{
+          position: "relative",
+          zIndex: "10",
+          paddingLeft: 0,
+          paddingRight: 0,
+        }}
+      >
         <NavBar />
         {children}
       </Container>
-    </Container>
+    </div>
   );
 }

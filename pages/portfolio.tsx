@@ -1,15 +1,17 @@
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { withSessionSsr } from "lib/sessions";
 import { withGetServerSideProps } from "lib/getServerSideProps";
 import { useEffect, useState } from "react";
-import useUser from "lib/useUser";
 import { Table } from "components/Table";
+import fetchJson from "lib/fetchJson";
+import { Box, Typography } from "@mui/material";
 
 interface CoinsLastPrice {
   _id: string;
   name: string;
   avgPrice: number;
   holding: number;
+  usd: number;
   __v: number;
 }
 export const getServerSideProps = withSessionSsr(withGetServerSideProps);
@@ -19,37 +21,67 @@ interface PortfolioProps {
   authenticated: boolean;
   userEmail: string;
   coins: Array<CoinsLastPrice>;
-  // coinData: {
-  //   [key: string]: {
-  //     usd: string;
-  //   };
-  // };
+  userId: string;
+  coinData: Array<{
+    [key: string]: {
+      [key: string]: number;
+    };
+  }>;
 }
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
-  const { authenticated, userEmail, userId, coins, coinData } = data;
-  const [userData, setUserData] = useState([]);
-  // console.log(userEmail, authenticated);
+  const router = useRouter();
+  const { authenticated, userId, coins, coinData } = data;
+  const [coinName, setCoinName] = useState("");
+  const [coinAvgPrice, setCoinAvgPrice] = useState("");
+  const [coinHolding, setCoinHolding] = useState("");
+  console.log(coinData);
+  console.log("coins", coins);
+  const [userData, setUserData] = useState(Array<CoinsLastPrice>);
+
   const handleClick = () => {
-    if (!authenticated) {
-      Router.push("login");
-    }
+    Router.push("login");
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = {
+      name: coinName,
+      avgPrice: coinAvgPrice,
+      holding: coinHolding,
+    };
+
+    const res = await fetch("api/coin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+    const result = await res.json();
+
+    const newID = { id: result.coinId, userId: userId };
+
+    await fetchJson("api/update-data-user", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newID),
+    });
+    router.replace(router.asPath);
   };
 
   useEffect(() => {
-    console.log(coins);
-
-    // console.log(coinData);
-    // console.log(coins);
-    // console.log(data);
     const result = coins.map((coin, i) => {
       const lastPrice = coinData[i][coin.name];
-      // console.log(lastPrice);
       const newObject = { ...coin, ...lastPrice };
       return newObject;
     });
-    // console.log(result);
-    // setUserData(result);
+    console.log("result", result);
+    setUserData(result);
   }, [coinData, coins]);
 
   if (!authenticated) {
@@ -63,26 +95,57 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   }
 
   return (
-    <div>
-      <h1>User authorized</h1>
-      <p>Hola</p>
-      <p>{userEmail}</p>
-      {/* {userData &&
-        userData.map((coin) => (
-          <div key={coin.name}>
-            <div>Name</div>
-            <div>{coin.name}</div>
-            <div>Price</div>
-            <div>{coin.usd}</div>
-            <div>Avg. Price</div>
-            <div>{coin.avgPrice}</div>
-            <div>Holdings</div>
-            <div>{coin.holding}</div>
-            <div>Amount</div>
-            <div>{coin.avgPrice * coin.holding}</div>
-          </div>
-        ))} */}
-      <Table arr={userData} />
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        marginTop: "32px",
+      }}
+    >
+      <Box sx={{ width: "20%" }}>
+        <Box sx={{ display: "flex" }}>
+          <Box>
+            <Typography>Portafolio principal</Typography>
+            <Typography>$20.000</Typography>
+          </Box>
+        </Box>
+        <Box sx={{ marginTop: "8px" }}>
+          <Typography>Crear portafolio</Typography>
+        </Box>
+      </Box>
+
+      <Box sx={{ width: "80%" }}>
+        <Box>
+          <Typography>Current Balance</Typography>
+          <Typography>$20000</Typography>
+        </Box>
+        <Box sx={{ marginTop: "80px" }}>
+          <Typography>Tus activos</Typography>
+          <Table data={userData} />
+          <Box sx={{ marginTop: "16px" }}>
+            <form onSubmit={handleSubmit}>
+              <Box
+                sx={{
+                  maxWidth: "350px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <label>Name</label>
+                <input onChange={(e) => setCoinName(e.target.value)}></input>
+                <label>Avg Price</label>
+                <input
+                  onChange={(e) => setCoinAvgPrice(e.target.value)}
+                ></input>
+                <label>Holding</label>
+                <input onChange={(e) => setCoinHolding(e.target.value)}></input>
+                <Box sx={{ marginTop: "16px" }}>
+                  <button>Crear portafolio</button>
+                </Box>
+              </Box>
+            </form>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }

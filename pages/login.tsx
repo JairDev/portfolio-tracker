@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Button, Typography } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { useTheme } from "@mui/material/styles";
 
-import Link from "next/link";
+import { default as NextLink } from "next/link";
 
 import { useFormik } from "formik";
 
@@ -15,8 +16,10 @@ import BoxAuth from "components/BoxAuth";
 import { validationSchema } from "schema/yup";
 import useUser from "lib/useUser";
 import fetchJson from "lib/fetchJson";
+import ContentBox from "components/ContentInputBox";
 
 export default function Login() {
+  const { spacing, shape } = useTheme();
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const { mutateUser } = useUser({
@@ -36,7 +39,6 @@ export default function Login() {
         password: values.password,
       };
       const res = mutateUser(
-        "api/user",
         await fetchJson("api/login", {
           method: "POST",
           headers: {
@@ -47,18 +49,22 @@ export default function Login() {
         }),
         false
       );
+
       const { authenticated, message } = await res;
-      console.log(authenticated);
+      const o = await res;
+      // console.log(authenticated);
+      // console.log(o);
       if (authenticated) {
+        // console.log("message");
         setSuccessMessage(message);
       } else {
         setErrorMessage(message);
       }
 
-      setTimeout(() => {
-        setSuccessMessage(null);
-        setErrorMessage(null);
-      }, 1500);
+      // setTimeout(() => {
+      //   setSuccessMessage(null);
+      //   setErrorMessage(null);
+      // }, 1500);
     },
   });
 
@@ -71,8 +77,25 @@ export default function Login() {
           justifyContent: "center",
           alignItems: "center",
           height: "60vh",
+          marginTop: spacing(14),
+          position: "relative",
         }}
       >
+        {/* <Box
+          sx={{
+            background: "rgba(255, 0, 200, 0.262)",
+            filter: "blur(200px)",
+            position: "absolute",
+            top: "-80%",
+            right: 0,
+            borderRadius: "50%",
+            width: "60%",
+            height: "100%",
+          }}
+        /> */}
+        <Box sx={{ marginBottom: spacing(6) }}>
+          <Typography variant="h1">Iniciar Sesión</Typography>
+        </Box>
         <BoxAuth>
           {errorMessage && (
             <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
@@ -90,19 +113,11 @@ export default function Login() {
             </Alert>
           )}
           <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                "& .MuiTextField-root": { my: 1 },
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <ContentBox>
               <Input
                 id="email"
                 name="email"
-                label="Email"
+                label="Correo electrónico"
                 value={formik.values.email}
                 placeHolder="jhondoe@example.com"
                 onChange={formik.handleChange}
@@ -113,8 +128,9 @@ export default function Login() {
               <Input
                 id="password"
                 name="password"
-                label="Password"
+                label="Contraseña"
                 value={formik.values.password}
+                placeHolder="password"
                 onChange={formik.handleChange}
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
@@ -122,11 +138,33 @@ export default function Login() {
                 helperText={formik.touched.password && formik.errors.password}
                 type="password"
               />
-              <Button type="submit">Sign in</Button>
-            </Box>
-            <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-              <Typography>{"Don't have an account?"}</Typography>
-              <Link href="register">Sign up</Link>
+
+              <Button
+                variant="contained"
+                sx={{
+                  color: "white",
+                  width: "100%",
+                  padding: spacing(2, 0),
+                  marginTop: spacing(2),
+                  borderRadius: shape.borderRadius,
+                }}
+                type="submit"
+              >
+                Iniciar sesión
+              </Button>
+            </ContentBox>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                marginTop: spacing(4),
+              }}
+            >
+              <Typography>No tienes una cuenta?</Typography>
+
+              <Link href="register" component={NextLink}>
+                Regístrate
+              </Link>
             </Box>
           </form>
         </BoxAuth>

@@ -3,16 +3,17 @@ import { Table } from "components/Table";
 import Head from "next/head";
 import styles from "styles/Home.module.css";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import MarketTrendCard from "components/MarketTrendCard";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { Button } from "components/Button";
 import Input from "components/Input";
 import StepCard from "components/StepCard";
+import { default as NextLink } from "next/link";
 
 export default function Home() {
-  const { spacing } = useTheme();
+  const { palette, spacing, shape } = useTheme();
 
   return (
     <div>
@@ -31,34 +32,54 @@ export default function Home() {
           }}
         >
           <Typography variant="h1">
-            Start and Build Your Crypto Portfolio Here
+            Comience y construya su cartera de criptomonedas
           </Typography>
-          <Box maxWidth="600px">
+          <Box maxWidth="600px" sx={{ marginTop: spacing(2) }}>
             <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-              Only at CoinMarketApp, you can track the price of your favorite
-              cryptos and stay on top of the latest news from the crypto world.
+              Solo en CoinMarketApp, puede realizar un seguimiento del precio de
+              sus criptomonedas favoritas y estar al tanto de las últimas
+              noticias del mundo de las criptomonedas.
             </Typography>
           </Box>
-          <Button text="Get Started" />
+          <Box sx={{ marginTop: spacing(8) }}>
+            <Link
+              component={NextLink}
+              underline="none"
+              color="text.primary"
+              sx={{
+                bgcolor: "primary.main",
+                padding: spacing(2, 4),
+                borderRadius: shape.borderRadius,
+              }}
+              href="/login"
+            >
+              EMPEZAR
+            </Link>
+          </Box>
         </Box>
         <Box
           sx={{
             paddingTop: spacing(17),
           }}
         >
-          <Typography variant="h5">Market Trend</Typography>
-          <Grid container sx={{ paddingTop: spacing(1) }}>
-            <Grid container justifyContent="space-between" spacing={8}>
-              <Grid item>
+          <Typography variant="h5">Tendencia del mercado</Typography>
+          <Grid container sx={{ paddingTop: spacing(2) }}>
+            <Grid
+              container
+              justifyContent="space-between"
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs item>
                 <MarketTrendCard />
               </Grid>
-              <Grid item>
+              <Grid xs item>
                 <MarketTrendCard />
               </Grid>
-              <Grid item>
+              <Grid xs item>
                 <MarketTrendCard />
               </Grid>
-              <Grid item>
+              <Grid xs item>
                 <MarketTrendCard />
               </Grid>
             </Grid>

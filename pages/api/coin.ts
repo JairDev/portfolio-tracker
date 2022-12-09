@@ -1,8 +1,13 @@
-import dbConnect from "lib/mongodb";
-import Coin from "models/Coin";
-import User from "models/User";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function coinApi(req, res) {
+import dbConnect from "lib/mongodb";
+
+import Coin from "models/Coin";
+
+export default async function coinApi(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await dbConnect();
 
   const { name, avgPrice, holding } = req.body;
@@ -13,12 +18,10 @@ export default async function coinApi(req, res) {
     holding,
   });
 
-  const result = await coin.save();
-  console.log(coin);
-  await User.findByIdAndUpdate(
-    "6373d00cd6777c8937dc643a",
-    { $push: { coins: result._id } },
-    { new: true, useFindAndModify: false }
-  );
-  res.status(200).json({ message: "Test coin api" });
+  try {
+    const result = await coin.save();
+    res.status(201).json({ message: "Currency added", coinId: result._id });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }

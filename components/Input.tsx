@@ -1,4 +1,9 @@
-import { Box, TextField } from "@mui/material";
+import { SpaceBarOutlined } from "@mui/icons-material";
+import { Box, InputLabel, TextField, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { FormHelperText } from "@mui/material";
+import { InputBase } from "@mui/material";
+
 import { FormikTouched, FormikErrors } from "formik";
 
 interface InputProps {
@@ -24,20 +29,50 @@ export default function Input({
   helperText,
   type,
 }: InputProps) {
+  const { spacing, palette } = useTheme();
+  // const theme= useTheme();
+  console.log(palette.error.main);
+  const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
+
   return (
-    <Box>
+    <Box
+      sx={{
+        width: "100%",
+        marginBottom: spacing(2),
+      }}
+    >
+      <InputLabel sx={{ color: "white", marginBottom: spacing(1) }}>
+        {label}
+      </InputLabel>
+
       <TextField
+        required
         id={id}
         name={name}
-        label={label}
+        defaultValue={placeHolder}
         value={value}
         placeholder={placeHolder}
-        sx={{ width: "100%" }}
+        sx={{
+          width: "100%",
+          border: "1px solid rgba(255, 255, 255, 0.103)",
+          background: "#160C24",
+          margin: "0px",
+        }}
         onChange={onChange}
         error={error}
-        helperText={helperText}
         type={type}
       />
+      <Box
+        sx={{
+          height: "24px",
+          color: palette.error.main,
+          marginTop: spacing(1),
+        }}
+      >
+        {error && (
+          <Typography sx={{ fontSize: "12px" }}>{helperText}</Typography>
+        )}
+      </Box>
     </Box>
   );
 }

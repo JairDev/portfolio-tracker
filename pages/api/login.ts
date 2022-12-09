@@ -30,6 +30,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       }
 
       if (checkPassword) {
+        // console.log("login", user);
         const token = jwt.sign(
           {
             userId: user._id,
@@ -39,13 +40,15 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
           { expiresIn: "24h" }
         );
         req.session.user = {
+          ...user,
           token,
           userId: user._id,
           userEmail: user.email,
+          stamp: "login",
         };
         await req.session.save();
         res.status(200).send({
-          message: "Login Successful",
+          message: "Inicio de sesión exitoso",
           authenticated: true,
           userId: user._id,
           userEmail: user.email,

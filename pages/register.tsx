@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Link } from "@mui/material";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { useTheme } from "@mui/material/styles";
 
-import Link from "next/link";
+import { default as NextLink } from "next/link";
 
 import { useFormik } from "formik";
 
@@ -13,8 +14,10 @@ import Input from "components/Input";
 import BoxAuth from "components/BoxAuth";
 
 import { validationSchema } from "schema/yup";
+import ContentBox from "components/ContentInputBox";
 
 export default function Register() {
+  const { spacing, shape } = useTheme();
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -59,8 +62,24 @@ export default function Register() {
         justifyContent: "center",
         alignItems: "center",
         height: "60vh",
+        marginTop: spacing(14),
       }}
     >
+      {/* <Box
+        sx={{
+          background: "rgba(255, 0, 200, 0.262)",
+          filter: "blur(200px)",
+          position: "absolute",
+          top: "-80%",
+          right: 0,
+          borderRadius: "50%",
+          width: "60%",
+          height: "100%",
+        }}
+      /> */}
+      <Box sx={{ marginBottom: spacing(6) }}>
+        <Typography variant="h1">Regístrate</Typography>
+      </Box>
       <BoxAuth>
         {errorMessage && (
           <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
@@ -75,19 +94,11 @@ export default function Register() {
           </Alert>
         )}
         <form onSubmit={formik.handleSubmit}>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { my: 1 },
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <ContentBox>
             <Input
               id="email"
               name="email"
-              label="Email"
+              label="Correo electrónico"
               value={formik.values.email}
               placeHolder="jhondoe@example.com"
               onChange={formik.handleChange}
@@ -98,18 +109,38 @@ export default function Register() {
             <Input
               id="password"
               name="password"
-              label="Password"
+              label="Contraseña"
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
               type="password"
             />
-            <Button type="submit">Sign up</Button>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Typography>Already have an account?</Typography>
-            <Link href="login">Sign in</Link>
+            <Button
+              variant="contained"
+              sx={{
+                color: "white",
+                width: "100%",
+                padding: spacing(2, 0),
+                marginTop: spacing(2),
+                borderRadius: shape.borderRadius,
+              }}
+              type="submit"
+            >
+              Regístrate
+            </Button>
+          </ContentBox>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              marginTop: spacing(4),
+            }}
+          >
+            <Typography>Ya tienes una cuenta?</Typography>
+            <Link href="login" component={NextLink}>
+              Inicia sesión
+            </Link>
           </Box>
         </form>
       </BoxAuth>

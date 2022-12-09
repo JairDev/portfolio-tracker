@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { default as NextLink } from "next/link";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -14,16 +14,10 @@ import { useTheme } from "@mui/material/styles";
 import useUser from "lib/useUser";
 import { Button } from "./Button";
 import fetchJson from "lib/fetchJson";
-import useSWR from "swr";
-
-// import Button from "@mui/material/Button";
 
 export default function NavBarProfile() {
   const router = useRouter();
-  const { palette, spacing, shape } = useTheme();
-  const theme = useTheme();
-  // console.log(theme);
-  // console.log(palette.primaryButton);
+  const { spacing, shape } = useTheme();
   const { userEmail, authenticated, loading, mutateUser } = useUser({});
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -52,26 +46,24 @@ export default function NavBarProfile() {
   if (loading) {
     return <div>Cargando</div>;
   }
-
   if (!authenticated) {
     return (
-      <Link
-        component={NextLink}
-        underline="none"
-        color="text.primary"
-        sx={{
-          bgcolor: "primary.main",
-          // background: "primary",
-          // color: palette.mainFontColor,
-          padding: spacing(2, 4),
-          borderRadius: shape.borderRadius,
-        }}
-        href="/login"
-      >
-        Login
-      </Link>
-      // <Button text="Login" />
-      // <Button variant="contained">Contained</Button>
+      <>
+        <Link
+          component={NextLink}
+          underline="none"
+          color="text.primary"
+          sx={{
+            bgcolor: "primary.main",
+            padding: spacing(2, 4),
+            borderRadius: shape.borderRadius,
+            opacity: router.pathname === "/login" ? 0 : 1,
+          }}
+          href="/login"
+        >
+          INICIAR SESIÓN
+        </Link>
+      </>
     );
   }
 

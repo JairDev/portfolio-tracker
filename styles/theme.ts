@@ -26,12 +26,6 @@ declare module "@mui/material/styles" {
 
 export let theme = createTheme({
   palette: {
-    // mainBack: "#11011E",
-    // primaryButton: "#0FAE96",
-    // cardTrendBack: "rgba(255, 255, 255, 0.02)",
-    // mainFontColor: "#ECF1F0",
-    // labelFontColor: "#B6B6B6",
-    // errorColor: "#EF4444",
     primary: {
       main: "#0FAE96",
     },
