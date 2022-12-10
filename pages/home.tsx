@@ -11,10 +11,22 @@ import { Button } from "components/Button";
 import Input from "components/Input";
 import StepCard from "components/StepCard";
 import { default as NextLink } from "next/link";
+import { useEffect } from "react";
+import useSWR from "swr";
+
+const urlCoin =
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 
 export default function Home() {
   const { palette, spacing, shape } = useTheme();
-
+  const { data } = useSWR(urlCoin);
+  let loading = !data;
+  // useEffect(() => {
+  //   async function getCoins() {
+  //     const res await
+  //   }
+  // }, [])
+  console.log(data);
   return (
     <div>
       <Head>
@@ -38,7 +50,7 @@ export default function Home() {
             <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
               Solo en CoinMarketApp, puede realizar un seguimiento del precio de
               sus criptomonedas favoritas y estar al tanto de las últimas
-              noticias del mundo de las criptomonedas.
+              noticias del criptomundo.
             </Typography>
           </Box>
           <Box sx={{ marginTop: spacing(8) }}>
@@ -70,18 +82,27 @@ export default function Home() {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid xs item>
-                <MarketTrendCard />
-              </Grid>
-              <Grid xs item>
-                <MarketTrendCard />
-              </Grid>
-              <Grid xs item>
-                <MarketTrendCard />
-              </Grid>
-              <Grid xs item>
-                <MarketTrendCard />
-              </Grid>
+              {data &&
+                data
+                  .slice(0, 4)
+                  .map(
+                    ({
+                      id,
+                      name,
+                      current_price,
+                      price_change_percentage_24h,
+                      image,
+                    }) => (
+                      <Grid key={id} xs item>
+                        <MarketTrendCard
+                          name={name}
+                          currentPrice={current_price}
+                          priceChange={price_change_percentage_24h}
+                          image={image}
+                        />
+                      </Grid>
+                    )
+                  )}
             </Grid>
           </Grid>
         </Box>

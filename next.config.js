@@ -14,6 +14,19 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ["assets.coingecko.com"],
+  },
+  // images: {
+  //   remotePatterns: [
+  //     {
+  //       protocol: "https",
+  //       hostname: "assets.coingecko.com",
+  //       port: "",
+  //       pathname: "/account123/**",
+  //     },
+  //   ],
+  // },
 };
 
 module.exports = nextConfig;

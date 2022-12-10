@@ -5,8 +5,16 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Image from "next/image";
+import { useTheme } from "@mui/material/styles";
 
-export default function MarketTrendCard() {
+export default function MarketTrendCard({
+  name,
+  currentPrice,
+  priceChange,
+  image,
+}) {
+  const { spacing } = useTheme();
   return (
     <Card
       sx={{
@@ -15,24 +23,34 @@ export default function MarketTrendCard() {
       }}
     >
       <CardContent>
-        <Box sx={{ display: "flex" }}>
-          <Typography sx={{ fontSize: 14 }} gutterBottom>
-            Bitcoin BTC
-          </Typography>
-          <Typography component="div">Label</Typography>
-          <Typography component="div">Icon</Typography>
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: spacing(3),
+            }}
+          >
+            <Image src={image} alt={name} width={48} height={48} />
+
+            <Typography sx={{ fontSize: 14 }} gutterBottom>
+              {name}
+            </Typography>
+          </Box>
         </Box>
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box>
-            <Typography sx={{ mb: 1.5 }}>$234234</Typography>
-            <Typography>1.44%</Typography>
+            <Typography
+              sx={{ mb: spacing(1), fontSize: "18px", fontWeight: "bold" }}
+            >
+              ${currentPrice}
+            </Typography>
+            <Typography>{priceChange}%</Typography>
           </Box>
           <Typography>Graphic</Typography>
         </Box>
       </CardContent>
-      {/* <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions> */}
     </Card>
   );
 }
