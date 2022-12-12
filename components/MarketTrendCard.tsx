@@ -1,12 +1,16 @@
 import * as React from "react";
+
+import Image from "next/image";
+
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import Icon from "@mui/material/Icon";
 
 export default function MarketTrendCard({
   name,

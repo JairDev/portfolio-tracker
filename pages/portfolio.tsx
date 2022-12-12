@@ -1,13 +1,16 @@
-import Router, { useRouter } from "next/router";
-import { withSessionSsr } from "lib/sessions";
-import { withGetServerSideProps } from "lib/getServerSideProps";
 import { useEffect, useState } from "react";
-import { Table } from "components/Table";
-import fetchJson from "lib/fetchJson";
-import { Box, Typography } from "@mui/material";
-import { Button } from "components/Button";
-import BasicModal from "components/Modal";
+import Router, { useRouter } from "next/router";
 
+import { Box, Typography } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
+import fetchJson from "lib/fetchJson";
+import { withGetServerSideProps } from "lib/getServerSideProps";
+import { withSessionSsr } from "lib/sessions";
+
+import { Button } from "components/Button";
+import { Table } from "components/Table";
+import BasicModal from "components/Modal";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -150,7 +153,9 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
               onClick={handleClickAddCoin}
               text="Añadir nueva moneda"
               variant="contained"
-            />
+            >
+              <AddCircleOutlineIcon />
+            </Button>
           </Box>
           <BasicModal open={open} handleClose={handleClose} />
         </Box>

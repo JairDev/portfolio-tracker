@@ -33,7 +33,7 @@ export default function Input({
   // const theme= useTheme();
   console.log(palette.error.main);
   const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
-
+  console.log(placeHolder);
   return (
     <Box
       sx={{
@@ -49,7 +49,7 @@ export default function Input({
         required
         id={id}
         name={name}
-        defaultValue={placeHolder}
+        // defaultValue={placeHolder}
         value={value}
         placeholder={placeHolder}
         sx={{

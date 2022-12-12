@@ -15,7 +15,7 @@ export default function Layout({ children }: LayoutProps) {
         sx={{
           background: "rgba(255, 0, 200, 0.253)",
           borderRadius: "50%",
-          position: "absolute",
+          position: "fixed",
           top: "0%",
           right: "0%",
           width: "60%",

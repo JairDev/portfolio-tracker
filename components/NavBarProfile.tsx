@@ -55,13 +55,14 @@ export default function NavBarProfile() {
           color="text.primary"
           sx={{
             bgcolor: "primary.main",
-            padding: spacing(2, 4),
-            borderRadius: shape.borderRadius,
+            padding: spacing(1, 3),
+            borderRadius: "8px",
+            fontWeight: "600",
             opacity: router.pathname === "/login" ? 0 : 1,
           }}
           href="/login"
         >
-          INICIAR SESIÓN
+          Iniciar sesión
         </Link>
       </>
     );

@@ -34,6 +34,7 @@ export let theme = createTheme({
     },
     background: {
       paper: "#11011E",
+      default: "#red",
     },
     text: {
       primary: "#ECF1F0",
