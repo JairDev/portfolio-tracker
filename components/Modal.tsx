@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Select from "./Select";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,12 +31,24 @@ export default function BasicModal({ open, handleClose }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <Box>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Transacción
+            </Typography>
+          </Box>
+          <Box>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Comprar
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Vender
+            </Typography>
+          </Box>
+          <Box>
+            <Box>
+              <Select></Select>
+            </Box>
+          </Box>
         </Box>
       </Modal>
     </Box>
