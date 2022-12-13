@@ -67,7 +67,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
   };
 
   React.useEffect(() => {
-    console.log(data);
+    // console.log(data);
     data.map((coin) => {
       const multiply = coin.avgPrice * coin.holding;
       // console.log(multiply);

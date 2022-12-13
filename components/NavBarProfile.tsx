@@ -55,7 +55,7 @@ export default function NavBarProfile() {
           color="text.primary"
           sx={{
             bgcolor: "primary.main",
-            padding: spacing(1, 3),
+            padding: spacing(2, 5),
             borderRadius: "8px",
             fontWeight: "600",
             opacity: router.pathname === "/login" ? 0 : 1,

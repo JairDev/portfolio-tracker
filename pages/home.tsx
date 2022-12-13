@@ -8,21 +8,36 @@ import { Link, Typography } from "@mui/material";
 import MarketTrendCard from "components/MarketTrendCard";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import Icon from "@mui/material/Icon";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 
 import { Button } from "components/Button";
 import Input from "components/Input";
 import StepCard from "components/StepCard";
 import { Table } from "components/Table";
+import ArticleCard from "components/ArticleCard";
 
 const urlCoin =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 
 export default function Home() {
   const { palette, spacing, shape } = useTheme();
-  const { data } = useSWR(urlCoin);
+  const { data: coinData } = useSWR(urlCoin);
+  const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
+  const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
+  const { data } = useSWR(urlNews);
+  console.log(data);
+  // let loading = !newsData;
+  // const newsData = [...data];
+  // console.log("news", newsData?.articles);
 
   return (
     <div>
@@ -37,13 +52,13 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            paddingTop: spacing(11),
+            paddingTop: spacing(14),
           }}
         >
           <Typography variant="h1">
             Comience y construya su cartera de criptomonedas
           </Typography>
-          <Box maxWidth="600px" sx={{ marginTop: spacing(2) }}>
+          <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
             <Typography
               variant="subtitle1"
               sx={{ textAlign: "center", color: " #B6B6B6" }}
@@ -60,7 +75,7 @@ export default function Home() {
               color="text.primary"
               sx={{
                 bgcolor: "primary.main",
-                padding: spacing(1, 3),
+                padding: spacing(2, 5),
                 borderRadius: "8px",
                 fontWeight: "600",
               }}
@@ -75,16 +90,18 @@ export default function Home() {
             paddingTop: spacing(18),
           }}
         >
-          <Typography variant="h6">Tendencia del mercado</Typography>
-          <Grid container sx={{ paddingTop: spacing(2) }}>
+          <Typography variant="h5" sx={{ fontWeight: "500" }}>
+            Tendencia del mercado
+          </Typography>
+          <Grid container sx={{ paddingTop: spacing(3) }}>
             <Grid
               container
               justifyContent="space-between"
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              {data &&
-                data
+              {coinData &&
+                coinData
                   .slice(0, 4)
                   .map(
                     ({
@@ -113,15 +130,17 @@ export default function Home() {
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h4">Actualización del mercado</Typography>
+            <Typography variant="h4" sx={{ fontWeight: "500" }}>
+              Actualización del mercado
+            </Typography>
             <Box>
-              <Input placeHolder="Search Coin" type="text" />
+              <Input placeHolder="Buscar criptomoneda" type="text" />
             </Box>
           </Box>
 
           <Box>
             <Table
-              data={data && data.slice(0, 10)}
+              data={coinData && coinData.slice(0, 10)}
               cellValue={[
                 "Rank",
                 "Nombre",
@@ -187,6 +206,150 @@ export default function Home() {
             <Typography variant="h4">Noticias sobre criptomonedas</Typography>
             <Box>
               <Input placeHolder="Buscar noticia" type="text" />
+            </Box>
+          </Box>
+
+          <Grid container sx={{ paddingTop: spacing(2) }}>
+            <Grid
+              container
+              justifyContent="space-between"
+              rowSpacing={4}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              {/* {loading ? (
+                <div>Cargando</div>
+              ) : (
+                newsData?.articles.map((article, i) => (
+                  <Grid
+                    key={article.title}
+                    xs={i === 0 ? 8 : 4}
+                    sx={{ heigth: "100%" }}
+                    item
+                  >
+                    <ArticleCard
+                      title={article.title}
+                      subTitle={article.description}
+                      image={article.image}
+                    />
+                  </Grid>
+                ))
+              )} */}
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            height: "200px",
+            marginTop: "180px",
+            paddingBottom: "40px",
+            // border: "1px solid red",
+          }}
+        >
+          <Box
+            sx={{
+              // width: "40%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              // border: "1px solid yellow",
+            }}
+          >
+            <Box
+              sx={{
+                // border: "1px solid red",
+                width: "100%",
+                display: "flex",
+                // justifyContent: "center",
+                // alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="/"
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  fontSize: "24px",
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: palette.text.primary,
+                  textDecoration: "none",
+                }}
+              >
+                CoinMarket
+              </Typography>
+              <Typography
+                component="span"
+                sx={{ color: palette.primary.main, fontWeight: "700" }}
+              >
+                App
+              </Typography>
+            </Box>
+            <Box>
+              <Icon>
+                <InstagramIcon />
+              </Icon>
+              <Icon sx={{ marginLeft: "8px" }}>
+                <TwitterIcon />
+              </Icon>
+              <Icon sx={{ marginLeft: "8px" }}>
+                <LinkedInIcon />
+              </Icon>
+            </Box>
+            <Box>
+              <Typography>Diseñado por: @Bdyhm</Typography>
+              <Typography sx={{ marginTop: "8px" }}>
+                Desarrollado por: Alfredo Moscoso
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              marginLeft: "48px",
+              height: "100%",
+            }}
+          >
+            <Box sx={{ paddingLeft: "16px" }}>
+              <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
+                Aprender
+              </Typography>
+            </Box>
+            <Box>
+              <MenuItem
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Link
+                  sx={{ marginTop: "16px", color: palette.text.primary }}
+                  href="https://academy.binance.com/es/start-here"
+                  underline="hover"
+                >
+                  Que es una criptomoneda?
+                </Link>
+                <Link
+                  sx={{ marginTop: "16px", color: palette.text.primary }}
+                  href="https://academy.binance.com/es/articles/what-is-a-cryptocurrency-whitepaper"
+                  underline="hover"
+                >
+                  Que es un whitepaper?
+                </Link>
+                <Link
+                  sx={{ marginTop: "16px", color: palette.text.primary }}
+                  href="https://academy.binance.com/es/articles/what-is-a-decentralized-exchange-dex"
+                  underline="hover"
+                >
+                  Que es un exchange descentralizado?
+                </Link>
+              </MenuItem>
             </Box>
           </Box>
         </Box>

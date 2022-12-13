@@ -19,6 +19,7 @@ function ButtonComponent({ text, variant, onClick, children }: ButtonProps) {
       onClick={onClick}
       variant={variant}
       sx={{
+        borderRadius: "8px",
         display: "flex",
         color: "text.primary",
         alignItems: "center",

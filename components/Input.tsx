@@ -38,6 +38,7 @@ export default function Input({
     <Box
       sx={{
         width: "100%",
+        height: "100px",
         marginBottom: spacing(2),
       }}
     >
@@ -49,12 +50,12 @@ export default function Input({
         required
         id={id}
         name={name}
-        // defaultValue={placeHolder}
         value={value}
         placeholder={placeHolder}
         sx={{
           width: "100%",
           border: "1px solid rgba(255, 255, 255, 0.103)",
+          borderRadius: "8px",
           background: "#160C24",
           margin: "0px",
         }}

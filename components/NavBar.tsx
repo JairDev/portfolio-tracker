@@ -53,6 +53,7 @@ export default function NavBar() {
             href="/"
             sx={{
               display: { xs: "none", md: "flex" },
+              fontSize: "24px",
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",

@@ -31,6 +31,7 @@ export default function Layout({ children }: LayoutProps) {
           paddingLeft: 0,
           paddingRight: 0,
         }}
+        maxWidth="lg"
       >
         <NavBar />
         {children}
