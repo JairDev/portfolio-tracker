@@ -22,6 +22,10 @@ export default function SelectCoin() {
           value={age}
           label="Age"
           onChange={handleChange}
+          sx={{
+            border: "1px solid rgba(255, 255, 255, 0.103)",
+            background: "#160C24",
+          }}
         >
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>

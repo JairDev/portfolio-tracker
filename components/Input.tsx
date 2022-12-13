@@ -38,8 +38,8 @@ export default function Input({
     <Box
       sx={{
         width: "100%",
-        height: "100px",
-        marginBottom: spacing(2),
+        // height: "100px",
+        // marginBottom: spacing(2),
       }}
     >
       <InputLabel sx={{ color: "white", marginBottom: spacing(1) }}>
@@ -65,7 +65,8 @@ export default function Input({
       />
       <Box
         sx={{
-          height: "24px",
+          // border: "1px solid red",
+          // height: "24px",
           color: palette.error.main,
           marginTop: spacing(1),
         }}
