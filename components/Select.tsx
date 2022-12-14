@@ -11,25 +11,36 @@ export default function SelectCoin() {
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string);
   };
-
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+      <FormControl variant="filled" fullWidth>
+        {/* <InputLabel
+          // id="demo-simple-select-label"
+          sx={{ color: "text.primary" }}
+        >
+          Busca una moneda
+        </InputLabel> */}
         <Select
-          labelId="demo-simple-select-label"
           id="demo-simple-select"
+          name="select-coin"
           value={age}
-          label="Age"
           onChange={handleChange}
+          displayEmpty
+          placeholder="Select"
           sx={{
-            border: "1px solid rgba(255, 255, 255, 0.103)",
             background: "#160C24",
+            "&  > div": {
+              padding: "16px",
+            },
+            svg: {
+              color: "white",
+            },
           }}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value="">BTC</MenuItem>
+          <MenuItem value={10}>ETH</MenuItem>
+          <MenuItem value={20}>DOT</MenuItem>
+          <MenuItem value={30}>BNB</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -11,6 +11,7 @@ import { withSessionSsr } from "lib/sessions";
 import { Button } from "components/Button";
 import { Table } from "components/Table";
 import BasicModal from "components/Modal";
+import NestedModal from "components/Modal";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -158,6 +159,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
             </Button>
           </Box>
           <BasicModal open={open} handleClose={handleClose} />
+          {/* <NestedModal /> */}
         </Box>
         <Box sx={{ marginTop: "80px" }}>
           {userData.length > 0 && (
