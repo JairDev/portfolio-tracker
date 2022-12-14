@@ -1,4 +1,7 @@
-import * as React from "react";
+import React, { useState } from "react";
+
+import Router, { useRouter } from "next/router";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -8,6 +11,8 @@ import { useTheme } from "@mui/material/styles";
 import Input from "./Input";
 import SelectCoin from "./Select";
 import BasicTabs from "./Tabs";
+import fetchJson from "lib/fetchJson";
+import useUser from "lib/useUser";
 
 const style = {
   position: "absolute" as "absolute",
@@ -15,23 +20,63 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  // border: "2px solid red",
+  bgcolor: "#160C24",
+  border: "1px solid rgba(255, 255, 255, 0.103)",
   boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
 };
 
-function ChildModal() {
-  const { spacing, shape } = useTheme();
+function ChildModal({ coinName, setOpenParent }) {
+  const router = useRouter();
 
+  const { spacing, shape } = useTheme();
+  const [coinAvgPrice, setCoinAvgPrice] = useState("");
+  const [coinHolding, setCoinHolding] = useState("");
+  const { userId, userEmail, authenticated, loading, mutateUser } = useUser({});
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(" hola");
+
+    const form = {
+      name: coinName,
+      avgPrice: coinAvgPrice,
+      holding: coinHolding,
+    };
+
+    const res = await fetch("api/coin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+    const result = await res.json();
+    console.log(result);
+
+    const newID = { id: result.coinId, userId: userId };
+
+    await fetchJson("api/update-data-user", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newID),
+    });
+    router.replace(router.asPath);
+    setOpen(false);
+    setOpenParent(false);
   };
 
   return (
@@ -58,10 +103,11 @@ function ChildModal() {
               <BasicTabs />
             </Box>
             <Box>
-              {/* <form onSubmit={formik.handleSubmit}> */}
               <Box sx={{ marginTop: spacing(1) }}>
-                <form>
-                  <SelectCoin />
+                <form onSubmit={handleSubmit}>
+                  {/* <form> */}
+                  {/* <SelectCoin /> */}
+                  <Typography>{coinName}</Typography>
                   <Box
                     sx={{
                       display: " flex",
@@ -76,6 +122,7 @@ function ChildModal() {
                         label="Cantidad"
                         // value={formik.values.email}
                         placeHolder="0.00"
+                        onChange={(e) => setCoinHolding(e.target.value)}
                         // onChange={formik.handleChange}
                         // error={formik.touched.email && Boolean(formik.errors.email)}
                         // helperText={formik.touched.email && formik.errors.email}
@@ -89,7 +136,7 @@ function ChildModal() {
                         label="Precio por moneda"
                         // value={formik.values.password}
                         placeHolder="$20.000.00"
-                        // onChange={formik.handleChange}
+                        onChange={(e) => setCoinAvgPrice(e.target.value)}
                         // error={
                         //   formik.touched.password && Boolean(formik.errors.password)
                         // }
@@ -137,9 +184,9 @@ function ChildModal() {
   );
 }
 
-export default function BasicModal({ open, handleClose }) {
+export default function BasicModal({ open, handleClose, setOpen }) {
   const { spacing } = useTheme();
-
+  // console.log(ope)
   return (
     <Box sx={{ position: "absolute" }}>
       <Modal
@@ -163,7 +210,7 @@ export default function BasicModal({ open, handleClose }) {
               </form>
             </Box>
           </Box>
-          <ChildModal />
+          <ChildModal coinName={"bitcoin"} setOpenParent={setOpen} />
         </Box>
       </Modal>
     </Box>

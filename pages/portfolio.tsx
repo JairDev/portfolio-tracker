@@ -158,7 +158,12 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
               <AddCircleOutlineIcon />
             </Button>
           </Box>
-          <BasicModal open={open} handleClose={handleClose} />
+          <BasicModal
+            open={open}
+            handleClose={handleClose}
+            userId={userId}
+            setOpen={setOpen}
+          />
           {/* <NestedModal /> */}
         </Box>
         <Box sx={{ marginTop: "80px" }}>

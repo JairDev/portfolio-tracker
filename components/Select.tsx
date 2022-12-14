@@ -28,6 +28,8 @@ export default function SelectCoin() {
           displayEmpty
           placeholder="Select"
           sx={{
+            border: "1px solid rgba(255, 255, 255, 0.103)",
+            borderRadius: "8px",
             background: "#160C24",
             "&  > div": {
               padding: "16px",

@@ -51,6 +51,16 @@ export default function BasicTabs() {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          sx={{
+            // border: "2px solid red",
+            button: {
+              color: "text.primary",
+              // padding: "0px",
+              // "&.Mui-selected": {
+              //   background: "red",
+              // },
+            },
+          }}
         >
           <Tab label="Comprar" {...a11yProps(0)} />
           <Tab label="Vender" {...a11yProps(1)} />
