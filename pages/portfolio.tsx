@@ -12,6 +12,7 @@ import { Button } from "components/Button";
 import { Table } from "components/Table";
 import BasicModal from "components/Modal";
 import NestedModal from "components/Modal";
+import useSWR from "swr";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -35,7 +36,12 @@ interface PortfolioProps {
   }>;
 }
 
+const urlCoin =
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+
 export default function Porfolio({ data }: { data: PortfolioProps }) {
+  const { data: coinDataApi } = useSWR(urlCoin);
+
   const router = useRouter();
   const { authenticated, userId, coins, coinData } = data;
   const [coinName, setCoinName] = useState("");
@@ -46,8 +52,6 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // console.log(coinData);
-  // console.log("coins", coins);
   const [userData, setUserData] = useState(Array<CoinsLastPrice>);
 
   const handleClick = () => {
@@ -96,18 +100,36 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       const newObject = { ...coin, ...lastPrice };
       return newObject;
     });
+
+    const resultUserData = result.map((coinp) => {
+      console.log(coinp);
+      const profit = coinp?.avgPrice * coinp?.holding;
+      const profitResult = Number.parseFloat(coinp?.usd - profit).toFixed(2);
+      const filter = coinDataApi?.filter((coin) => coin.id === coinp.name);
+
+      const newObj = filter?.map((coin) => ({
+        market_cap_rank: coin.market_cap_rank,
+        image: coin.image,
+        profitResult,
+        ...coinp,
+      }));
+      filter?.map((coin) => {
+        if (coin) {
+          console.log(coin);
+        }
+      });
+
+      return newObj;
+    });
+    const flatData = resultUserData.flat();
     const reduce = result.reduce((prev, current) => {
       const amount = current.usd * current.holding;
-      console.log(amount);
-      // const total = Number.parseFloat(prev + current.holding).toFixed(2);
       return prev + amount;
     }, 0);
 
     setTotalAmount(reduce.toString());
-    // console.log("reduce", reduce);
-    // console.log("result", result);
-    setUserData(result);
-  }, [coinData, coins]);
+    setUserData(flatData);
+  }, [coinData, coinDataApi, coins]);
 
   if (!authenticated) {
     return (
@@ -177,7 +199,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
           )}
 
           {userData.length > 0 ? (
-            <Table data={userData} />
+            <Table data={userData} coinData={coinData} />
           ) : (
             <Typography>Este portafolio está vació</Typography>
           )}

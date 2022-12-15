@@ -13,6 +13,7 @@ import SelectCoin from "./Select";
 import BasicTabs from "./Tabs";
 import fetchJson from "lib/fetchJson";
 import useUser from "lib/useUser";
+import useSWR from "swr";
 
 const style = {
   position: "absolute" as "absolute",
@@ -46,9 +47,10 @@ function ChildModal({ coinName, setOpenParent }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(" hola");
-
+    const lower = coinName.toLowerCase();
+    console.log(lower);
     const form = {
-      name: coinName,
+      name: lower,
       avgPrice: coinAvgPrice,
       holding: coinHolding,
     };
@@ -186,7 +188,13 @@ function ChildModal({ coinName, setOpenParent }) {
 
 export default function BasicModal({ open, handleClose, setOpen }) {
   const { spacing } = useTheme();
-  // console.log(ope)
+  const urlCoin =
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+  const { data: coinData } = useSWR(urlCoin);
+  const [value, setValue] = useState("");
+
+  // console.log(coinData);
+  // console.log(value);
   return (
     <Box sx={{ position: "absolute" }}>
       <Modal
@@ -206,11 +214,11 @@ export default function BasicModal({ open, handleClose, setOpen }) {
             {/* <form onSubmit={formik.handleSubmit}> */}
             <Box sx={{ marginTop: spacing(1) }}>
               <form>
-                <SelectCoin />
+                <SelectCoin data={coinData} setValue={setValue} />
               </form>
             </Box>
           </Box>
-          <ChildModal coinName={"bitcoin"} setOpenParent={setOpen} />
+          <ChildModal coinName={value} setOpenParent={setOpen} />
         </Box>
       </Modal>
     </Box>
