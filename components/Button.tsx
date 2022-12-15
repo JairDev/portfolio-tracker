@@ -8,7 +8,7 @@ interface ButtonProps {
   icon?: boolean;
   variant?: "text" | "outlined" | "contained";
   children?: React.ReactNode;
-  onClick?: () => Promise<void>;
+  onClick?: () => void | (() => Promise<void>);
 }
 
 function ButtonComponent({ text, variant, onClick, children }: ButtonProps) {

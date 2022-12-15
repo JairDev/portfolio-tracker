@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Router, { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -14,6 +16,7 @@ import BasicTabs from "./Tabs";
 import fetchJson from "lib/fetchJson";
 import useUser from "lib/useUser";
 import useSWR from "swr";
+import useCoin from "lib/useCoin";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,31 +32,48 @@ const style = {
   pb: 3,
 };
 
+interface ModalProps {}
+
 function ChildModal({ coinName, setOpenParent }) {
   const router = useRouter();
-
+  const { userId, userEmail, authenticated, loading, mutateUser } = useUser({});
+  // const { mutateUserCoin } = useCoin();
   const { spacing, shape } = useTheme();
   const [coinAvgPrice, setCoinAvgPrice] = useState("");
   const [coinHolding, setCoinHolding] = useState("");
-  const { userId, userEmail, authenticated, loading, mutateUser } = useUser({});
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setOpenParent(false);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(" hola");
+    // console.log(" hola");
     const lower = coinName.toLowerCase();
-    console.log(lower);
+    // console.log(lower);
     const form = {
       name: lower,
       avgPrice: coinAvgPrice,
       holding: coinHolding,
     };
+
+    // const res = mutateUserCoin(
+    //   await fetchJson("api/coin", {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(form),
+    //   })
+    // );
 
     const res = await fetch("api/coin", {
       method: "POST",
@@ -64,10 +84,14 @@ function ChildModal({ coinName, setOpenParent }) {
       body: JSON.stringify(form),
     });
     const result = await res.json();
-    console.log(result);
+    // console.log(res);
+    // console.log(result);
+    // if (res.ok) {
+    //   setSuccessMessage(result.message);
+    // }
 
     const newID = { id: result.coinId, userId: userId };
-
+    // console.log(newID);
     await fetchJson("api/update-data-user", {
       method: "POST",
       headers: {
@@ -96,9 +120,30 @@ function ChildModal({ coinName, setOpenParent }) {
           // sx={{ border: "1px solid red" }}
         >
           <Box sx={style}>
+            {errorMessage && (
+              <Alert
+                sx={{ position: "absolute", top: "-70px" }}
+                severity="error"
+              >
+                <AlertTitle>Error</AlertTitle>
+                {errorMessage}
+              </Alert>
+            )}
+            {successMessage && (
+              <Alert
+                sx={{ position: "absolute", top: "-70px" }}
+                severity="success"
+              >
+                <AlertTitle>Success</AlertTitle>
+                {successMessage}
+              </Alert>
+            )}
             <Box>
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Transacción
+              </Typography>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                {successMessage}
               </Typography>
             </Box>
             <Box>
@@ -202,24 +247,24 @@ export default function BasicModal({ open, handleClose, setOpen }) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        // sx={{ border: "1px solid red" }}
       >
-        <Box sx={style}>
-          <Box>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Seleccionar moneda
-            </Typography>
-          </Box>
-          <Box>
-            {/* <form onSubmit={formik.handleSubmit}> */}
-            <Box sx={{ marginTop: spacing(1) }}>
-              <form>
-                <SelectCoin data={coinData} setValue={setValue} />
-              </form>
+        <div>
+          <Box sx={style}>
+            <Box>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Seleccionar moneda
+              </Typography>
             </Box>
+            <Box>
+              <Box sx={{ marginTop: spacing(1) }}>
+                <form>
+                  <SelectCoin data={coinData} setValue={setValue} />
+                </form>
+              </Box>
+            </Box>
+            <ChildModal coinName={value} setOpenParent={setOpen} />
           </Box>
-          <ChildModal coinName={value} setOpenParent={setOpen} />
-        </Box>
+        </div>
       </Modal>
     </Box>
   );

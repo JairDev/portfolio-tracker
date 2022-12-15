@@ -13,6 +13,7 @@ import { Table } from "components/Table";
 import BasicModal from "components/Modal";
 import NestedModal from "components/Modal";
 import useSWR from "swr";
+import useCoin from "lib/useCoin";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -41,17 +42,15 @@ const urlCoin =
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
-
+  // const { userCoin } = useCoin();
+  // console.log(userCoin);
   const router = useRouter();
   const { authenticated, userId, coins, coinData } = data;
-  const [coinName, setCoinName] = useState("");
-  const [coinAvgPrice, setCoinAvgPrice] = useState("");
-  const [coinHolding, setCoinHolding] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  // console.log(coinDataApi);
   const [userData, setUserData] = useState(Array<CoinsLastPrice>);
 
   const handleClick = () => {
@@ -59,39 +58,8 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   const handleClickAddCoin = () => {
-    console.log("w");
+    // console.log("w");
     setOpen(true);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = {
-      name: coinName,
-      avgPrice: coinAvgPrice,
-      holding: coinHolding,
-    };
-
-    const res = await fetch("api/coin", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
-    const result = await res.json();
-
-    const newID = { id: result.coinId, userId: userId };
-
-    await fetchJson("api/update-data-user", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newID),
-    });
-    router.replace(router.asPath);
   };
 
   useEffect(() => {
@@ -100,34 +68,32 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       const newObject = { ...coin, ...lastPrice };
       return newObject;
     });
-
+    // console.log(result);
     const resultUserData = result.map((coinp) => {
-      console.log(coinp);
+      // console.log(coinp);
       const profit = coinp?.avgPrice * coinp?.holding;
-      const profitResult = Number.parseFloat(coinp?.usd - profit).toFixed(2);
+      const profitResult = Number.parseFloat(
+        (coinp?.usd - profit).toString()
+      ).toFixed(2);
       const filter = coinDataApi?.filter((coin) => coin.id === coinp.name);
-
       const newObj = filter?.map((coin) => ({
         market_cap_rank: coin.market_cap_rank,
         image: coin.image,
         profitResult,
         ...coinp,
       }));
-      filter?.map((coin) => {
-        if (coin) {
-          console.log(coin);
-        }
-      });
 
       return newObj;
     });
+    // console.log(resultUserData);
     const flatData = resultUserData.flat();
+    // console.log(flatData);
     const reduce = result.reduce((prev, current) => {
       const amount = current.usd * current.holding;
       return prev + amount;
     }, 0);
 
-    setTotalAmount(reduce.toString());
+    setTotalAmount(reduce.toFixed(2).toString());
     setUserData(flatData);
   }, [coinData, coinDataApi, coins]);
 
@@ -180,13 +146,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
               <AddCircleOutlineIcon />
             </Button>
           </Box>
-          <BasicModal
-            open={open}
-            handleClose={handleClose}
-            userId={userId}
-            setOpen={setOpen}
-          />
-          {/* <NestedModal /> */}
+          <BasicModal open={open} handleClose={handleClose} setOpen={setOpen} />
         </Box>
         <Box sx={{ marginTop: "80px" }}>
           {userData.length > 0 && (
@@ -199,34 +159,12 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
           )}
 
           {userData.length > 0 ? (
-            <Table data={userData} coinData={coinData} />
+            <Table data={userData} />
           ) : (
             <Typography>Este portafolio está vació</Typography>
           )}
 
-          <Box sx={{ marginTop: "16px" }}>
-            {/* <form onSubmit={handleSubmit}>
-              <Box
-                sx={{
-                  maxWidth: "350px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <label>Name</label>
-                <input onChange={(e) => setCoinName(e.target.value)}></input>
-                <label>Avg Price</label>
-                <input
-                  onChange={(e) => setCoinAvgPrice(e.target.value)}
-                ></input>
-                <label>Holding</label>
-                <input onChange={(e) => setCoinHolding(e.target.value)}></input>
-                <Box sx={{ marginTop: "16px" }}>
-                  <button>Crear portafolio</button>
-                </Box>
-              </Box>
-            </form> */}
-          </Box>
+          <Box sx={{ marginTop: "16px" }}></Box>
         </Box>
       </Box>
     </Box>

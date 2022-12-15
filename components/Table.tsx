@@ -20,12 +20,18 @@ interface CoinData {
   holding: number;
   name: string;
   usd: number;
+  market_cap_rank: string;
+  image: string;
+  current_price: string;
+  price_change_percentage_24h: string;
+  high_24h: string;
+  profitResult: string;
   _id: string;
 }
 
 interface TablePropsArray {
   data: Array<CoinData>;
-  tableHome: boolean;
+  tableHome?: boolean;
 }
 
 const urlCoin =
@@ -37,7 +43,6 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
 
   const router = useRouter();
   const { userEmail } = useUser({});
-  const [profit, setProfit] = React.useState<boolean>("");
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
 
   const [userData, setUserData] = useState([]);

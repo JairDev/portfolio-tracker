@@ -31,9 +31,9 @@ export default function Input({
 }: InputProps) {
   const { spacing, palette } = useTheme();
   // const theme= useTheme();
-  console.log(palette.error.main);
+  // console.log(palette.error.main);
   const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
-  console.log(placeHolder);
+  // console.log(placeHolder);
   return (
     <Box
       sx={{

@@ -34,10 +34,6 @@ export default function Home() {
   const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
   const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
   const { data } = useSWR(urlNews);
-  console.log(data);
-  // let loading = !newsData;
-  // const newsData = [...data];
-  // console.log("news", newsData?.articles);
 
   return (
     <div>
@@ -139,17 +135,7 @@ export default function Home() {
           </Box>
 
           <Box>
-            <Table
-              data={coinData && coinData.slice(0, 10)}
-              cellValue={[
-                "Rank",
-                "Nombre",
-                "Último precio",
-                "Cambio",
-                // "Mercado",
-              ]}
-              tableHome
-            />
+            <Table data={coinData && coinData.slice(0, 10)} tableHome />
           </Box>
         </Box>
         <Box

@@ -22,7 +22,6 @@ const settings = ["mail@mail.com"];
 export default function NavBar() {
   const { palette, spacing, shape } = useTheme();
   const theme = useTheme();
-  console.log(theme);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );

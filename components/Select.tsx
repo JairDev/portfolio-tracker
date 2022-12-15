@@ -40,13 +40,9 @@ export default function SelectCoin({ data = [], setValue }) {
             },
           }}
         >
-          {/* <MenuItem value="">BTC</MenuItem> */}
-          {/* <MenuItem value={10}>ETH</MenuItem>
-          <MenuItem value={20}>DOT</MenuItem>
-          <MenuItem value={30}>BNB</MenuItem> */}
           {data &&
             data.map((coin) => (
-              <MenuItem key={coin.id} value={coin.name}>
+              <MenuItem key={coin.id} value={coin.id}>
                 {coin.name}
               </MenuItem>
             ))}
