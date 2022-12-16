@@ -52,7 +52,7 @@ function ChildModal({ coinName, setOpenParent }) {
     setOpen(false);
     setOpenParent(false);
   };
-
+  // co;
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log(" hola");
@@ -64,17 +64,6 @@ function ChildModal({ coinName, setOpenParent }) {
       holding: coinHolding,
     };
 
-    // const res = mutateUserCoin(
-    //   await fetchJson("api/coin", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(form),
-    //   })
-    // );
-
     const res = await fetch("api/coin", {
       method: "POST",
       headers: {
@@ -84,11 +73,19 @@ function ChildModal({ coinName, setOpenParent }) {
       body: JSON.stringify(form),
     });
     const result = await res.json();
-    // console.log(res);
-    // console.log(result);
-    // if (res.ok) {
-    //   setSuccessMessage(result.message);
-    // }
+    if (res.ok) {
+      setSuccessMessage(result.message);
+    }
+    if (!res.ok) {
+      setErrorMessage(result.message);
+    }
+
+    setTimeout(() => {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+      setOpen(false);
+      setOpenParent(false);
+    }, 1500);
 
     const newID = { id: result.coinId, userId: userId };
     // console.log(newID);
@@ -101,8 +98,8 @@ function ChildModal({ coinName, setOpenParent }) {
       body: JSON.stringify(newID),
     });
     router.replace(router.asPath);
-    setOpen(false);
-    setOpenParent(false);
+    // setOpen(false);
+    // setOpenParent(false);
   };
 
   return (
@@ -119,7 +116,7 @@ function ChildModal({ coinName, setOpenParent }) {
           aria-describedby="modal-modal-description"
           // sx={{ border: "1px solid red" }}
         >
-          <Box sx={style}>
+          <Box sx={{ ...style, position: "relative" }}>
             {errorMessage && (
               <Alert
                 sx={{ position: "absolute", top: "-70px" }}

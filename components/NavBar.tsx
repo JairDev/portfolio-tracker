@@ -16,12 +16,18 @@ import Link from "@mui/material/Link";
 
 import NavBarProfile from "./NavBarProfile";
 
-const pages = ["Portafolio", "Mercado", "Noticias", "Conversor"];
+const pages = [
+  { link: "Portafolio", path: "portfolio" },
+  { link: "Mercado", path: "#market" },
+  { link: "Noticias", path: "#news" },
+  { link: "Conversor", path: "converter" },
+];
 const settings = ["mail@mail.com"];
 
 export default function NavBar() {
   const { palette, spacing, shape } = useTheme();
   const theme = useTheme();
+  console.log(theme);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -31,6 +37,10 @@ export default function NavBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  React.useEffect(() => {
+    // pages.map((page) => console.log(page.path));
+  }, []);
 
   return (
     <AppBar
@@ -98,11 +108,11 @@ export default function NavBar() {
               display: { xs: "block", md: "none" },
             }}
           >
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Link href={page}>{page}</Link>
+                <Link href={page === "Mercado" ? "#market" : page}>{page}</Link>
               </MenuItem>
-            ))}
+            ))} */}
           </Menu>
         </Box>
 
@@ -131,14 +141,14 @@ export default function NavBar() {
           }}
         >
           {pages.map((page) => (
-            <MenuItem key={page} onClick={handleCloseNavMenu}>
+            <MenuItem key={page.path} onClick={handleCloseNavMenu}>
               <Link
                 component={NextLink}
                 underline="none"
-                href={page === "Portafolio" ? "portfolio" : page.toLowerCase()}
+                href={page.path}
                 color="text.primary"
               >
-                {page}
+                {page.link}
               </Link>
             </MenuItem>
           ))}

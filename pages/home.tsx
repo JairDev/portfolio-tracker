@@ -125,7 +125,10 @@ export default function Home() {
             paddingTop: spacing(18),
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            id="market"
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
             <Typography variant="h4" sx={{ fontWeight: "500" }}>
               Actualización del mercado
             </Typography>
@@ -158,7 +161,21 @@ export default function Home() {
               criptomoneda favorita
             </Typography>
             <Box sx={{ marginTop: spacing(4) }}>
-              <Button variant="contained" text="Regístrate ahora" />
+              {/* <Button variant="contained" text="Regístrate ahora" /> */}
+              <Link
+                component={NextLink}
+                underline="none"
+                color="text.primary"
+                sx={{
+                  bgcolor: "primary.main",
+                  padding: spacing(2, 5),
+                  borderRadius: "8px",
+                  fontWeight: "600",
+                }}
+                href="/register"
+              >
+                Regístrate ahora
+              </Link>
             </Box>
           </Box>
           <Box>
@@ -188,7 +205,10 @@ export default function Home() {
             marginTop: spacing(16),
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            id="news"
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
             <Typography variant="h4">Noticias sobre criptomonedas</Typography>
             <Box>
               <Input placeHolder="Buscar noticia" type="text" />

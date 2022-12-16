@@ -22,7 +22,9 @@ export default async function coinApi(
     const result = await coin.save();
     res.status(201).json({ message: "Activo añadido", coinId: result._id });
   } else {
-    res.status(500).json({ error: "error" });
+    res
+      .status(500)
+      .json({ message: " Error al añadir un activo", coinId: null });
   }
 
   // try {

@@ -11,6 +11,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 import useUser from "lib/useUser";
 import useSWR from "swr";
@@ -44,6 +46,8 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
   const router = useRouter();
   const { userEmail } = useUser({});
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const [userData, setUserData] = useState([]);
 
@@ -63,6 +67,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
       },
       body: JSON.stringify(objectToSend),
     });
+    console.log(resDeleteCoin);
 
     await fetch("api/delete-user-coin", {
       method: "DELETE",
@@ -74,7 +79,17 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
     });
 
     const resultDeleteCoin = await resDeleteCoin.json();
-    // console.log(resultDeleteCoin);
+    console.log(resultDeleteCoin);
+    if (resDeleteCoin.ok) {
+      setSuccessMessage(resultDeleteCoin.message);
+    }
+    if (!resDeleteCoin.ok) {
+      setErrorMessage(resultDeleteCoin.message);
+    }
+    setTimeout(() => {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+    }, 1500);
 
     router.replace(router.asPath);
   };
@@ -82,100 +97,128 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
   React.useEffect(() => {}, [coinData, data]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table
-        sx={{
-          minWidth: 650,
-          background: "rgba(255, 255, 255, 0.02)",
-          border: borderStyle,
-        }}
-        aria-label="simple table"
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ borderBottom: borderStyle }}>Rank</TableCell>
-            <TableCell sx={{ borderBottom: borderStyle }}>Nombre</TableCell>
-            <TableCell sx={{ borderBottom: borderStyle }}>
-              Último precio
-            </TableCell>
-            <TableCell sx={{ borderBottom: borderStyle }} align="right">
-              {tableHome ? "Cambio" : "Avg Precio"}
-            </TableCell>
-            <TableCell sx={{ borderBottom: borderStyle }} align="right">
-              {tableHome ? "Mercado" : "Holding"}
-            </TableCell>
-            {/* //////////////// */}
-            {!tableHome && (
-              <>
-                <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                  Monto
-                </TableCell>
-                <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                  Profit/Loss
-                </TableCell>
-                <TableCell
-                  sx={{ borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}
-                  align="right"
-                ></TableCell>
-              </>
-            )}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.map((coin) => (
-              <TableRow
-                key={coin?.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell
-                  sx={{ borderBottom: borderStyle }}
-                  component="th"
-                  scope="row"
+    <Box sx={{ position: "relative " }}>
+      {errorMessage && (
+        <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {errorMessage}
+        </Alert>
+      )}
+      {successMessage && (
+        <Alert sx={{ position: "absolute", top: "-70px" }} severity="success">
+          <AlertTitle>Success</AlertTitle>
+          {successMessage}
+        </Alert>
+      )}
+      <TableContainer component={Paper}>
+        <Table
+          sx={{
+            minWidth: 650,
+            background: "rgba(255, 255, 255, 0.02)",
+            border: borderStyle,
+          }}
+          aria-label="simple table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ borderBottom: borderStyle }}>Rank</TableCell>
+              <TableCell sx={{ borderBottom: borderStyle }}>Nombre</TableCell>
+              <TableCell sx={{ borderBottom: borderStyle }}>
+                Último precio
+              </TableCell>
+              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                {tableHome ? "Cambio" : "Avg Precio"}
+              </TableCell>
+              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                {tableHome ? "Mercado" : "Holding"}
+              </TableCell>
+              {/* //////////////// */}
+              {!tableHome && (
+                <>
+                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                    Monto
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                    Profit/Loss
+                  </TableCell>
+                  <TableCell
+                    sx={{ borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}
+                    align="right"
+                  ></TableCell>
+                </>
+              )}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.map((coin) => (
+                <TableRow
+                  key={coin?.name}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  {coin?.market_cap_rank}
-                </TableCell>
-
-                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <TableCell
                     sx={{ borderBottom: borderStyle }}
                     component="th"
                     scope="row"
                   >
-                    <Image src={coin?.image} alt="" width={40} height={40} />
+                    {coin?.market_cap_rank}
                   </TableCell>
-                  {coin?.name}
-                </Box>
-                <TableCell sx={{ borderBottom: borderStyle }}>
-                  ${coin?.usd || coin?.current_price}
-                </TableCell>
-                <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                  {coin?.avgPrice || coin?.price_change_percentage_24h}
-                </TableCell>
-                <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                  {coin?.holding || coin?.high_24h}
-                </TableCell>
 
-                {!tableHome && (
-                  <>
-                    <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                      {coin?.usd * coin?.holding}
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <TableCell
+                      sx={{ borderBottom: borderStyle }}
+                      component="th"
+                      scope="row"
+                    >
+                      <Image src={coin?.image} alt="" width={40} height={40} />
                     </TableCell>
-                    <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                      {coin?.profitResult}
-                    </TableCell>
-                    <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                      <button onClick={(e) => handleDeleteClick(e, coin?._id)}>
-                        Delete
-                      </button>
-                    </TableCell>
-                  </>
-                )}
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                    {coin?.name}
+                  </Box>
+                  <TableCell sx={{ borderBottom: borderStyle }}>
+                    ${coin?.usd || coin?.current_price}
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                    {coin?.avgPrice || coin?.price_change_percentage_24h}
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                    {coin?.holding || coin?.high_24h}
+                  </TableCell>
+
+                  {!tableHome && (
+                    <>
+                      <TableCell
+                        sx={{ borderBottom: borderStyle }}
+                        align="right"
+                      >
+                        {coin?.usd * coin?.holding}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderBottom: borderStyle,
+                          color: `${coin?.profitResult < 0 ? "red" : " green"}`,
+                        }}
+                        align="right"
+                      >
+                        {coin?.profitResult}
+                      </TableCell>
+                      <TableCell
+                        sx={{ borderBottom: borderStyle }}
+                        align="right"
+                      >
+                        <button
+                          onClick={(e) => handleDeleteClick(e, coin?._id)}
+                        >
+                          Delete
+                        </button>
+                      </TableCell>
+                    </>
+                  )}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
 

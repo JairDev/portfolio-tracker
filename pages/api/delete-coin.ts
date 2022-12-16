@@ -9,7 +9,7 @@ export default async function deleteCoin(
     const { id } = req.body;
     await Coin.deleteOne({ _id: id });
     res.status(200).json({
-      message: "Activo eliminado",
+      message: "Activo removido",
     });
   } catch (error) {
     res.status(500).json({
