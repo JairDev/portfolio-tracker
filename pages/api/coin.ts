@@ -22,22 +22,24 @@ export default async function coinApi(
     const update = await Coin.findOneAndUpdate({ name: name }, { profit });
     console.log("profit", profit);
     console.log("update", update);
-    // const result = await coin.save();
-  }
-  if (name && avgPrice && holding && lastProfit) {
-    const coin = await new Coin({
-      name,
-      avgPrice,
-      holding,
-      profit: lastProfit,
-    });
-    // console.log("coin", coin);
-    const result = await coin.save();
-    res.status(201).json({ message: "Activo añadido", coinId: result._id });
+    res.status(201).json({ message: "Activo actualizado" });
   } else {
-    res
-      .status(500)
-      .json({ message: " Error al añadir un activo", coinId: null });
+    if (name && avgPrice && holding && lastProfit) {
+      console.log("NAME", name);
+      const coin = await new Coin({
+        name,
+        avgPrice,
+        holding,
+        profit: lastProfit,
+      });
+      // console.log("coin", coin);
+      const result = await coin.save();
+      res.status(201).json({ message: "Activo añadido", coinId: result._id });
+    } else {
+      res
+        .status(500)
+        .json({ message: " Error al añadir un activo", coinId: null });
+    }
   }
 
   // try {

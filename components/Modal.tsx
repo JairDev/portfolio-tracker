@@ -33,7 +33,7 @@ const style = {
   pb: 3,
 };
 
-interface ModalProps {}
+// interface ModalProps {}
 
 function ChildModal({ coinName, setOpenParent, setValue }) {
   const urlCoin =
@@ -51,10 +51,7 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
   const [open, setOpen] = React.useState(false);
   console.log(coinName);
 
-  // const find = getApiCoinData(coinName);
   const find = coinDataApi.find((coin) => coin.id === coinName);
-  console.log(find);
-  // const find = getApiCoinData();
 
   const handleOpen = () => {
     setOpen(true);
@@ -64,21 +61,19 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
     setOpenParent(false);
     setValue("");
   };
-  // co;
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(" hola");
     const coinNameToLowerCase = coinName.toLowerCase();
-    // console.log(lower);
     const lastPrice = find.current_price;
     const lastProfit = Number.parseFloat(
       (lastPrice - coinAvgPrice).toFixed(2)
     ).toString();
+
     const form = {
       name: coinNameToLowerCase,
       avgPrice: coinAvgPrice,
       holding: coinHolding,
-      lastProfit,
+      lastProfit: lastProfit * coinHolding,
     };
     console.log("profit", lastProfit);
 
