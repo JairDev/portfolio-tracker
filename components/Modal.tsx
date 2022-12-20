@@ -33,9 +33,18 @@ const style = {
   pb: 3,
 };
 
-// interface ModalProps {}
+interface ChildModalProps {
+  coinName: string;
+  setOpenParent: React.Dispatch<React.SetStateAction<boolean>>;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+}
 
-function ChildModal({ coinName, setOpenParent, setValue }) {
+interface BasicModalProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const urlCoin =
     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
   const { data: coinDataApi } = useSWR(urlCoin);
@@ -60,21 +69,23 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
 
     setOpen(false);
     setOpenParent(false);
-    setValue("");
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const coinNameToLowerCase = coinName.toLowerCase();
     const lastPrice = find.current_price;
     const lastProfit = Number.parseFloat(
-      (lastPrice - coinAvgPrice).toFixed(2)
+      (lastPrice - Number(coinAvgPrice)).toFixed(2)
     ).toString();
+
+    const profit = Number(lastProfit) * Number(coinHolding);
 
     const form = {
       name: coinNameToLowerCase,
       avgPrice: coinAvgPrice,
       holding: coinHolding,
-      lastProfit: lastProfit * coinHolding,
+      lastProfit: profit,
     };
     console.log("profit", lastProfit);
 
@@ -112,8 +123,7 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
       body: JSON.stringify(newID),
     });
     router.replace(router.asPath);
-    // setOpen(false);
-    setOpenParent(false);
+    setValue("");
   };
 
   return (
@@ -240,17 +250,18 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
   );
 }
 
-export default function BasicModal({ open, setOpen }) {
+export default function BasicModal({ open, setOpen }: BasicModalProps) {
   const { spacing } = useTheme();
   const urlCoin =
     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
   const { data: coinData } = useSWR(urlCoin);
   const [value, setValue] = useState("");
   const handleClose = () => {
-    setOpen(false);
     console.log("close basic");
+    setOpen(false);
     setValue("");
   };
+  useEffect(() => {});
   console.log(value);
   return (
     <Box sx={{ position: "absolute" }}>
