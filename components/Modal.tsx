@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Router, { useRouter } from "next/router";
 
@@ -17,6 +17,7 @@ import fetchJson from "lib/fetchJson";
 import useUser from "lib/useUser";
 import useSWR from "swr";
 import useCoin from "lib/useCoin";
+import getApiCoinData from "lib/getApiCoinData";
 
 const style = {
   position: "absolute" as "absolute",
@@ -34,7 +35,11 @@ const style = {
 
 interface ModalProps {}
 
-function ChildModal({ coinName, setOpenParent }) {
+function ChildModal({ coinName, setOpenParent, setValue }) {
+  const urlCoin =
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+  const { data: coinDataApi } = useSWR(urlCoin);
+  // console.log(coinDataApi);
   const router = useRouter();
   const { userId, userEmail, authenticated, loading, mutateUser } = useUser({});
   // const { mutateUserCoin } = useCoin();
@@ -44,6 +49,12 @@ function ChildModal({ coinName, setOpenParent }) {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [open, setOpen] = React.useState(false);
+  console.log(coinName);
+
+  // const find = getApiCoinData(coinName);
+  const find = coinDataApi.find((coin) => coin.id === coinName);
+  console.log(find);
+  // const find = getApiCoinData();
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,18 +62,25 @@ function ChildModal({ coinName, setOpenParent }) {
   const handleClose = () => {
     setOpen(false);
     setOpenParent(false);
+    setValue("");
   };
   // co;
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log(" hola");
-    const lower = coinName.toLowerCase();
+    const coinNameToLowerCase = coinName.toLowerCase();
     // console.log(lower);
+    const lastPrice = find.current_price;
+    const lastProfit = Number.parseFloat(
+      (lastPrice - coinAvgPrice).toFixed(2)
+    ).toString();
     const form = {
-      name: lower,
+      name: coinNameToLowerCase,
       avgPrice: coinAvgPrice,
       holding: coinHolding,
+      lastProfit,
     };
+    console.log("profit", lastProfit);
 
     const res = await fetch("api/coin", {
       method: "POST",
@@ -105,7 +123,7 @@ function ChildModal({ coinName, setOpenParent }) {
   return (
     <React.Fragment>
       <Button onClick={handleOpen} sx={{ marginTop: spacing(2) }}>
-        Siguiente
+        {coinName && "Siguiente"}
       </Button>
 
       <Box>
@@ -114,7 +132,6 @@ function ChildModal({ coinName, setOpenParent }) {
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
-          // sx={{ border: "1px solid red" }}
         >
           <Box sx={{ ...style, position: "relative" }}>
             {errorMessage && (
@@ -131,7 +148,6 @@ function ChildModal({ coinName, setOpenParent }) {
                 sx={{ position: "absolute", top: "-70px" }}
                 severity="success"
               >
-                <AlertTitle>Success</AlertTitle>
                 {successMessage}
               </Alert>
             )}
@@ -228,15 +244,17 @@ function ChildModal({ coinName, setOpenParent }) {
   );
 }
 
-export default function BasicModal({ open, handleClose, setOpen }) {
+export default function BasicModal({ open, setOpen }) {
   const { spacing } = useTheme();
   const urlCoin =
     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
   const { data: coinData } = useSWR(urlCoin);
   const [value, setValue] = useState("");
+  const handleClose = () => {
+    setOpen(false);
+    setValue("");
+  };
 
-  // console.log(coinData);
-  // console.log(value);
   return (
     <Box sx={{ position: "absolute" }}>
       <Modal
@@ -259,7 +277,11 @@ export default function BasicModal({ open, handleClose, setOpen }) {
                 </form>
               </Box>
             </Box>
-            <ChildModal coinName={value} setOpenParent={setOpen} />
+            <ChildModal
+              coinName={value}
+              setOpenParent={setOpen}
+              setValue={setValue}
+            />
           </Box>
         </div>
       </Modal>

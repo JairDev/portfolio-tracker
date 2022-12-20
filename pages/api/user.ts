@@ -44,7 +44,7 @@ async function user(req: NextApiRequest, res: NextApiResponse) {
 
     const user = decodeToken;
     // console.log("user", user);
-    console.log("usersession", user);
+    // console.log("usersession", user);
     const { coins } = await getAllUserData(user?.userId);
     res.status(200).json({
       authenticated: true,

@@ -16,6 +16,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 
 import useUser from "lib/useUser";
 import useSWR from "swr";
+import formatCurrency from "lib/formatCurrency";
 
 interface CoinData {
   avgPrice: number;
@@ -94,7 +95,9 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
     router.replace(router.asPath);
   };
 
-  React.useEffect(() => {}, [coinData, data]);
+  React.useEffect(() => {
+    // console.log(data);
+  }, [coinData, data]);
 
   return (
     <Box sx={{ position: "relative " }}>
@@ -106,7 +109,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
       )}
       {successMessage && (
         <Alert sx={{ position: "absolute", top: "-70px" }} severity="success">
-          <AlertTitle>Success</AlertTitle>
+          {/* <AlertTitle>Success</AlertTitle> */}
           {successMessage}
         </Alert>
       )}
@@ -175,7 +178,10 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
                     {coin?.name}
                   </Box>
                   <TableCell sx={{ borderBottom: borderStyle }}>
-                    ${coin?.usd || coin?.current_price}
+                    $
+                    {coin?.usd
+                      ? formatCurrency(coin?.usd, "usd")
+                      : formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
                     {coin?.avgPrice || coin?.price_change_percentage_24h}
@@ -190,16 +196,19 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
                         sx={{ borderBottom: borderStyle }}
                         align="right"
                       >
-                        {coin?.usd * coin?.holding}
+                        {formatCurrency(coin?.amountCoin, "usd")}
                       </TableCell>
                       <TableCell
                         sx={{
                           borderBottom: borderStyle,
-                          color: `${coin?.profitResult < 0 ? "red" : " green"}`,
+                          color: `${
+                            coin?.profit < 0 ? "error.main" : "success.light"
+                          }`,
                         }}
                         align="right"
                       >
-                        {coin?.profitResult}
+                        {/* ${formatCurrency(coin?.profitResult, "usd")} */}
+                        {coin?.profit}
                       </TableCell>
                       <TableCell
                         sx={{ borderBottom: borderStyle }}

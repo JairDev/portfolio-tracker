@@ -10,10 +10,12 @@ import Menu from "@mui/material/Menu";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useTheme } from "@mui/material/styles";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import useUser from "lib/useUser";
 import { Button } from "./Button";
 import fetchJson from "lib/fetchJson";
+import { MenuItem } from "@mui/material";
 
 export default function NavBarProfile() {
   const router = useRouter();
@@ -74,7 +76,7 @@ export default function NavBarProfile() {
         <Avatar alt={userEmail} src="/static/images/avatar/2.jpg" />
       </IconButton>
       <Menu
-        sx={{ mt: "45px" }}
+        sx={{ mt: "45px", padding: "16px" }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
@@ -89,8 +91,19 @@ export default function NavBarProfile() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <Typography textAlign="center">{userEmail}</Typography>
-        <Button onClick={logOut} text="Logout" />
+        <Box sx={{ display: "flex", alignItems: "center " }}>
+          <MenuItem>Hola</MenuItem>
+          {/* <Typography component="span" textAlign="center">
+            Hola
+          </Typography> */}
+          <Typography textAlign="center" sx={{ paddingRight: "16px" }}>
+            {userEmail}
+          </Typography>
+        </Box>
+        <MenuItem sx={{ marginTop: "8px" }}>
+          <LogoutIcon />
+          <Button onClick={logOut} text="Cerrar sesión" />
+        </MenuItem>
       </Menu>
     </Box>
   );

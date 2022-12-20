@@ -17,7 +17,7 @@ interface JwtPayload {
 async function getCoin(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userSession = req?.session?.user;
-    console.log("usersession", userSession);
+    // console.log("usersession", userSession);
 
     const { coins } = await getAllUserData(userSession?.userId);
 

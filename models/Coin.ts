@@ -11,6 +11,9 @@ const CoinSchema = new mongoose.Schema({
   holding: {
     type: Number,
   },
+  profit: {
+    type: Number,
+  },
 });
 
 export default mongoose.models.Coin || mongoose.model("Coin", CoinSchema);

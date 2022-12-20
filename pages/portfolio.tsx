@@ -3,6 +3,7 @@ import Router, { useRouter } from "next/router";
 
 import { Box, Typography } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { useTheme } from "@mui/material/styles";
 
 import fetchJson from "lib/fetchJson";
 import { withGetServerSideProps } from "lib/getServerSideProps";
@@ -42,14 +43,15 @@ const urlCoin =
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
+  const { spacing } = useTheme();
   // const { userCoin } = useCoin();
   // console.log(userCoin);
   const router = useRouter();
   const { authenticated, userId, coins, coinData } = data;
-  const [totalAmount, setTotalAmount] = useState("");
+  const [totalAmount, setTotalAmount] = useState();
   const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleClose = () => setOpen(false);
   // console.log(coinDataApi);
   const [userData, setUserData] = useState(Array<CoinsLastPrice>);
 
@@ -62,7 +64,18 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     setOpen(true);
   };
 
+  const format = (value) => {
+    const options1 = { currency: "USD" };
+    const numberFormat1 = new Intl.NumberFormat("us-US", options1);
+    // console.log(numberFormat1.format(value));
+    return numberFormat1.format(value);
+  };
+
   useEffect(() => {
+    // const options1 = { style: "currency", currency: "USD" };
+    // const numberFormat1 = new Intl.NumberFormat("us-US", options1);
+    // console.log(numberFormat1.format(totalAmount));
+    // console.log("op", -3383 + 1614);
     const result = coins.map((coin, i) => {
       const lastPrice = coinData[i][coin.name];
       const newObject = { ...coin, ...lastPrice };
@@ -70,16 +83,29 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     });
     // console.log(result);
     const resultUserData = result.map((coinp) => {
-      // console.log(coinp);
-      const profit = coinp?.avgPrice * coinp?.holding;
-      const profitResult = Number.parseFloat(
-        (coinp?.usd - profit).toString()
-      ).toFixed(2);
+      console.log(coinp);
+      const buyAmount = Number.parseFloat(
+        (coinp?.usd - coinp?.avgPrice).toFixed(2)
+      ).toString();
+      // console.log(buyAmount);
+      // const b =
+      // 15000
+      // 16000 - 15000 = 1000
+      // old profit - new profit
+      // 3500 - 1000 = 2500
+      // const profitResult = Number.parseFloat(
+      //   (coinp?.usd - buyAmount).toString()
+      // ).toFixed(2);
+
+      const amountCoin = coinp.usd * coinp.holding;
+
       const filter = coinDataApi?.filter((coin) => coin.id === coinp.name);
+
       const newObj = filter?.map((coin) => ({
         market_cap_rank: coin.market_cap_rank,
         image: coin.image,
-        profitResult,
+        // profitResult: buyAmount,
+        amountCoin,
         ...coinp,
       }));
 
@@ -95,6 +121,11 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
 
     setTotalAmount(reduce.toFixed(2).toString());
     setUserData(flatData);
+    // console.log("aaaa", Number("1688722") * 2);
+    const str = "000,222,333,22.22.2";
+
+    const w = str.replace(/,/g, "");
+    // console.log(w);
   }, [coinData, coinDataApi, coins]);
 
   if (!authenticated) {
@@ -111,7 +142,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     <Box
       sx={{
         display: "flex",
-        marginTop: "32px",
+        marginTop: spacing(14),
       }}
     >
       <Box sx={{ width: "20%" }}>
@@ -121,7 +152,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
               Portafolio principal
             </Typography>
 
-            <Typography>${totalAmount}</Typography>
+            <Typography>${format(totalAmount)}</Typography>
           </Box>
         </Box>
         <Box sx={{ marginTop: "8px" }}>
@@ -134,7 +165,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
           <Box>
             <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
             <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-              ${totalAmount}
+              ${format(totalAmount)}
             </Typography>
           </Box>
           <Box>
@@ -146,7 +177,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
               <AddCircleOutlineIcon />
             </Button>
           </Box>
-          <BasicModal open={open} handleClose={handleClose} setOpen={setOpen} />
+          <BasicModal open={open} setOpen={setOpen} />
         </Box>
         <Box sx={{ marginTop: "80px" }}>
           {userData.length > 0 && (

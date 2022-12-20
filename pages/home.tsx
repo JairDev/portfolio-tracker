@@ -34,7 +34,7 @@ export default function Home() {
   const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
   const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
   const { data } = useSWR(urlNews);
-
+  console.log(coinData);
   return (
     <div>
       <Head>

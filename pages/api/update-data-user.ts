@@ -13,7 +13,7 @@ export default async function updataDataUser(
     { $push: { coins: id } },
     { new: true, useFindAndModify: false }
   );
-  console.log("u", user);
+  // console.log("u", user);
   // console.log("u", id);
   // console.log("user", userId);
 
