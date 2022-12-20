@@ -19,7 +19,12 @@ export default async function coinApi(
     const profit = Number(
       Number.parseFloat(coinFind.profit + Number(lastProfit)).toFixed(2)
     );
-    const update = await Coin.findOneAndUpdate({ name: name }, { profit });
+    const updateHolding = Number(coinFind.holding) + Number(holding);
+    console.log("updateHold", updateHolding);
+    const update = await Coin.findOneAndUpdate(
+      { name: name },
+      { profit, holding: updateHolding }
+    );
     console.log("profit", profit);
     console.log("update", update);
     res.status(201).json({ message: "Activo actualizado" });

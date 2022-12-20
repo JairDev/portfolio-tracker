@@ -39,17 +39,16 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
   const urlCoin =
     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
   const { data: coinDataApi } = useSWR(urlCoin);
-  // console.log(coinDataApi);
   const router = useRouter();
-  const { userId, userEmail, authenticated, loading, mutateUser } = useUser({});
-  // const { mutateUserCoin } = useCoin();
+  const { userId } = useUser({});
   const { spacing, shape } = useTheme();
   const [coinAvgPrice, setCoinAvgPrice] = useState("");
   const [coinHolding, setCoinHolding] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [open, setOpen] = React.useState(false);
-  console.log(coinName);
+
+  // console.log(coinName);
 
   const find = coinDataApi.find((coin) => coin.id === coinName);
 
@@ -57,6 +56,8 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
     setOpen(true);
   };
   const handleClose = () => {
+    console.log("close child");
+
     setOpen(false);
     setOpenParent(false);
     setValue("");
@@ -112,7 +113,7 @@ function ChildModal({ coinName, setOpenParent, setValue }) {
     });
     router.replace(router.asPath);
     // setOpen(false);
-    // setOpenParent(false);
+    setOpenParent(false);
   };
 
   return (
@@ -247,9 +248,10 @@ export default function BasicModal({ open, setOpen }) {
   const [value, setValue] = useState("");
   const handleClose = () => {
     setOpen(false);
+    console.log("close basic");
     setValue("");
   };
-
+  console.log(value);
   return (
     <Box sx={{ position: "absolute" }}>
       <Modal

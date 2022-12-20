@@ -72,30 +72,15 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
-    // const options1 = { style: "currency", currency: "USD" };
-    // const numberFormat1 = new Intl.NumberFormat("us-US", options1);
-    // console.log(numberFormat1.format(totalAmount));
-    // console.log("op", -3383 + 1614);
     const result = coins.map((coin, i) => {
       const lastPrice = coinData[i][coin.name];
       const newObject = { ...coin, ...lastPrice };
       return newObject;
     });
-    // console.log(result);
     const resultUserData = result.map((coinp) => {
-      console.log(coinp);
       const buyAmount = Number.parseFloat(
         (coinp?.usd - coinp?.avgPrice).toFixed(2)
       ).toString();
-      // console.log(buyAmount);
-      // const b =
-      // 15000
-      // 16000 - 15000 = 1000
-      // old profit - new profit
-      // 3500 - 1000 = 2500
-      // const profitResult = Number.parseFloat(
-      //   (coinp?.usd - buyAmount).toString()
-      // ).toFixed(2);
 
       const amountCoin = coinp.usd * coinp.holding;
 
@@ -104,16 +89,13 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       const newObj = filter?.map((coin) => ({
         market_cap_rank: coin.market_cap_rank,
         image: coin.image,
-        // profitResult: buyAmount,
         amountCoin,
         ...coinp,
       }));
 
       return newObj;
     });
-    // console.log(resultUserData);
     const flatData = resultUserData.flat();
-    // console.log(flatData);
     const reduce = result.reduce((prev, current) => {
       const amount = current.usd * current.holding;
       return prev + amount;
@@ -121,11 +103,6 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
 
     setTotalAmount(reduce.toFixed(2).toString());
     setUserData(flatData);
-    // console.log("aaaa", Number("1688722") * 2);
-    const str = "000,222,333,22.22.2";
-
-    const w = str.replace(/,/g, "");
-    // console.log(w);
   }, [coinData, coinDataApi, coins]);
 
   if (!authenticated) {

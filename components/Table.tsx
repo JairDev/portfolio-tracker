@@ -25,10 +25,11 @@ interface CoinData {
   usd: number;
   market_cap_rank: string;
   image: string;
-  current_price: string;
+  current_price: number;
   price_change_percentage_24h: string;
   high_24h: string;
-  profitResult: string;
+  profit: number;
+  amountCoin: number;
   _id: string;
 }
 
@@ -96,7 +97,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
   };
 
   React.useEffect(() => {
-    // console.log(data);
+    console.log(data);
   }, [coinData, data]);
 
   return (
@@ -207,8 +208,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
                         }}
                         align="right"
                       >
-                        {/* ${formatCurrency(coin?.profitResult, "usd")} */}
-                        {coin?.profit}
+                        ${formatCurrency(coin?.profit, "usd")}
                       </TableCell>
                       <TableCell
                         sx={{ borderBottom: borderStyle }}
