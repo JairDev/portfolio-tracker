@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import Router, { useRouter } from "next/router";
 
+import { useFormik } from "formik";
+
+import { validationSchema } from "schema/yup";
+
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
@@ -64,6 +68,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     console.log("close child");
 
@@ -71,60 +76,126 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
     setOpenParent(false);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const coinNameToLowerCase = coinName.toLowerCase();
-    const lastPrice = find.current_price;
-    const lastProfit = Number.parseFloat(
-      (lastPrice - Number(coinAvgPrice)).toFixed(2)
-    ).toString();
+  const formik = useFormik({
+    initialValues: {
+      quantity: "",
+      price: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      const data = {
+        quantity: values.quantity,
+        price: values.price,
+      };
+      console.log(data);
+      // const coinNameToLowerCase = coinName.toLowerCase();
+      // const lastPrice = find.current_price;
+      // const lastProfit = Number.parseFloat(
+      //   (lastPrice - Number(coinAvgPrice)).toFixed(2)
+      // ).toString();
 
-    const profit = Number(lastProfit) * Number(coinHolding);
+      // const profit = Number(lastProfit) * Number(coinHolding);
 
-    const form = {
-      name: coinNameToLowerCase,
-      avgPrice: coinAvgPrice,
-      holding: coinHolding,
-      lastProfit: profit,
-    };
-    console.log("profit", lastProfit);
+      // const form = {
+      //   name: coinNameToLowerCase,
+      //   avgPrice: coinAvgPrice,
+      //   holding: coinHolding,
+      //   lastProfit: profit,
+      // };
+      // console.log("profit", lastProfit);
 
-    const res = await fetch("api/coin", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
-    const result = await res.json();
-    if (res.ok) {
-      setSuccessMessage(result.message);
-    }
-    if (!res.ok) {
-      setErrorMessage(result.message);
-    }
+      // const res = await fetch("api/coin", {
+      //   method: "POST",
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(form),
+      // });
+      // const result = await res.json();
+      // if (res.ok) {
+      //   setSuccessMessage(result.message);
+      // }
+      // if (!res.ok) {
+      //   setErrorMessage(result.message);
+      // }
 
-    setTimeout(() => {
-      setSuccessMessage(null);
-      setErrorMessage(null);
-      setOpen(false);
-      setOpenParent(false);
-    }, 1500);
+      // setTimeout(() => {
+      //   setSuccessMessage(null);
+      //   setErrorMessage(null);
+      //   setOpen(false);
+      //   setOpenParent(false);
+      // }, 1500);
 
-    const newID = { id: result.coinId, userId: userId };
-    // console.log(newID);
-    await fetchJson("api/update-data-user", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newID),
-    });
-    router.replace(router.asPath);
-    setValue("");
-  };
+      // const newID = { id: result.coinId, userId: userId };
+      // // console.log(newID);
+      // await fetchJson("api/update-data-user", {
+      //   method: "POST",
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newID),
+      // });
+      // router.replace(router.asPath);
+      // setValue("");
+    },
+  });
+
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const coinNameToLowerCase = coinName.toLowerCase();
+  //   const lastPrice = find.current_price;
+  //   const lastProfit = Number.parseFloat(
+  //     (lastPrice - Number(coinAvgPrice)).toFixed(2)
+  //   ).toString();
+
+  //   const profit = Number(lastProfit) * Number(coinHolding);
+
+  //   const form = {
+  //     name: coinNameToLowerCase,
+  //     avgPrice: coinAvgPrice,
+  //     holding: coinHolding,
+  //     lastProfit: profit,
+  //   };
+  //   console.log("profit", lastProfit);
+
+  //   const res = await fetch("api/coin", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(form),
+  //   });
+  //   const result = await res.json();
+  //   if (res.ok) {
+  //     setSuccessMessage(result.message);
+  //   }
+  //   if (!res.ok) {
+  //     setErrorMessage(result.message);
+  //   }
+
+  //   setTimeout(() => {
+  //     setSuccessMessage(null);
+  //     setErrorMessage(null);
+  //     setOpen(false);
+  //     setOpenParent(false);
+  //   }, 1500);
+
+  //   const newID = { id: result.coinId, userId: userId };
+  //   // console.log(newID);
+  //   await fetchJson("api/update-data-user", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(newID),
+  //   });
+  //   router.replace(router.asPath);
+  //   setValue("");
+  // };
 
   return (
     <React.Fragment>
@@ -170,7 +241,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
             </Box>
             <Box>
               <Box sx={{ marginTop: spacing(1) }}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                   {/* <form> */}
                   {/* <SelectCoin /> */}
                   <Typography>{coinName}</Typography>
@@ -183,30 +254,36 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
                   >
                     <Box sx={{ width: "45%" }}>
                       <Input
-                        id="email"
-                        name="email"
+                        id="quantity"
+                        name="quantity"
                         label="Cantidad"
-                        // value={formik.values.email}
+                        value={formik.values.quantity}
                         placeHolder="0.00"
-                        onChange={(e) => setCoinHolding(e.target.value)}
-                        // onChange={formik.handleChange}
-                        // error={formik.touched.email && Boolean(formik.errors.email)}
-                        // helperText={formik.touched.email && formik.errors.email}
+                        // onChange={(e) => setCoinHolding(e.target.value)}
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.quantity &&
+                          Boolean(formik.errors.quantity)
+                        }
+                        helperText={
+                          formik.touched.quantity && formik.errors.quantity
+                        }
                         type="text"
                       />
                     </Box>
                     <Box sx={{ width: "45%" }}>
                       <Input
-                        id="password"
-                        // name="Precio por moneda"
+                        id="price"
+                        name="price"
                         label="Precio por moneda"
-                        // value={formik.values.password}
+                        value={formik.values.price}
                         placeHolder="$20.000.00"
-                        onChange={(e) => setCoinAvgPrice(e.target.value)}
-                        // error={
-                        //   formik.touched.password && Boolean(formik.errors.password)
-                        // }
-                        // helperText={formik.touched.password && formik.errors.password}
+                        // onChange={(e) => setCoinAvgPrice(e.target.value)}
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.price && Boolean(formik.errors.price)
+                        }
+                        helperText={formik.touched.price && formik.errors.price}
                         type="number"
                       />
                     </Box>

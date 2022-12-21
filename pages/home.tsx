@@ -127,7 +127,12 @@ export default function Home() {
         >
           <Box
             id="market"
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingBottom: spacing(2),
+            }}
           >
             <Typography variant="h4" sx={{ fontWeight: "500" }}>
               Actualización del mercado
