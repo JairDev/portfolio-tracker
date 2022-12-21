@@ -37,11 +37,17 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs({ handleTransactionType }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    // console.log(value);
     setValue(newValue);
+  };
+
+  const handleClick = (e) => {
+    // console.log(e.target.dataset.action);
+    handleTransactionType(e.target.dataset.action);
   };
 
   return (
@@ -62,8 +68,18 @@ export default function BasicTabs() {
             },
           }}
         >
-          <Tab label="Comprar" {...a11yProps(0)} />
-          <Tab label="Vender" {...a11yProps(1)} />
+          <Tab
+            onClick={handleClick}
+            data-action="buy"
+            label="Comprar"
+            {...a11yProps(0)}
+          />
+          <Tab
+            onClick={handleClick}
+            data-action="sell"
+            label="Vender"
+            {...a11yProps(1)}
+          />
           {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
         </Tabs>
       </Box>

@@ -13,8 +13,8 @@ interface InputProps {
   type: string;
   value: string;
   placeHolder?: string | undefined;
-  error: any;
-  helperText: any;
+  error?: any;
+  helperText?: any;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

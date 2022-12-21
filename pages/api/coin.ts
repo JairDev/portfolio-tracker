@@ -10,24 +10,41 @@ export default async function coinApi(
 ) {
   await dbConnect();
 
-  const { name, avgPrice, holding, lastProfit } = req.body;
+  const { name, avgPrice, holding, lastProfit, sell, lastPrice } = req.body;
   const coinFind = await Coin.findOne({ name: name });
   console.log("lastProfit", lastProfit);
   console.log("find", coinFind);
 
   if (coinFind) {
-    const profit = Number(
-      Number.parseFloat(coinFind.profit + Number(lastProfit)).toFixed(2)
-    );
-    const updateHolding = Number(coinFind.holding) + Number(holding);
-    console.log("updateHold", updateHolding);
-    const update = await Coin.findOneAndUpdate(
-      { name: name },
-      { profit, holding: updateHolding }
-    );
-    console.log("profit", profit);
-    console.log("update", update);
-    res.status(201).json({ message: "Activo actualizado" });
+    if (sell) {
+      const sellAmount = avgPrice * holding;
+      const profit = Number(sellAmount) - Number(lastPrice);
+      const updateHolding = Number(coinFind.holding) - Number(holding);
+      console.log("updateHolding", updateHolding);
+      console.log("lastPrice", lastPrice);
+      console.log(" profit", profit);
+      console.log(sellAmount);
+      const result = profit + coinFind.profit;
+      const update = await Coin.findOneAndUpdate(
+        { name: name },
+        { profit: result, holding: updateHolding }
+      );
+      console.log("update", update);
+      res.status(201).json({ message: "Activo actualizado" });
+    } else {
+      const profit = Number(
+        Number.parseFloat(coinFind.profit + Number(lastProfit)).toFixed(2)
+      );
+      const updateHolding = Number(coinFind.holding) + Number(holding);
+      console.log("updateHold", updateHolding);
+      const update = await Coin.findOneAndUpdate(
+        { name: name },
+        { profit, holding: updateHolding }
+      );
+      console.log("profit", profit);
+      console.log("update", update);
+      res.status(201).json({ message: "Activo actualizado" });
+    }
   } else {
     if (name && avgPrice && holding && lastProfit) {
       console.log("NAME", name);

@@ -97,7 +97,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
   };
 
   React.useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [coinData, data]);
 
   return (
