@@ -5,16 +5,14 @@ import { Box, Typography } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTheme } from "@mui/material/styles";
 
-import fetchJson from "lib/fetchJson";
 import { withGetServerSideProps } from "lib/getServerSideProps";
 import { withSessionSsr } from "lib/sessions";
 
 import { Button } from "components/Button";
 import { Table } from "components/Table";
 import BasicModal from "components/Modal";
-import NestedModal from "components/Modal";
 import useSWR from "swr";
-import useCoin from "lib/useCoin";
+import formatCurrency from "lib/formatCurrency";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -44,15 +42,12 @@ const urlCoin =
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
   const { spacing } = useTheme();
-  // const { userCoin } = useCoin();
-  // console.log(userCoin);
+
   const router = useRouter();
   const { authenticated, userId, coins, coinData } = data;
   const [totalAmount, setTotalAmount] = useState();
   const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-  // console.log(coinDataApi);
+
   const [userData, setUserData] = useState(Array<CoinsLastPrice>);
 
   const handleClick = () => {
@@ -60,15 +55,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   const handleClickAddCoin = () => {
-    // console.log("w");
     setOpen(true);
-  };
-
-  const format = (value) => {
-    const options1 = { currency: "USD" };
-    const numberFormat1 = new Intl.NumberFormat("us-US", options1);
-    // console.log(numberFormat1.format(value));
-    return numberFormat1.format(value);
   };
 
   useEffect(() => {
@@ -129,7 +116,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
               Portafolio principal
             </Typography>
 
-            <Typography>${format(totalAmount)}</Typography>
+            <Typography>${formatCurrency(totalAmount, "usd")}</Typography>
           </Box>
         </Box>
         <Box sx={{ marginTop: "8px" }}>
@@ -138,11 +125,18 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       </Box>
 
       <Box sx={{ width: "80%" }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "relative",
+            zIndex: " 50",
+          }}
+        >
           <Box>
             <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
             <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-              ${format(totalAmount)}
+              ${formatCurrency(totalAmount, "usd")}
             </Typography>
           </Box>
           <Box>
@@ -156,7 +150,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
           </Box>
           <BasicModal open={open} setOpen={setOpen} />
         </Box>
-        <Box sx={{ marginTop: "80px" }}>
+        <Box sx={{ marginTop: spacing(10) }}>
           {userData.length > 0 && (
             <Typography
               variant="h5"
@@ -169,7 +163,46 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
           {userData.length > 0 ? (
             <Table data={userData} />
           ) : (
-            <Typography>Este portafolio está vació</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column ",
+                justifyContent: "center ",
+                alignItems: "center ",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100vh",
+                zIndex: "10",
+              }}
+            >
+              <Box
+                sx={{
+                  paddingTop: spacing(10),
+                  display: "flex",
+                  flexDirection: "column ",
+                  justifyContent: "center ",
+                  alignItems: "center ",
+                }}
+              >
+                <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
+                  Este portafolio está vacío
+                </Typography>
+                <Typography sx={{ marginTop: "8px" }}>
+                  Agregue cualquier moneda para comenzar
+                </Typography>
+                <Box sx={{ marginTop: "32px" }}>
+                  <Button
+                    onClick={handleClickAddCoin}
+                    text="Añadir nueva moneda"
+                    variant="contained"
+                  >
+                    <AddCircleOutlineIcon />
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
           )}
 
           <Box sx={{ marginTop: "16px" }}></Box>
