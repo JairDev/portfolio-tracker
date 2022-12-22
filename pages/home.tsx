@@ -19,22 +19,34 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
+import Chart from "chart.js/auto";
+
 import { Button } from "components/Button";
 import Input from "components/Input";
 import StepCard from "components/StepCard";
 import { Table } from "components/Table";
 import ArticleCard from "components/ArticleCard";
+import { useEffect, useState } from "react";
+import LineChart from "components/LineChart";
 
 const urlCoin =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 
+const priceRange =
+  "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1";
+
 export default function Home() {
   const { palette, spacing, shape } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
+  const { data: coinPriceData } = useSWR(priceRange);
   const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
   const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
   const { data } = useSWR(urlNews);
-  console.log(coinData);
+
+  useEffect(() => {
+    console.log(coinPriceData);
+  }, [coinPriceData]);
+
   return (
     <div>
       <Head>
@@ -52,7 +64,7 @@ export default function Home() {
           }}
         >
           <Typography variant="h1">
-            Comience y construya su cartera de criptomonedas
+            Comience y construya su portafolio de criptomonedas
           </Typography>
           <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
             <Typography
@@ -80,6 +92,13 @@ export default function Home() {
               Empezar
             </Link>
           </Box>
+        </Box>
+
+        <Box>
+          {/* <div>
+            <canvas id="price"></canvas>
+          </div> */}
+          {/* {<LineChart chartData={chartData} />} */}
         </Box>
         <Box
           sx={{
