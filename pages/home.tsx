@@ -6,6 +6,8 @@ import Head from "next/head";
 import useSWR from "swr";
 
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import { Link, Typography } from "@mui/material";
 import MarketTrendCard from "components/MarketTrendCard";
 import { useTheme } from "@mui/material/styles";
@@ -42,6 +44,8 @@ export default function Home() {
   // const { data } = useSWR(urlNews);
   const [inputCoinName, setInputCoinName] = useState("");
   const [singleCoin, setSingleCoin] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleChange = (e) => {
     setInputCoinName(e.target.value);
@@ -53,6 +57,11 @@ export default function Home() {
     const res = await fetchJson(idCoinName);
     console.log(res);
     if (res.error) {
+      setErrorMessage("Moneda no encontrada");
+      setTimeout(() => {
+        setSuccessMessage(null);
+        setErrorMessage(null);
+      }, 1500);
       return;
     }
     const newObj = {
@@ -70,9 +79,8 @@ export default function Home() {
     setInputCoinName("");
   };
 
-  const handleClick = (e: React.BaseSyntheticEvent) => {
+  const handleClick = () => {
     setSingleCoin([]);
-    // console.log(e);
   };
 
   return (
@@ -184,7 +192,25 @@ export default function Home() {
             <Typography variant="h4" sx={{ fontWeight: "500" }}>
               Actualización del mercado
             </Typography>
-            <Box>
+            <Box sx={{ position: "relative" }}>
+              {errorMessage && (
+                <Alert
+                  sx={{ position: "absolute", top: "-90px" }}
+                  severity="error"
+                >
+                  <AlertTitle>Error</AlertTitle>
+                  {errorMessage}
+                </Alert>
+              )}
+              {successMessage && (
+                <Alert
+                  sx={{ position: "absolute", top: "-90px" }}
+                  severity="success"
+                >
+                  <AlertTitle>Success</AlertTitle>
+                  {successMessage}
+                </Alert>
+              )}
               <form onSubmit={handleSubmit}>
                 <Input
                   onChange={handleChange}
@@ -230,7 +256,6 @@ export default function Home() {
               criptomoneda favorita
             </Typography>
             <Box sx={{ marginTop: spacing(4) }}>
-              {/* <Button variant="contained" text="Regístrate ahora" /> */}
               <Link
                 component={NextLink}
                 underline="none"
