@@ -73,7 +73,7 @@ export default function MarketTrendCard({
       },
     ],
   });
-  console.log(chartData);
+  // console.log(chartData);
 
   return (
     <Card
