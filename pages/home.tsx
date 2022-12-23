@@ -35,6 +35,22 @@ import fetchJson from "lib/fetchJson";
 import LineChart from "components/LineChart";
 import { coinId, priceRange, urlCoin } from "lib/apiUrl";
 
+type ResponseSearchCoin = {
+  id?: string;
+  name?: string;
+  market_data?: {
+    current_price: {
+      usd: number;
+    };
+    price_change_percentage_24h: number;
+  };
+  image?: {
+    small: string;
+  };
+  market_cap_rank?: number;
+  error: string;
+};
+
 export default function Home() {
   const { palette, spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
@@ -44,23 +60,29 @@ export default function Home() {
   // const { data } = useSWR(urlNews);
   const [inputCoinName, setInputCoinName] = useState("");
   const [singleCoin, setSingleCoin] = useState([]);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState<undefined | string>(
+    undefined
+  );
+  const [errorMessage, setErrorMessage] = useState<undefined | string>(
+    undefined
+  );
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputCoinName(e.target.value);
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const idCoinName = coinId(inputCoinName.trim());
 
-    const res = await fetchJson(idCoinName);
+    const res: ResponseSearchCoin = await fetchJson(idCoinName);
     console.log(res);
-    if (res.error) {
+
+    if (res?.error) {
       setErrorMessage("Moneda no encontrada");
       setTimeout(() => {
-        setSuccessMessage(null);
-        setErrorMessage(null);
+        setSuccessMessage(undefined);
+        setErrorMessage(undefined);
       }, 1500);
       return;
     }
@@ -161,6 +183,12 @@ export default function Home() {
                       current_price,
                       price_change_percentage_24h,
                       image,
+                    }: {
+                      id: string;
+                      name: string;
+                      current_price: number;
+                      price_change_percentage_24h: number;
+                      image: string;
                     }) => (
                       <Grid key={id} xs item>
                         <MarketTrendCard
