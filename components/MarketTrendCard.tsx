@@ -22,9 +22,14 @@ export default function MarketTrendCard({
   currentPrice,
   priceChange,
   image,
+  priceChartData,
 }) {
   const { spacing } = useTheme();
+  const theme = useTheme();
   const { data: coinPriceData } = useSWR(priceRange);
+  const loading = !coinPriceData;
+  const priceValueClassName = priceChange < 0 ? "error.main" : "primary.main";
+  const chartValueClassName = priceChange < 0 ? "#d32f2f" : "#0FAE96";
 
   const priceData = [
     { year: 1, count: 10 },
@@ -53,14 +58,13 @@ export default function MarketTrendCard({
     { year: 23, count: 28 },
     { year: 24, count: 28 },
   ];
-  const [chartData, setChartData] = React.useState({
+
+  const chartData = {
     labels: priceData.map((row) => row.year),
-    // data: coinPriceData.prices.slice(0, 10).map((row) => row[1]),
     datasets: [
       {
-        label: "Users Gained ",
-        // data: priceData.map((row) => row.count),
-        data: coinPriceData && coinPriceData.prices.map((row) => row[1]),
+        label: "",
+        data: priceChartData?.map((row) => row[1]),
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",
@@ -68,12 +72,15 @@ export default function MarketTrendCard({
           "#f3ba2f",
           "#2a71d0",
         ],
-        borderColor: "white",
-        borderWidth: 2,
+        pointBackgroundColor: "none",
+        pointRadius: 0,
+
+        pointBorderWidth: 0,
+        borderColor: chartValueClassName,
+        borderWidth: 1,
       },
     ],
-  });
-  // console.log(chartData);
+  };
 
   return (
     <Card
@@ -106,10 +113,18 @@ export default function MarketTrendCard({
             >
               ${currentPrice}
             </Typography>
-            <Typography>{priceChange}%</Typography>
+            <Typography sx={{ color: priceValueClassName }}>
+              {priceChange}%
+            </Typography>
           </Box>
-          {/* <Typography>Graphic</Typography> */}
-          {/* <Box>{<LineChart chartData={chartData} />}</Box> */}
+          <Box
+            sx={{
+              // border: "1px solid red",
+              width: "120px",
+            }}
+          >
+            {!loading && <LineChart chartData={chartData} />}
+          </Box>
         </Box>
       </CardContent>
     </Card>

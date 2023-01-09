@@ -22,20 +22,36 @@ ChartJS.register(
 );
 
 export default function LineChart({ chartData }) {
+  console.log("chart", chartData);
+
   return (
     <div className="chart-container">
       {/* <h2 style={{ textAlign: "center" }}>Pie Chart</h2> */}
-      <Line
-        data={chartData}
-        options={{
-          plugins: {
-            title: {
-              // display: true,
-              text: "Users Gained between 2016-2020",
+      {chartData && (
+        <Line
+          data={chartData}
+          options={{
+            plugins: {
+              title: {
+                display: false,
+                // text: "Users Gained between 2016-2020",
+              },
+              legend: {
+                display: false,
+              },
             },
-          },
-        }}
-      />
+            scales: {
+              x: {
+                display: false,
+              },
+
+              y: {
+                display: false,
+              },
+            },
+          }}
+        />
+      )}
     </div>
   );
 }

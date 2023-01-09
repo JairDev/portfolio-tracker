@@ -4,7 +4,6 @@ export default async function fetchJson<JSON = unknown>(
 ): Promise<JSON> {
   const res = await fetch(input, options);
   const data = await res.json();
-  console.log(data);
 
   return data;
 }

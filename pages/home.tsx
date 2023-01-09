@@ -55,6 +55,7 @@ export default function Home() {
   const { palette, spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
   const loading = !coinData;
+  const [fullData, setFullData] = useState([]);
   // const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
   // const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
   // const { data } = useSWR(urlNews);
@@ -104,6 +105,32 @@ export default function Home() {
   const handleClick = () => {
     setSingleCoin([]);
   };
+
+  useEffect(() => {
+    async function change() {
+      // console.log(res);
+      if (coinData) {
+        const changeObj = coinData.slice(0, 4).map(async (coin) => {
+          const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
+          // console.log(coin);
+          const res = await fetchJson(priceRange);
+          // console.log(res);
+          const newObj = {
+            ...coin,
+            priceChart: res.prices,
+          };
+          // console.log("newOBj", newObj);
+          return newObj;
+        });
+
+        // console.log(changeObj);
+        const result = await Promise.all(changeObj);
+        // console.log(result);
+        setFullData(result);
+      }
+    }
+    change();
+  }, [coinData]);
 
   return (
     <div>
@@ -166,6 +193,7 @@ export default function Home() {
           <Typography variant="h5" sx={{ fontWeight: "500" }}>
             Tendencia del mercado
           </Typography>
+
           <Grid container sx={{ paddingTop: spacing(3) }}>
             <Grid
               container
@@ -173,8 +201,8 @@ export default function Home() {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              {coinData &&
-                coinData
+              {fullData &&
+                fullData
                   .slice(0, 4)
                   .map(
                     ({
@@ -183,6 +211,7 @@ export default function Home() {
                       current_price,
                       price_change_percentage_24h,
                       image,
+                      priceChart,
                     }: {
                       id: string;
                       name: string;
@@ -196,6 +225,7 @@ export default function Home() {
                           currentPrice={current_price}
                           priceChange={price_change_percentage_24h}
                           image={image}
+                          priceChartData={priceChart}
                         />
                       </Grid>
                     )
