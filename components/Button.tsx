@@ -24,13 +24,14 @@ function ButtonComponent({ text, variant, onClick, children }: ButtonProps) {
         color: "text.primary",
         alignItems: "center",
         justifyContent: "center",
-        padding: "8px 24px",
+        // padding: "8px 24px",
         fontWeight: "600",
+        // height: "100%",
       }}
     >
       <Box
         sx={{
-          marginRight: spacing(1),
+          // marginRight: spacing(1),
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
