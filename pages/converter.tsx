@@ -5,8 +5,17 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import Input from "components/Input";
 import SelectCoin from "components/Select";
 import { Button } from "components/Button";
+import useSWR from "swr";
+
+const urlCoin =
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+
+const urlVs = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies";
 
 export default function Converter() {
+  const { data: coinDataApi } = useSWR(urlCoin);
+  const { data: coinDataVs } = useSWR(urlVs);
+  // console.log(coinDataVs);
   const { spacing } = useTheme();
   return (
     <Box sx={{ paddingTop: spacing(14) }}>
@@ -35,7 +44,7 @@ export default function Converter() {
           }}
         >
           <Box sx={{ flex: "0 1 45%" }}>
-            <SelectCoin />
+            <SelectCoin data={coinDataApi} />
           </Box>
           <Box
             sx={{

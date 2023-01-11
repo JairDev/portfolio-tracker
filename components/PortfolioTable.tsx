@@ -35,13 +35,12 @@ interface CoinData {
 
 interface TablePropsArray {
   data: Array<CoinData>;
-  tableHome?: boolean;
 }
 
 const urlCoin =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 
-function TableComponent({ data = [], tableHome }: TablePropsArray) {
+export default function PortfolioTable({ data = [] }: TablePropsArray) {
   // console.log(data);
   const { data: coinData } = useSWR(urlCoin);
 
@@ -51,6 +50,51 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   // const priceChange24h =
+
+  const [userData, setUserData] = useState([]);
+
+  const handleDeleteClick = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    coinId: string
+  ) => {
+    const objectToSend = {
+      id: coinId,
+      userEmail,
+    };
+    const resDeleteCoin = await fetch("api/delete-coin", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(objectToSend),
+    });
+    console.log(resDeleteCoin);
+
+    await fetch("api/delete-user-coin", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(objectToSend),
+    });
+
+    const resultDeleteCoin = await resDeleteCoin.json();
+    console.log(resultDeleteCoin);
+    if (resDeleteCoin.ok) {
+      setSuccessMessage(resultDeleteCoin.message);
+    }
+    if (!resDeleteCoin.ok) {
+      setErrorMessage(resultDeleteCoin.message);
+    }
+    setTimeout(() => {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+    }, 1500);
+
+    router.replace(router.asPath);
+  };
 
   React.useEffect(() => {
     // console.log(data);
@@ -87,11 +131,23 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
                 Último precio
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                Cambio
+                {"Avg Precio"}
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                Mercado
+                {"Holding"}
               </TableCell>
+              {/* //////////////// */}
+
+              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                Monto
+              </TableCell>
+              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                Profit/Loss
+              </TableCell>
+              <TableCell
+                sx={{ borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}
+                align="right"
+              ></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -120,13 +176,36 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
                     {coin?.name}
                   </Box>
                   <TableCell sx={{ borderBottom: borderStyle }}>
-                    ${formatCurrency(coin?.current_price, "usd")}
+                    $
+                    {coin?.usd
+                      ? formatCurrency(coin?.usd, "usd")
+                      : formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    {coin?.price_change_percentage_24h}
+                    {coin?.avgPrice}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    {coin?.high_24h}
+                    {coin?.holding}
+                  </TableCell>
+
+                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                    {formatCurrency(coin?.amountCoin, "usd")}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderBottom: borderStyle,
+                      color: `${
+                        coin?.profit < 0 ? "error.main" : "success.light"
+                      }`,
+                    }}
+                    align="right"
+                  >
+                    ${formatCurrency(coin?.profit, "usd")}
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
+                    <button onClick={(e) => handleDeleteClick(e, coin?._id)}>
+                      Delete
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -136,5 +215,3 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
     </Box>
   );
 }
-
-export { TableComponent as Table };

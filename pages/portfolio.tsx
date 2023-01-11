@@ -13,6 +13,7 @@ import { Table } from "components/Table";
 import BasicModal from "components/Modal";
 import useSWR from "swr";
 import formatCurrency from "lib/formatCurrency";
+import PortfolioTable from "components/PortfolioTable";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -161,7 +162,10 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
           )}
 
           {userData.length > 0 ? (
-            <Table data={userData} />
+            <>
+              {/* <Table data={userData} /> */}
+              <PortfolioTable data={userData} />
+            </>
           ) : (
             <Box
               sx={{

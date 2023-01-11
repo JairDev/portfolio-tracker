@@ -13,6 +13,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Icon from "@mui/material/Icon";
 import LineChart from "./LineChart";
 import useSWR from "swr";
+import formatCurrency from "lib/formatCurrency";
 
 const priceRange =
   "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1";
@@ -114,7 +115,7 @@ export default function MarketTrendCard({
               ${currentPrice}
             </Typography>
             <Typography sx={{ color: priceValueClassName }}>
-              {priceChange}%
+              {formatCurrency(priceChange, "usd")}%
             </Typography>
           </Box>
           <Box

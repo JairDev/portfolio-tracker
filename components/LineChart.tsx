@@ -22,7 +22,7 @@ ChartJS.register(
 );
 
 export default function LineChart({ chartData }) {
-  console.log("chart", chartData);
+  // console.log("chart", chartData);
 
   return (
     <div className="chart-container">

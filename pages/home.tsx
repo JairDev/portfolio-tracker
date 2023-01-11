@@ -55,7 +55,7 @@ export default function Home() {
   const { palette, spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
   const loading = !coinData;
-  console.log(coinData);
+  // console.log(coinData);
   const [fullData, setFullData] = useState([]);
   // const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
   // const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
