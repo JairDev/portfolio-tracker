@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useRouter } from "next/router";
 import Image from "next/image";
 
 import Table from "@mui/material/Table";
@@ -14,9 +13,8 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 
-import useUser from "lib/useUser";
-import useSWR from "swr";
 import formatCurrency from "lib/formatCurrency";
+import LineChart from "./LineChart";
 
 interface CoinData {
   avgPrice: number;
@@ -41,20 +39,11 @@ interface TablePropsArray {
 const urlCoin =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
 
-function TableComponent({ data = [], tableHome }: TablePropsArray) {
-  // console.log(data);
-  const { data: coinData } = useSWR(urlCoin);
-
-  const router = useRouter();
-  const { userEmail } = useUser({});
+function TableComponent({ data = [] }: TablePropsArray) {
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  // const priceChange24h =
-
-  React.useEffect(() => {
-    // console.log(data);
-  }, [coinData, data]);
+  const [priceChart, setPriceChart] = useState([]);
 
   return (
     <Box sx={{ position: "relative " }}>
@@ -96,7 +85,7 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
           </TableHead>
           <TableBody>
             {data &&
-              data.map((coin) => (
+              data.slice(0, 10).map((coin) => (
                 <TableRow
                   key={coin?.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -122,11 +111,32 @@ function TableComponent({ data = [], tableHome }: TablePropsArray) {
                   <TableCell sx={{ borderBottom: borderStyle }}>
                     ${formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
-                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    {coin?.price_change_percentage_24h}
+                  <TableCell
+                    sx={{
+                      borderBottom: borderStyle,
+                      color:
+                        Number(coin?.price_change_percentage_24h) < 0
+                          ? "error.main"
+                          : "primary.main",
+                    }}
+                    align="right"
+                  >
+                    {coin?.price_change_percentage_24h}%
                   </TableCell>
-                  <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    {coin?.high_24h}
+                  <TableCell
+                    sx={{ borderBottom: borderStyle, width: "120px" }}
+                    align="right"
+                  >
+                    <Box sx={{ width: "120px" }}>
+                      <LineChart
+                        priceChartData={coin.priceChart}
+                        chartValueClassName={
+                          Number(coin?.price_change_percentage_24h) < 0
+                            ? "#d32f2f"
+                            : "#0FAE96"
+                        }
+                      />
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}

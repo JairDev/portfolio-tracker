@@ -8,7 +8,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  TimeScale,
 } from "chart.js";
+import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -18,15 +20,36 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  TimeScale
 );
 
-export default function LineChart({ chartData }) {
-  // console.log("chart", chartData);
+export default function LineChart({ priceChartData, chartValueClassName }) {
+  const chartData = {
+    labels: priceChartData?.map((row) => row[0]),
+    datasets: [
+      {
+        label: "",
+        data: priceChartData?.map((row) => row[1]),
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#f3ba2f",
+          "#2a71d0",
+        ],
+        pointBackgroundColor: "none",
+        pointRadius: 0,
+
+        pointBorderWidth: 0,
+        borderColor: chartValueClassName,
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <div className="chart-container">
-      {/* <h2 style={{ textAlign: "center" }}>Pie Chart</h2> */}
       {chartData && (
         <Line
           data={chartData}
@@ -34,7 +57,6 @@ export default function LineChart({ chartData }) {
             plugins: {
               title: {
                 display: false,
-                // text: "Users Gained between 2016-2020",
               },
               legend: {
                 display: false,

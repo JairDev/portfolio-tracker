@@ -55,11 +55,7 @@ export default function Home() {
   const { palette, spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
   const loading = !coinData;
-  // console.log(coinData);
   const [fullData, setFullData] = useState([]);
-  // const apiKeyNews = "69927d6b98c03af209c1e8961b1ff94e";
-  // const urlNews = `https://gnews.io/api/v4/search?q=${"bitcoin"}&lang=en&max=10&token=${apiKeyNews}`;
-  // const { data } = useSWR(urlNews);
   const [inputCoinName, setInputCoinName] = useState("");
   const [singleCoin, setSingleCoin] = useState([]);
   const [successMessage, setSuccessMessage] = useState<undefined | string>(
@@ -109,24 +105,17 @@ export default function Home() {
 
   useEffect(() => {
     async function change() {
-      // console.log(res);
       if (coinData) {
-        const changeObj = coinData.slice(0, 4).map(async (coin) => {
+        const changeObj = coinData.slice(0, 10).map(async (coin) => {
           const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
-          // console.log(coin);
           const res = await fetchJson(priceRange);
-          // console.log(res);
           const newObj = {
             ...coin,
             priceChart: res.prices,
           };
-          // console.log("newOBj", newObj);
           return newObj;
         });
-
-        // console.log(changeObj);
         const result = await Promise.all(changeObj);
-        // console.log(result);
         setFullData(result);
       }
     }
@@ -180,12 +169,6 @@ export default function Home() {
           </Box>
         </Box>
 
-        <Box>
-          {/* <div>
-            <canvas id="price"></canvas>
-          </div> */}
-          {/* {<LineChart chartData={chartData} />} */}
-        </Box>
         <Box
           sx={{
             paddingTop: spacing(18),
@@ -283,11 +266,9 @@ export default function Home() {
 
           <Box>
             {singleCoin?.length > 0 ? (
-              <Table data={singleCoin} tableHome />
+              <Table data={singleCoin} />
             ) : (
-              !loading && (
-                <Table data={coinData && coinData.slice(0, 10)} tableHome />
-              )
+              !loading && <Table data={fullData} />
             )}
 
             {singleCoin?.length > 0 && (
