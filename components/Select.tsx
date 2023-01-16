@@ -5,13 +5,16 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-export default function SelectCoin({ data = [], setValue }) {
-  const [coin, setCoin] = React.useState("Bitcoin");
+export default function SelectCoin({ data = [], setValue, isFiat }) {
+  const [coin, setCoin] = React.useState("");
   // console.log("data", data);
+
   const handleChange = (event: SelectChangeEvent) => {
+    // console.log(event.target.value);
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
   };
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl variant="filled" fullWidth>
@@ -25,10 +28,12 @@ export default function SelectCoin({ data = [], setValue }) {
           // label="Outlined"
 
           // defaultValue={coin}
+          displayEmpty
           sx={{
             border: "1px solid rgba(255, 255, 255, 0.103)",
             borderRadius: "8px",
-            background: "#160C24",
+            // background: "#160C24",
+            background: "grey",
             "&  > div": {
               padding: "16px",
             },
@@ -39,8 +44,12 @@ export default function SelectCoin({ data = [], setValue }) {
         >
           {data &&
             data.map((coin) => (
-              <MenuItem key={coin.id} value={coin.id}>
-                {coin.name}
+              <MenuItem
+                key={isFiat ? coin : coin.name}
+                value={isFiat ? coin : coin.id}
+              >
+                {isFiat ? coin : coin.name}
+                {/* {coin} */}
               </MenuItem>
             ))}
         </Select>

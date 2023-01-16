@@ -75,11 +75,11 @@ function TableComponent({ data = [] }: TablePropsArray) {
               <TableCell sx={{ borderBottom: borderStyle }}>
                 Último precio
               </TableCell>
-              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+              <TableCell sx={{ borderBottom: borderStyle }} align="center">
                 Cambio
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                Mercado
+                Últimas 24h
               </TableCell>
             </TableRow>
           </TableHead>
@@ -119,7 +119,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
                           ? "error.main"
                           : "primary.main",
                     }}
-                    align="right"
+                    align="center"
                   >
                     {coin?.price_change_percentage_24h}%
                   </TableCell>

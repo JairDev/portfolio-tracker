@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
@@ -6,19 +8,53 @@ import Input from "components/Input";
 import SelectCoin from "components/Select";
 import { Button } from "components/Button";
 import useSWR from "swr";
+import fetchJson from "lib/fetchJson";
 
 const urlCoin =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false";
 
 const urlVs = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies";
 
+const priceVsCurrency =
+  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eth";
+
 export default function Converter() {
   const { data: coinDataApi } = useSWR(urlCoin);
-  const { data: coinDataVs } = useSWR(urlVs);
-  // console.log(coinDataVs);
+  const { data: coinDataVsCurrency } = useSWR(urlVs);
+  // console.log(coinDataVsCurrency);
   const { spacing } = useTheme();
+  const [quantity, setQuantity] = useState(1);
+  const [coinValue, setCoinValue] = useState("bitcoin");
+  const [fiatValue, setFiatValue] = useState("usd");
+  const [result, setResult] = useState("");
+
+  const handleChangeCoinValue = (value) => {
+    setCoinValue(value);
+  };
+  const handleChangeFiatValue = (value) => {
+    setFiatValue(value);
+  };
+
+  const handleChangeQuantity = (e) => {
+    console.log(e.target.value);
+    setQuantity(e.target.value);
+  };
+
+  useEffect(() => {
+    const priceVsCurrency = `https://api.coingecko.com/api/v3/simple/price?ids=${coinValue}&vs_currencies=${fiatValue}`;
+    // console.log(priceVsCurrency);
+    async function getPrice() {
+      const res = await fetchJson(priceVsCurrency);
+      console.log(res);
+      const price = res[coinValue][fiatValue] * quantity;
+      console.log(price);
+      setResult(price);
+    }
+    getPrice();
+  }, [coinValue, fiatValue, quantity]);
+
   return (
-    <Box sx={{ paddingTop: spacing(14) }}>
+    <Box sx={{ paddingTop: spacing(14), border: "1px solid red" }}>
       <Box sx={{ textAlign: "center" }}>
         <Typography variant="h5">
           Calculadora convertidora de criptomonedas
@@ -29,10 +65,11 @@ export default function Converter() {
           display: "flex",
           flexDirection: "column",
           paddingTop: spacing(5),
+          border: "1px solid yellow",
         }}
       >
         <Box sx={{ width: "45%" }}>
-          <Input type="number" />
+          <Input type="number" onChange={handleChangeQuantity} />
         </Box>
         <Box
           sx={{
@@ -44,7 +81,7 @@ export default function Converter() {
           }}
         >
           <Box sx={{ flex: "0 1 45%" }}>
-            <SelectCoin data={coinDataApi} />
+            <SelectCoin data={coinDataApi} setValue={handleChangeCoinValue} />
           </Box>
           <Box
             sx={{
@@ -86,9 +123,16 @@ export default function Converter() {
             </Button>
           </Box>
           <Box sx={{ flex: "0 1 45%" }}>
-            <SelectCoin />
+            <SelectCoin
+              data={coinDataVsCurrency}
+              setValue={handleChangeFiatValue}
+              isFiat
+            />
           </Box>
         </Box>
+      </Box>
+      <Box>
+        {coinValue} = {result} {fiatValue}
       </Box>
     </Box>
   );
