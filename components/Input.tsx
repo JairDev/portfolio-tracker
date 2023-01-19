@@ -35,7 +35,7 @@ export default function Input({
   const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log("q");
+    console.log("q");
     setInputCoinName(e.target.value);
   };
 
@@ -75,7 +75,7 @@ export default function Input({
           background: "#160C24",
           margin: "0px",
         }}
-        onChange={onChange}
+        onChange={handleChange}
         error={error}
         type={type}
       />

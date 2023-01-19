@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { default as NextLink } from "next/link";
 import Head from "next/head";
@@ -8,11 +8,10 @@ import useSWR from "swr";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { Link, Typography } from "@mui/material";
+import { Link, Typography, TextField } from "@mui/material";
 import MarketTrendCard from "components/MarketTrendCard";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-import Grid2 from "@mui/material/Unstable_Grid2";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -21,9 +20,6 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-
-import Chart from "chart.js/auto";
 
 import { Button } from "components/Button";
 import Input from "components/Input";
@@ -32,8 +28,7 @@ import { Table } from "components/Table";
 import ArticleCard from "components/ArticleCard";
 
 import fetchJson from "lib/fetchJson";
-import LineChart from "components/LineChart";
-import { coinId, priceRange, urlCoin } from "lib/apiUrl";
+import { coinId, urlCoin } from "lib/apiUrl";
 
 type ResponseSearchCoin = {
   id?: string;
@@ -56,48 +51,38 @@ export default function Home() {
   const { data: coinData } = useSWR(urlCoin);
   const loading = !coinData;
   const [fullData, setFullData] = useState([]);
-  const [inputCoinName, setInputCoinName] = useState("");
   const [singleCoin, setSingleCoin] = useState([]);
-  // const [successMessage, setSuccessMessage] = useState<undefined | string>(
-  //   undefined
-  // );
-  // const [errorMessage, setErrorMessage] = useState<undefined | string>(
-  //   undefined
-  // );
+  const inputRef = useRef(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCoinName(e.target.value);
-  };
+  const [errorMessage, setErrorMessage] = useState<undefined | string>(
+    undefined
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("hola");
-    // const idCoinName = coinId(inputCoinName.trim());
+    const coinName = inputRef?.current?.value;
+    const idCoinName = coinId(coinName.trim());
+    const res: ResponseSearchCoin = await fetchJson(idCoinName);
 
-    // const res: ResponseSearchCoin = await fetchJson(idCoinName);
-    // console.log(res);
+    if (res?.error) {
+      setErrorMessage("Moneda no encontrada");
+      setTimeout(() => {
+        setSuccessMessage(undefined);
+        setErrorMessage(undefined);
+      }, 1500);
+      return;
+    }
+    const newObj = {
+      id: res?.id,
+      name: res?.name,
+      current_price: res?.market_data?.current_price?.usd,
+      price_change_percentage_24h:
+        res?.market_data?.price_change_percentage_24h,
+      image: res?.image?.small,
+      market_cap_rank: res?.market_cap_rank,
+    };
 
-    // if (res?.error) {
-    //   setErrorMessage("Moneda no encontrada");
-    //   setTimeout(() => {
-    //     setSuccessMessage(undefined);
-    //     setErrorMessage(undefined);
-    //   }, 1500);
-    //   return;
-    // }
-    // const newObj = {
-    //   id: res?.id,
-    //   name: res?.name,
-    //   current_price: res?.market_data?.current_price?.usd,
-    //   price_change_percentage_24h:
-    //     res?.market_data?.price_change_percentage_24h,
-    //   image: res?.image?.small,
-    //   market_cap_rank: res?.market_cap_rank,
-    // };
-
-    // setSingleCoin((prev) => [...prev, newObj]);
-
-    // setInputCoinName("");
+    setSingleCoin((prev) => [...prev, newObj]);
   };
 
   const handleClick = () => {
@@ -236,7 +221,7 @@ export default function Home() {
               Actualización del mercado
             </Typography>
             <Box sx={{ position: "relative" }}>
-              {/* {errorMessage && (
+              {errorMessage && (
                 <Alert
                   sx={{ position: "absolute", top: "-90px" }}
                   severity="error"
@@ -245,21 +230,18 @@ export default function Home() {
                   {errorMessage}
                 </Alert>
               )}
-              {successMessage && (
-                <Alert
-                  sx={{ position: "absolute", top: "-90px" }}
-                  severity="success"
-                >
-                  <AlertTitle>Success</AlertTitle>
-                  {successMessage}
-                </Alert>
-              )} */}
+
               <form onSubmit={handleSubmit}>
-                <Input
-                  // onChange={handleSubmit}
-                  placeHolder="Buscar criptomoneda"
-                  value={inputCoinName}
-                  type="text"
+                <TextField
+                  inputRef={inputRef}
+                  placeholder="Buscar criptomoneda"
+                  sx={{
+                    width: "100%",
+                    border: "1px solid rgba(255, 255, 255, 0.103)",
+                    borderRadius: "8px",
+                    background: "#160C24",
+                    margin: "0px",
+                  }}
                 />
               </form>
             </Box>
