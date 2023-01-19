@@ -50,11 +50,11 @@ export default function Converter() {
       console.log(price);
       setResult(price);
     }
-    getPrice();
+    // getPrice();
   }, [coinValue, fiatValue, quantity]);
 
   return (
-    <Box sx={{ paddingTop: spacing(14), border: "1px solid red" }}>
+    <Box sx={{ paddingTop: spacing(14) }}>
       <Box sx={{ textAlign: "center" }}>
         <Typography variant="h5">
           Calculadora convertidora de criptomonedas
@@ -65,7 +65,6 @@ export default function Converter() {
           display: "flex",
           flexDirection: "column",
           paddingTop: spacing(5),
-          border: "1px solid yellow",
         }}
       >
         <Box sx={{ width: "45%" }}>
@@ -81,7 +80,11 @@ export default function Converter() {
           }}
         >
           <Box sx={{ flex: "0 1 45%" }}>
-            <SelectCoin data={coinDataApi} setValue={handleChangeCoinValue} />
+            <SelectCoin
+              data={coinDataApi}
+              setValue={handleChangeCoinValue}
+              value="bitcoin"
+            />
           </Box>
           <Box
             sx={{
@@ -126,13 +129,14 @@ export default function Converter() {
             <SelectCoin
               data={coinDataVsCurrency}
               setValue={handleChangeFiatValue}
+              value="usd"
               isFiat
             />
           </Box>
         </Box>
       </Box>
       <Box>
-        {coinValue} = {result} {fiatValue}
+        {quantity} {coinValue} = {result} {fiatValue}
       </Box>
     </Box>
   );

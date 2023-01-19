@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 
+import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,6 +16,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 
 import formatCurrency from "lib/formatCurrency";
 import LineChart from "./LineChart";
+import Input from "./Input";
 
 interface CoinData {
   avgPrice: number;
@@ -24,7 +26,7 @@ interface CoinData {
   market_cap_rank: string;
   image: string;
   current_price: number;
-  price_change_percentage_24h: string;
+  price_change_percentage_24h: number;
   high_24h: string;
   profit: number;
   amountCoin: number;
@@ -36,18 +38,28 @@ interface TablePropsArray {
   tableHome?: boolean;
 }
 
-const urlCoin =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
-
 function TableComponent({ data = [] }: TablePropsArray) {
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [priceChart, setPriceChart] = useState([]);
+  const [inputCoinName, setInputCoinName] = useState("");
+
+  const { spacing } = useTheme();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log("q");
+    // setInputCoinName(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setInputCoinName("");
+  };
 
   return (
     <Box sx={{ position: "relative " }}>
-      {errorMessage && (
+      {/* {errorMessage && (
         <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
           <AlertTitle>Error</AlertTitle>
           {errorMessage}
@@ -55,10 +67,19 @@ function TableComponent({ data = [] }: TablePropsArray) {
       )}
       {successMessage && (
         <Alert sx={{ position: "absolute", top: "-70px" }} severity="success">
-          {/* <AlertTitle>Success</AlertTitle> */}
+          <AlertTitle>Success</AlertTitle>
           {successMessage}
         </Alert>
-      )}
+      )} */}
+      {/* <form onSubmit={handleSubmit}> */}
+      {/* <Input
+        onChange={handleChange}
+        placeHolder="Buscar criptomoneda"
+        value={inputCoinName}
+        type="text"
+      /> */}
+      {/* </form> */}
+
       <TableContainer component={Paper}>
         <Table
           sx={{
@@ -78,7 +99,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
               <TableCell sx={{ borderBottom: borderStyle }} align="center">
                 Cambio
               </TableCell>
-              <TableCell sx={{ borderBottom: borderStyle }} align="right">
+              <TableCell sx={{ borderBottom: borderStyle }} align="center">
                 Últimas 24h
               </TableCell>
             </TableRow>
@@ -98,16 +119,21 @@ function TableComponent({ data = [] }: TablePropsArray) {
                     {coin?.market_cap_rank}
                   </TableCell>
 
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <TableCell
-                      sx={{ borderBottom: borderStyle }}
-                      component="th"
-                      scope="row"
+                  <TableCell
+                    sx={{ borderBottom: borderStyle }}
+                    component="th"
+                    scope="row"
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
                     >
                       <Image src={coin?.image} alt="" width={40} height={40} />
-                    </TableCell>
-                    {coin?.name}
-                  </Box>
+                      <Box sx={{ marginLeft: spacing(1) }}>{coin?.name}</Box>
+                    </Box>
+                  </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }}>
                     ${formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
@@ -121,7 +147,11 @@ function TableComponent({ data = [] }: TablePropsArray) {
                     }}
                     align="center"
                   >
-                    {coin?.price_change_percentage_24h}%
+                    {formatCurrency(
+                      coin?.price_change_percentage_24h.toFixed(2),
+                      "usd"
+                    )}
+                    %
                   </TableCell>
                   <TableCell
                     sx={{ borderBottom: borderStyle, width: "120px" }}

@@ -58,7 +58,7 @@ export default function MarketTrendCard({
               ${currentPrice}
             </Typography>
             <Typography sx={{ color: priceValueClassName }}>
-              {formatCurrency(priceChange, "usd")}%
+              {formatCurrency(priceChange.toFixed(2), "usd")}%
             </Typography>
           </Box>
           <Box

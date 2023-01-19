@@ -5,6 +5,7 @@ import { FormHelperText } from "@mui/material";
 import { InputBase } from "@mui/material";
 
 import { FormikTouched, FormikErrors } from "formik";
+import { useState } from "react";
 
 interface InputProps {
   id: string;
@@ -30,10 +31,24 @@ export default function Input({
   type,
 }: InputProps) {
   const { spacing, palette } = useTheme();
+  const [inputCoinName, setInputCoinName] = useState("");
+  const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log("q");
+    setInputCoinName(e.target.value);
+  };
+
   // const theme= useTheme();
   // console.log(palette.error.main);
-  const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
   // console.log(placeHolder);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log(e);
+    // onChange();
+    setInputCoinName("");
+  };
+
   return (
     <Box
       sx={{
@@ -46,6 +61,7 @@ export default function Input({
         {label}
       </InputLabel>
 
+      {/* <form onSubmit={handleSubmit}> */}
       <TextField
         required
         id={id}
@@ -63,6 +79,8 @@ export default function Input({
         error={error}
         type={type}
       />
+      {/* </form> */}
+      {/* <input value={value} onChange={handleChange} /> */}
       <Box
         sx={{
           // border: "1px solid red",

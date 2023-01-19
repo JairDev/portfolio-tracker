@@ -58,12 +58,12 @@ export default function Home() {
   const [fullData, setFullData] = useState([]);
   const [inputCoinName, setInputCoinName] = useState("");
   const [singleCoin, setSingleCoin] = useState([]);
-  const [successMessage, setSuccessMessage] = useState<undefined | string>(
-    undefined
-  );
-  const [errorMessage, setErrorMessage] = useState<undefined | string>(
-    undefined
-  );
+  // const [successMessage, setSuccessMessage] = useState<undefined | string>(
+  //   undefined
+  // );
+  // const [errorMessage, setErrorMessage] = useState<undefined | string>(
+  //   undefined
+  // );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputCoinName(e.target.value);
@@ -71,32 +71,33 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const idCoinName = coinId(inputCoinName.trim());
+    console.log("hola");
+    // const idCoinName = coinId(inputCoinName.trim());
 
-    const res: ResponseSearchCoin = await fetchJson(idCoinName);
-    console.log(res);
+    // const res: ResponseSearchCoin = await fetchJson(idCoinName);
+    // console.log(res);
 
-    if (res?.error) {
-      setErrorMessage("Moneda no encontrada");
-      setTimeout(() => {
-        setSuccessMessage(undefined);
-        setErrorMessage(undefined);
-      }, 1500);
-      return;
-    }
-    const newObj = {
-      id: res?.id,
-      name: res?.name,
-      current_price: res?.market_data?.current_price?.usd,
-      price_change_percentage_24h:
-        res?.market_data?.price_change_percentage_24h,
-      image: res?.image?.small,
-      market_cap_rank: res?.market_cap_rank,
-    };
+    // if (res?.error) {
+    //   setErrorMessage("Moneda no encontrada");
+    //   setTimeout(() => {
+    //     setSuccessMessage(undefined);
+    //     setErrorMessage(undefined);
+    //   }, 1500);
+    //   return;
+    // }
+    // const newObj = {
+    //   id: res?.id,
+    //   name: res?.name,
+    //   current_price: res?.market_data?.current_price?.usd,
+    //   price_change_percentage_24h:
+    //     res?.market_data?.price_change_percentage_24h,
+    //   image: res?.image?.small,
+    //   market_cap_rank: res?.market_cap_rank,
+    // };
 
-    setSingleCoin((prev) => [...prev, newObj]);
+    // setSingleCoin((prev) => [...prev, newObj]);
 
-    setInputCoinName("");
+    // setInputCoinName("");
   };
 
   const handleClick = () => {
@@ -235,7 +236,7 @@ export default function Home() {
               Actualización del mercado
             </Typography>
             <Box sx={{ position: "relative" }}>
-              {errorMessage && (
+              {/* {errorMessage && (
                 <Alert
                   sx={{ position: "absolute", top: "-90px" }}
                   severity="error"
@@ -252,10 +253,10 @@ export default function Home() {
                   <AlertTitle>Success</AlertTitle>
                   {successMessage}
                 </Alert>
-              )}
+              )} */}
               <form onSubmit={handleSubmit}>
                 <Input
-                  onChange={handleChange}
+                  // onChange={handleSubmit}
                   placeHolder="Buscar criptomoneda"
                   value={inputCoinName}
                   type="text"
