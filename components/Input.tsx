@@ -75,7 +75,7 @@ export default function Input({
           background: "#160C24",
           margin: "0px",
         }}
-        onChange={handleChange}
+        onChange={onChange}
         error={error}
         type={type}
       />

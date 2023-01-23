@@ -29,6 +29,7 @@ import ArticleCard from "components/ArticleCard";
 
 import fetchJson from "lib/fetchJson";
 import { coinId, urlCoin } from "lib/apiUrl";
+import CryptoNewsData from "components/CryptoNewsData";
 
 type ResponseSearchCoin = {
   id?: string;
@@ -49,10 +50,40 @@ type ResponseSearchCoin = {
 export default function Home() {
   const { palette, spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
+  // const { data: cryptoNewsData } = useSWR(
+  //   `https://newsapi.org/v2/everything?q=${"ethereum"}&apiKey=28d89ba563644bf397ab0a8e7b46fa4d`
+  // );
   const loading = !coinData;
   const [fullData, setFullData] = useState([]);
   const [singleCoin, setSingleCoin] = useState([]);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    // console.log(cryptoNewsData);
+    const options = {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": "53f82f7b35msh3121d6a07e0a16bp16e3d8jsnac367b155a33",
+        "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
+      },
+    };
+
+    async function getCoin() {
+      // const res = await fetch(
+      //   "https://newsapi.org/v2/everything?q=ethereum&apiKey=28d89ba563644bf397ab0a8e7b46fa4d"
+      // );
+      // const result = await res.json();
+      // console.log(res);
+      // console.log(result);
+    }
+    // getCoin();
+
+    // fetch("https://crypto-news-live3.p.rapidapi.com/news", options)
+    //   .then((response) => response.json())
+    //   .then((response) => console.log(response))
+    //   .catch((err) => console.error(err));
+    // console.log(" hi");
+  }, []);
 
   const [errorMessage, setErrorMessage] = useState<undefined | string>(
     undefined
@@ -105,7 +136,7 @@ export default function Home() {
         setFullData(result);
       }
     }
-    change();
+    // change();
   }, [coinData]);
 
   return (
@@ -317,49 +348,7 @@ export default function Home() {
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            marginTop: spacing(16),
-          }}
-        >
-          <Box
-            id="news"
-            sx={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <Typography variant="h4">Noticias sobre criptomonedas</Typography>
-            <Box>
-              <Input placeHolder="Buscar noticia" type="text" />
-            </Box>
-          </Box>
-
-          <Grid container sx={{ paddingTop: spacing(2) }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              rowSpacing={4}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
-              {/* {loading ? (
-                <div>Cargando</div>
-              ) : (
-                newsData?.articles.map((article, i) => (
-                  <Grid
-                    key={article.title}
-                    xs={i === 0 ? 8 : 4}
-                    sx={{ heigth: "100%" }}
-                    item
-                  >
-                    <ArticleCard
-                      title={article.title}
-                      subTitle={article.description}
-                      image={article.image}
-                    />
-                  </Grid>
-                ))
-              )} */}
-            </Grid>
-          </Grid>
-        </Box>
+        <CryptoNewsData />
 
         <Box
           sx={{

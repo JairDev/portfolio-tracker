@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useTheme } from "@mui/material/styles";
 import LogoutIcon from "@mui/icons-material/Logout";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import useUser from "lib/useUser";
 import { Button } from "./Button";
@@ -46,8 +47,13 @@ export default function NavBarProfile() {
   };
 
   if (loading) {
-    return <div>Cargando</div>;
+    return (
+      <Box>
+        <CircularProgress />;
+      </Box>
+    );
   }
+
   if (!authenticated) {
     return (
       <>
