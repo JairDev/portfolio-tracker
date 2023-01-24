@@ -30,6 +30,7 @@ import ArticleCard from "components/ArticleCard";
 import fetchJson from "lib/fetchJson";
 import { coinId, urlCoin } from "lib/apiUrl";
 import CryptoNewsData from "components/CryptoNewsData";
+import Footer from "components/Footer";
 
 type ResponseSearchCoin = {
   id?: string;
@@ -351,122 +352,6 @@ export default function Home() {
         </Box>
 
         <CryptoNewsData />
-
-        <Box
-          sx={{
-            display: "flex",
-            height: "200px",
-            marginTop: "180px",
-            paddingBottom: "40px",
-            // border: "1px solid red",
-          }}
-        >
-          <Box
-            sx={{
-              // width: "40%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              // border: "1px solid yellow",
-            }}
-          >
-            <Box
-              sx={{
-                // border: "1px solid red",
-                width: "100%",
-                display: "flex",
-                // justifyContent: "center",
-                // alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                noWrap
-                component="a"
-                href="/"
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  fontSize: "24px",
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: palette.text.primary,
-                  textDecoration: "none",
-                }}
-              >
-                CoinMarket
-              </Typography>
-              <Typography
-                component="span"
-                sx={{ color: palette.primary.main, fontWeight: "700" }}
-              >
-                App
-              </Typography>
-            </Box>
-            <Box>
-              <Icon>
-                <InstagramIcon />
-              </Icon>
-              <Icon sx={{ marginLeft: "8px" }}>
-                <TwitterIcon />
-              </Icon>
-              <Icon sx={{ marginLeft: "8px" }}>
-                <LinkedInIcon />
-              </Icon>
-            </Box>
-            <Box>
-              <Typography>Diseñado por: @Bdyhm</Typography>
-              <Typography sx={{ marginTop: "8px" }}>
-                Desarrollado por: Alfredo Moscoso
-              </Typography>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              marginLeft: "48px",
-              height: "100%",
-            }}
-          >
-            <Box sx={{ paddingLeft: "16px" }}>
-              <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
-                Aprender
-              </Typography>
-            </Box>
-            <Box>
-              <MenuItem
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                }}
-              >
-                <Link
-                  sx={{ marginTop: "16px", color: palette.text.primary }}
-                  href="https://academy.binance.com/es/start-here"
-                  underline="hover"
-                >
-                  Que es una criptomoneda?
-                </Link>
-                <Link
-                  sx={{ marginTop: "16px", color: palette.text.primary }}
-                  href="https://academy.binance.com/es/articles/what-is-a-cryptocurrency-whitepaper"
-                  underline="hover"
-                >
-                  Que es un whitepaper?
-                </Link>
-                <Link
-                  sx={{ marginTop: "16px", color: palette.text.primary }}
-                  href="https://academy.binance.com/es/articles/what-is-a-decentralized-exchange-dex"
-                  underline="hover"
-                >
-                  Que es un exchange descentralizado?
-                </Link>
-              </MenuItem>
-            </Box>
-          </Box>
-        </Box>
       </main>
     </div>
   );
