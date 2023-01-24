@@ -49,6 +49,8 @@ type ResponseSearchCoin = {
 
 export default function Home() {
   const { palette, spacing } = useTheme();
+  const theme = useTheme();
+  // console.log(theme);
   const { data: coinData } = useSWR(urlCoin);
   // const { data: cryptoNewsData } = useSWR(
   //   `https://newsapi.org/v2/everything?q=${"ethereum"}&apiKey=28d89ba563644bf397ab0a8e7b46fa4d`

@@ -1,49 +1,93 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
-import { CardActionArea } from "@mui/material";
+import {
+  Card,
+  Box,
+  Typography,
+  Link,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-export default function ArticleCard({ image, title, subTitle }) {
-  // console.log("title", title);
-  // console.log("image", image);
-  const handleClick = () => {
-    console.info("You clicked the Chip.");
-  };
+interface ArticleCardProps {
+  image: string;
+  title: string;
+  subTitle: string;
+  author: string | null;
+  toUrl: string;
+}
+export default function ArticleCard({
+  image,
+  title,
+  subTitle,
+  author,
+  toUrl,
+}: ArticleCardProps) {
+  const { spacing } = useTheme();
 
   return (
     <Card
       sx={{
-        // maxWidth: 345,
         height: "100% ",
       }}
     >
       <CardActionArea
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+          width: "100%",
           height: "100% ",
         }}
       >
-        <CardMedia
-          component="img"
-          height="140"
-          image={image}
-          alt="green iguana"
-        />
-        <Chip label="Crypto Basic" onClick={handleClick} />
-
-        <CardContent>
-          <Typography gutterBottom variant="h6" component="div">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="text.primary">
-            {subTitle}
-          </Typography>
-        </CardContent>
+        <Link href={toUrl} underline="none" sx={{ color: "inherit" }}>
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              width: "100%",
+              height: "100% ",
+            }}
+          >
+            <Box>
+              <CardMedia
+                component="img"
+                height="140"
+                image={image}
+                alt="green iguana"
+              />
+              <Box sx={{ marginTop: spacing(2) }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: "bold" }}
+                  component="div"
+                >
+                  {title}
+                </Typography>
+                <Typography variant="body2" color="text.primary">
+                  {subTitle}
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                paddingTop: spacing(3),
+              }}
+            >
+              <Typography
+                component="span"
+                sx={{ fontSize: "14px", marginRight: spacing(1) }}
+              >
+                by
+              </Typography>
+              <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+                {author ? author : "unknown author"}
+              </Typography>
+            </Box>
+          </CardContent>
+        </Link>
       </CardActionArea>
     </Card>
   );

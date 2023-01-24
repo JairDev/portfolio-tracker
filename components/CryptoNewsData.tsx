@@ -61,7 +61,7 @@ export default function CryptoNewsData() {
                 marginTop: "16px",
               }}
             >
-              <CircularProgress />;{" "}
+              <CircularProgress />
             </Box>
           ) : (
             cryptoNewsData?.articles.slice(0, 10).map((article, i: number) => (
@@ -75,6 +75,8 @@ export default function CryptoNewsData() {
                   title={article.title}
                   subTitle={article.description}
                   image={article.urlToImage}
+                  author={article.author}
+                  toUrl={article.url}
                 />
               </Grid>
             ))
