@@ -21,6 +21,8 @@ export default function CryptoNewsData() {
     setCoinNameValue(inputRef?.current?.value);
   };
 
+  console.log(cryptoNewsData);
+
   return (
     <Box
       sx={{
@@ -47,12 +49,7 @@ export default function CryptoNewsData() {
       </Box>
 
       <Grid container sx={{ paddingTop: spacing(2) }}>
-        <Grid
-          container
-          justifyContent="space-between"
-          rowSpacing={4}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
+        <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           {loading ? (
             <Box
               sx={{
