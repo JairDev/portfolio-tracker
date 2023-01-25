@@ -13,10 +13,12 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 import useUser from "lib/useUser";
 import useSWR from "swr";
 import formatCurrency from "lib/formatCurrency";
+import { Button } from "./Button";
 
 interface CoinData {
   avgPrice: number;
@@ -203,9 +205,12 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                     ${formatCurrency(coin?.profit, "usd")}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    <button onClick={(e) => handleDeleteClick(e, coin?._id)}>
-                      Delete
-                    </button>
+                    <Button
+                      size="small"
+                      onClick={(e) => handleDeleteClick(e, coin?._id)}
+                    >
+                      <DeleteOutlineIcon />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

@@ -5,32 +5,28 @@ import Head from "next/head";
 
 import useSWR from "swr";
 
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import { Link, Typography, TextField } from "@mui/material";
-import MarketTrendCard from "components/MarketTrendCard";
+import {
+  Box,
+  Alert,
+  AlertTitle,
+  Link,
+  Typography,
+  TextField,
+  Grid,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Grid from "@mui/material/Grid";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import Icon from "@mui/material/Icon";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import MenuItem from "@mui/material/MenuItem";
 
+import MarketTrendCard from "components/MarketTrendCard";
 import { Button } from "components/Button";
-import Input from "components/Input";
 import StepCard from "components/StepCard";
 import { Table } from "components/Table";
-import ArticleCard from "components/ArticleCard";
+import CryptoNewsData from "components/CryptoNewsData";
 
 import fetchJson from "lib/fetchJson";
 import { coinId, urlCoin } from "lib/apiUrl";
-import CryptoNewsData from "components/CryptoNewsData";
-import Footer from "components/Footer";
 
 type ResponseSearchCoin = {
   id?: string;
@@ -48,45 +44,22 @@ type ResponseSearchCoin = {
   error: string;
 };
 
+type InputRef = {
+  value: null;
+};
+
+interface SetCoin {
+  singleCoin: ResponseSearchCoin;
+  setSingleCoin: (singleCoin: ResponseSearchCoin) => void;
+}
+
 export default function Home() {
-  const { palette, spacing } = useTheme();
-  const theme = useTheme();
-  // console.log(theme);
+  const { spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
-  // const { data: cryptoNewsData } = useSWR(
-  //   `https://newsapi.org/v2/everything?q=${"ethereum"}&apiKey=28d89ba563644bf397ab0a8e7b46fa4d`
-  // );
   const loading = !coinData;
   const [fullData, setFullData] = useState([]);
-  const [singleCoin, setSingleCoin] = useState([]);
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    // console.log(cryptoNewsData);
-    const options = {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": "53f82f7b35msh3121d6a07e0a16bp16e3d8jsnac367b155a33",
-        "X-RapidAPI-Host": "crypto-news-live3.p.rapidapi.com",
-      },
-    };
-
-    async function getCoin() {
-      // const res = await fetch(
-      //   "https://newsapi.org/v2/everything?q=ethereum&apiKey=28d89ba563644bf397ab0a8e7b46fa4d"
-      // );
-      // const result = await res.json();
-      // console.log(res);
-      // console.log(result);
-    }
-    // getCoin();
-
-    // fetch("https://crypto-news-live3.p.rapidapi.com/news", options)
-    //   .then((response) => response.json())
-    //   .then((response) => console.log(response))
-    //   .catch((err) => console.error(err));
-    // console.log(" hi");
-  }, []);
+  const [singleCoin, setSingleCoin] = useState<SetCoin>();
+  const inputRef: React.RefObject<InputRef> = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState<undefined | string>(
     undefined
@@ -94,14 +67,12 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const coinName = inputRef?.current?.value;
-    const idCoinName = coinId(coinName.trim());
+    const idCoinName = coinId(inputRef?.current?.value);
     const res: ResponseSearchCoin = await fetchJson(idCoinName);
 
     if (res?.error) {
       setErrorMessage("Moneda no encontrada");
       setTimeout(() => {
-        setSuccessMessage(undefined);
         setErrorMessage(undefined);
       }, 1500);
       return;
@@ -126,7 +97,7 @@ export default function Home() {
   useEffect(() => {
     async function change() {
       if (coinData) {
-        const changeObj = coinData.slice(0, 10).map(async (coin) => {
+        const changeObj = coinData.slice(0, 4).map(async (coin) => {
           const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
           const res = await fetchJson(priceRange);
           const newObj = {
@@ -139,7 +110,7 @@ export default function Home() {
         setFullData(result);
       }
     }
-    // change();
+    change();
   }, [coinData]);
 
   return (
