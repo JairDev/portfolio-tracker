@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+
+import { default as NextLink } from "next/link";
 import Router, { useRouter } from "next/router";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTheme } from "@mui/material/styles";
 
@@ -14,6 +16,9 @@ import BasicModal from "components/Modal";
 import useSWR from "swr";
 import formatCurrency from "lib/formatCurrency";
 import PortfolioTable from "components/PortfolioTable";
+import Image from "next/image";
+
+import screenApp from "../public/screen-app.png";
 interface CoinsLastPrice {
   _id: string;
   name: string;
@@ -96,9 +101,64 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   if (!authenticated) {
     return (
       <div>
-        <p>PortFolio Tracker</p>
-        <p>Sign up now!</p>
-        <button onClick={handleClick}>Create Portfolio</button>
+        <Box
+          sx={{
+            display: "flex",
+
+            paddingTop: spacing(10),
+          }}
+        >
+          <Box
+            sx={{
+              width: "40%",
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{ fontWeight: "700", color: "primary.main" }}
+            >
+              Regístrese hoy
+            </Typography>
+
+            <Typography variant="h4" sx={{ fontWeight: "700" }}>
+              Rastreador de cartera criptográfica
+            </Typography>
+            <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
+              <Typography variant="subtitle1" sx={{ color: " #B6B6B6" }}>
+                Realice un seguimiento de sus ganancias, pérdidas y valoración
+                de cartera con nuestra plataforma fácil de usar.
+              </Typography>
+            </Box>
+            <Box sx={{ marginTop: spacing(8) }}>
+              <Link
+                component={NextLink}
+                underline="none"
+                color="text.primary"
+                sx={{
+                  bgcolor: "primary.main",
+                  padding: spacing(2, 5),
+                  borderRadius: "8px",
+                  fontWeight: "600",
+                }}
+                href="/register"
+              >
+                Crea tu portafolio
+              </Link>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              position: "relative",
+              marginTop: spacing(10),
+              transform: "translateX(20%)",
+            }}
+          >
+            <Image
+              src={screenApp}
+              alt="Imagen de un portafolio de criptomonedas"
+            />
+          </Box>
+        </Box>
       </div>
     );
   }
