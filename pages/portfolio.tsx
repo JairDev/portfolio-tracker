@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { default as NextLink } from "next/link";
-import Router, { useRouter } from "next/router";
+
+import useSWR from "swr";
 
 import { Box, Typography, Link } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -11,15 +12,13 @@ import { withGetServerSideProps } from "lib/getServerSideProps";
 import { withSessionSsr } from "lib/sessions";
 
 import { Button } from "components/Button";
-import { Table } from "components/Table";
 import BasicModal from "components/Modal";
-import useSWR from "swr";
 import formatCurrency from "lib/formatCurrency";
 import PortfolioTable from "components/PortfolioTable";
 import Image from "next/image";
 
 import screenApp from "../public/screen-app.png";
-interface CoinsLastPrice {
+interface UserDataTypes {
   _id: string;
   name: string;
   avgPrice: number;
@@ -33,13 +32,20 @@ interface PortfolioProps {
   message: string;
   authenticated: boolean;
   userEmail: string;
-  coins: Array<CoinsLastPrice>;
+  coins: Array<UserDataTypes>;
   userId: string;
   coinData: Array<{
     [key: string]: {
       [key: string]: number;
     };
   }>;
+}
+
+interface CoinFilter {
+  id?: string;
+  market_cap_rank?: number;
+  image?: string;
+  usd?: number;
 }
 
 const urlCoin =
@@ -49,48 +55,45 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
   const { spacing } = useTheme();
 
-  const { authenticated, userId, coins, coinData } = data;
-  const [totalAmount, setTotalAmount] = useState();
+  const { authenticated, coins, coinData } = data;
+  const [totalAmount, setTotalAmount] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const [userData, setUserData] = useState(Array<CoinsLastPrice>);
+  const [userData, setUserData] = useState(Array<UserDataTypes>);
 
   const handleClickAddCoin = () => {
     setOpen(true);
   };
 
   useEffect(() => {
-    const result = coins.map((coin, i) => {
-      const lastPrice = coinData[i][coin.name];
-      const newObject = { ...coin, ...lastPrice };
-      return newObject;
-    });
-    const resultUserData = result.map((coinp) => {
-      const buyAmount = Number.parseFloat(
-        (coinp?.usd - coinp?.avgPrice).toFixed(2)
-      ).toString();
+    console.log(coins);
+    const resultUserData = coins.map((userData, i) => {
+      const lastPrice = coinData[i][userData.name];
+      const totalAmount = lastPrice.usd * userData.holding;
 
-      const amountCoin = coinp.usd * coinp.holding;
+      const filter = coinDataApi?.filter(
+        (coin: CoinFilter) => coin.id === userData.name
+      );
 
-      const filter = coinDataApi?.filter((coin) => coin.id === coinp.name);
-      console.log(filter);
-      const newObj = filter?.map((coin) => ({
+      const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
+        ...userData,
         market_cap_rank: coin.market_cap_rank,
         image: coin.image,
-        amountCoin,
-        ...coinp,
+        totalAmount,
+        usd: lastPrice.usd,
       }));
 
-      return newObj;
+      return resultNewUserDataObject;
     });
-    const flatData = resultUserData.flat();
-    const reduce = result.reduce((prev, current) => {
+
+    const resultFlatUserData = resultUserData.flat();
+    const reduce = resultFlatUserData.reduce((prev, current) => {
       const amount = current.usd * current.holding;
       return prev + amount;
     }, 0);
 
-    setTotalAmount(reduce.toFixed(2).toString());
-    setUserData(flatData);
+    setTotalAmount(reduce);
+    setUserData(resultFlatUserData);
   }, [coinData, coinDataApi, coins]);
 
   if (!authenticated) {

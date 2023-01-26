@@ -40,7 +40,16 @@ interface CoinData {
 }
 
 interface TablePropsArray {
-  data: Array<CoinData>;
+  data: Array<CoinsLastPrice>;
+}
+
+interface CoinsLastPrice {
+  _id: string;
+  name: string;
+  avgPrice: number;
+  holding: number;
+  usd: number;
+  __v: number;
 }
 
 const urlCoin =

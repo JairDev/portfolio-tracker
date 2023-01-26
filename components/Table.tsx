@@ -85,6 +85,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
           sx={{
             minWidth: 650,
             background: "rgba(255, 255, 255, 0.02)",
+            // background: "red",
             border: borderStyle,
           }}
           aria-label="simple table"
