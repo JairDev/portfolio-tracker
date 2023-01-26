@@ -14,20 +14,19 @@ export default function Layout({ children }: LayoutProps) {
     <div className="container">
       <Box
         sx={{
-          background: "rgba(255, 0, 200, 0.253)",
+          background: "rgba(255, 0, 200, 0.5)",
           borderRadius: "50%",
           position: "fixed",
           top: "0%",
           right: "0%",
-          width: "60%",
-          height: "60%",
+          width: "55%",
+          height: "55%",
           filter: "blur(200px)",
           zIndex: "0",
         }}
       ></Box>
       <Container
         sx={{
-          // border: "1px solid blue",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",

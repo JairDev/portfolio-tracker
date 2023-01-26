@@ -49,16 +49,11 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
   const { spacing } = useTheme();
 
-  const router = useRouter();
   const { authenticated, userId, coins, coinData } = data;
   const [totalAmount, setTotalAmount] = useState();
   const [open, setOpen] = useState(false);
 
   const [userData, setUserData] = useState(Array<CoinsLastPrice>);
-
-  const handleClick = () => {
-    Router.push("login");
-  };
 
   const handleClickAddCoin = () => {
     setOpen(true);
@@ -78,7 +73,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       const amountCoin = coinp.usd * coinp.holding;
 
       const filter = coinDataApi?.filter((coin) => coin.id === coinp.name);
-
+      console.log(filter);
       const newObj = filter?.map((coin) => ({
         market_cap_rank: coin.market_cap_rank,
         image: coin.image,
@@ -103,9 +98,10 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       <div>
         <Box
           sx={{
+            border: "1px solid red",
             display: "flex",
 
-            paddingTop: spacing(10),
+            paddingTop: spacing(14),
           }}
         >
           <Box
@@ -125,8 +121,8 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
             </Typography>
             <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
               <Typography variant="subtitle1" sx={{ color: " #B6B6B6" }}>
-                Realice un seguimiento de sus ganancias, pérdidas y valoración
-                de cartera con nuestra plataforma fácil de usar.
+                Realice un seguimiento de sus ganancias y pérdidas con nuestra
+                plataforma fácil de usar.
               </Typography>
             </Box>
             <Box sx={{ marginTop: spacing(8) }}>
@@ -170,22 +166,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
         marginTop: spacing(14),
       }}
     >
-      <Box sx={{ width: "20%" }}>
-        <Box sx={{ display: "flex" }}>
-          <Box>
-            <Typography sx={{ fontWeight: "bold" }}>
-              Portafolio principal
-            </Typography>
-
-            <Typography>${formatCurrency(totalAmount, "usd")}</Typography>
-          </Box>
-        </Box>
-        <Box sx={{ marginTop: "8px" }}>
-          <Typography sx={{ fontWeight: "bold" }}>Crear portafolio</Typography>
-        </Box>
-      </Box>
-
-      <Box sx={{ width: "80%" }}>
+      <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -223,21 +204,17 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
 
           {userData.length > 0 ? (
             <>
-              {/* <Table data={userData} /> */}
               <PortfolioTable data={userData} />
             </>
           ) : (
             <Box
               sx={{
-                display: "flex",
                 flexDirection: "column ",
                 justifyContent: "center ",
                 alignItems: "center ",
-                position: "absolute",
                 top: 0,
                 left: 0,
                 width: "100%",
-                height: "100vh",
                 zIndex: "10",
               }}
             >
