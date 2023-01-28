@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { Box, Typography, Link } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTheme } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { withGetServerSideProps } from "lib/getServerSideProps";
 import { withSessionSsr } from "lib/sessions";
@@ -53,7 +54,8 @@ const urlCoin =
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
-  const loading = !data;
+  const loading = !coinDataApi;
+  console.log(loading);
   const { spacing } = useTheme();
 
   const { authenticated, coins, coinData } = data;
@@ -67,13 +69,9 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
-    // console.log(coins);
     const resultUserData = coins.map((userData, i) => {
       const lastPrice = coinData[i][userData.name];
-      // console.log(lastPrice.usd);
       const totalAmount = lastPrice?.usd * userData?.holding;
-      // console.log(userData?.avgPrice);
-      // console.log((userData?.avgPrice - lastPrice?.usd) * userData?.holding);
       const profit = (userData?.avgPrice - lastPrice?.usd) * userData?.holding;
 
       const filter = coinDataApi?.filter(
@@ -103,6 +101,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     setUserData(resultFlatUserData);
   }, [coinData, coinDataApi, coins]);
 
+  console.log(userData);
   if (!authenticated) {
     return (
       <div>
@@ -169,6 +168,46 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     );
   }
 
+  if (userData.length < 0) {
+    <Box
+      sx={{
+        flexDirection: "column ",
+        justifyContent: "center ",
+        alignItems: "center ",
+        top: 0,
+        left: 0,
+        width: "100%",
+        zIndex: "10",
+      }}
+    >
+      <Box
+        sx={{
+          paddingTop: spacing(10),
+          display: "flex",
+          flexDirection: "column ",
+          justifyContent: "center ",
+          alignItems: "center ",
+        }}
+      >
+        <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
+          Este portafolio está vacío
+        </Typography>
+        <Typography sx={{ marginTop: "8px" }}>
+          Agregue cualquier moneda para comenzar
+        </Typography>
+        <Box sx={{ marginTop: "32px" }}>
+          <Button
+            onClick={handleClickAddCoin}
+            text="Añadir nueva moneda"
+            variant="contained"
+          >
+            <AddCircleOutlineIcon />
+          </Button>
+        </Box>
+      </Box>
+    </Box>;
+  }
+
   return (
     <Box
       sx={{
@@ -212,48 +251,20 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
             </Typography>
           )}
 
-          {userData.length > 0 ? (
+          {!userData[0] ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: spacing(2),
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
             <>
               <PortfolioTable data={userData} />
             </>
-          ) : (
-            <Box
-              sx={{
-                flexDirection: "column ",
-                justifyContent: "center ",
-                alignItems: "center ",
-                top: 0,
-                left: 0,
-                width: "100%",
-                zIndex: "10",
-              }}
-            >
-              <Box
-                sx={{
-                  paddingTop: spacing(10),
-                  display: "flex",
-                  flexDirection: "column ",
-                  justifyContent: "center ",
-                  alignItems: "center ",
-                }}
-              >
-                <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-                  Este portafolio está vacío
-                </Typography>
-                <Typography sx={{ marginTop: "8px" }}>
-                  Agregue cualquier moneda para comenzar
-                </Typography>
-                <Box sx={{ marginTop: "32px" }}>
-                  <Button
-                    onClick={handleClickAddCoin}
-                    text="Añadir nueva moneda"
-                    variant="contained"
-                  >
-                    <AddCircleOutlineIcon />
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
           )}
 
           <Box sx={{ marginTop: "16px" }}></Box>

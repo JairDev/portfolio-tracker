@@ -42,9 +42,6 @@ interface TablePropsArray {
 }
 
 export default function PortfolioTable({ data = [] }: TablePropsArray) {
-  const { data: coinData } = useSWR(urlCoin);
-  // const loading = !data;
-  console.log(data);
   const router = useRouter();
   const { userEmail } = useUser({});
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
