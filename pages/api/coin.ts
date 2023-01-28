@@ -12,47 +12,41 @@ export default async function coinApi(
 
   const { name, avgPrice, holding, lastProfit, sell, lastPrice } = req.body;
   const coinFind = await Coin.findOne({ name: name });
-  console.log("lastProfit", lastProfit);
   console.log("find", coinFind);
+  console.log("lastprice", lastPrice);
+  // console.log(lastPrice)
 
   if (coinFind) {
     if (sell) {
       const sellAmount = avgPrice * holding;
-      const profit = Number(sellAmount) - Number(lastPrice);
       const updateHolding = Number(coinFind.holding) - Number(holding);
       console.log("updateHolding", updateHolding);
       console.log("lastPrice", lastPrice);
-      console.log(" profit", profit);
       console.log(sellAmount);
-      const result = profit + coinFind.profit;
+
       const update = await Coin.findOneAndUpdate(
         { name: name },
-        { profit: result, holding: updateHolding }
+        { holding: updateHolding }
       );
       console.log("update", update);
       res.status(201).json({ message: "Activo actualizado" });
     } else {
-      const profit = Number(
-        Number.parseFloat(coinFind.profit + Number(lastProfit)).toFixed(2)
-      );
       const updateHolding = Number(coinFind.holding) + Number(holding);
       console.log("updateHold", updateHolding);
       const update = await Coin.findOneAndUpdate(
         { name: name },
-        { profit, holding: updateHolding }
+        { holding: updateHolding }
       );
-      console.log("profit", profit);
       console.log("update", update);
       res.status(201).json({ message: "Activo actualizado" });
     }
   } else {
-    if (name && avgPrice && holding && lastProfit) {
+    if (name && avgPrice && holding) {
       console.log("NAME", name);
       const coin = await new Coin({
         name,
         avgPrice,
         holding,
-        profit: lastProfit,
       });
       // console.log("coin", coin);
       const result = await coin.save();
@@ -63,17 +57,4 @@ export default async function coinApi(
         .json({ message: " Error al añadir un activo", coinId: null });
     }
   }
-
-  // try {
-  //   const coin = await new Coin({
-  //     name,
-  //     avgPrice,
-  //     holding,
-  //   });
-  //   console.log("coin", coin);
-  //   const result = await coin.save();
-  //   res.status(201).json({ message: "Activo añadido", coinId: result._id });
-  // } catch (error) {
-  //   res.status(500).json({ error });
-  // }
 }

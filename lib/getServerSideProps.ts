@@ -33,7 +33,9 @@ export const withGetServerSideProps = async function ({ req }) {
       return coinData;
     }
   );
+
   const resultAllCoinsData = await Promise.all(coinsLastPrice);
+  console.log(resultAllCoinsData);
 
   const data = JSON.parse(
     JSON.stringify({ ...userData, coinData: resultAllCoinsData })

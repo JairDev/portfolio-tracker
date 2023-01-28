@@ -23,55 +23,35 @@ import useUser from "lib/useUser";
 import formatCurrency from "lib/formatCurrency";
 
 import { Button } from "./Button";
-
-interface CoinData {
-  avgPrice: number;
-  holding: number;
-  name: string;
-  usd: number;
+import { urlCoin } from "lib/apiUrl";
+interface CoinsLastPrice {
+  _id: string;
   market_cap_rank: string;
   image: string;
+  name: string;
   current_price: number;
-  price_change_percentage_24h: string;
-  high_24h: string;
+  totalAmount: number;
   profit: number;
-  amountCoin: number;
-  _id: string;
+  avgPrice: number;
+  holding: number;
+  usd: number;
 }
 
 interface TablePropsArray {
   data: Array<CoinsLastPrice>;
 }
 
-interface CoinsLastPrice {
-  _id: string;
-  name: string;
-  avgPrice: number;
-  holding: number;
-  usd: number;
-  __v: number;
-}
-
-const urlCoin =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
-
 export default function PortfolioTable({ data = [] }: TablePropsArray) {
-  // console.log(data);
   const { data: coinData } = useSWR(urlCoin);
-
+  // const loading = !data;
+  console.log(data);
   const router = useRouter();
   const { userEmail } = useUser({});
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  // const priceChange24h =
 
-  const [userData, setUserData] = useState([]);
-
-  const handleDeleteClick = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-    coinId: string
-  ) => {
+  const handleDeleteClick = async (e, coinId: string) => {
     const objectToSend = {
       id: coinId,
       userEmail,
@@ -111,9 +91,9 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
     router.replace(router.asPath);
   };
 
-  React.useEffect(() => {
-    // console.log(data);
-  }, [coinData, data]);
+  // React.useEffect(() => {
+  //   // console.log(data);
+  // }, [coinData, data]);
 
   return (
     <Box sx={{ position: "relative " }}>
@@ -166,7 +146,9 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data &&
+            {!data ? (
+              <div>Cargando</div>
+            ) : (
               data.map((coin) => (
                 <TableRow
                   key={coin?.name}
@@ -204,7 +186,7 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                   </TableCell>
 
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    {formatCurrency(coin?.amountCoin, "usd")}
+                    {formatCurrency(coin?.totalAmount, "usd")}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -226,7 +208,8 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -92,22 +92,14 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
     e.preventDefault();
     const coinNameToLowerCase = coinName.toLowerCase();
     const lastPrice = find.current_price;
-    const lastProfit = Number.parseFloat(
-      (lastPrice - Number(coinAvgPrice)).toFixed(2)
-    ).toString();
-
-    const profit = Number(lastProfit) * Number(coinHolding);
 
     const form = {
       name: coinNameToLowerCase,
       avgPrice: coinAvgPrice,
       holding: coinHolding,
-      lastProfit: profit,
       sell: isSell,
       lastPrice,
     };
-    console.log("profit", lastProfit);
-    // console.log("price", lastPrice);
 
     const res = await fetch("api/coin", {
       method: "POST",
@@ -269,12 +261,12 @@ export default function BasicModal({ open, setOpen }: BasicModalProps) {
   const { data: coinData } = useSWR(urlCoin);
   const [value, setValue] = useState("");
   const handleClose = () => {
-    console.log("close basic");
+    // console.log("close basic");
     setOpen(false);
     setValue("");
   };
   useEffect(() => {});
-  console.log(value);
+  // console.log(value);
   return (
     <Box sx={{ position: "absolute" }}>
       <Modal

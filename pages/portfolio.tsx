@@ -53,6 +53,7 @@ const urlCoin =
 
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
+  const loading = !data;
   const { spacing } = useTheme();
 
   const { authenticated, coins, coinData } = data;
@@ -66,33 +67,39 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
-    console.log(coins);
+    // console.log(coins);
     const resultUserData = coins.map((userData, i) => {
       const lastPrice = coinData[i][userData.name];
-      const totalAmount = lastPrice.usd * userData.holding;
+      // console.log(lastPrice.usd);
+      const totalAmount = lastPrice?.usd * userData?.holding;
+      // console.log(userData?.avgPrice);
+      // console.log((userData?.avgPrice - lastPrice?.usd) * userData?.holding);
+      const profit = (userData?.avgPrice - lastPrice?.usd) * userData?.holding;
 
       const filter = coinDataApi?.filter(
-        (coin: CoinFilter) => coin.id === userData.name
+        (coin: CoinFilter) => coin?.id === userData?.name
       );
 
       const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
         ...userData,
-        market_cap_rank: coin.market_cap_rank,
-        image: coin.image,
+        market_cap_rank: coin?.market_cap_rank,
+        image: coin?.image,
         totalAmount,
-        usd: lastPrice.usd,
+        usd: lastPrice?.usd,
+        profit,
       }));
 
       return resultNewUserDataObject;
     });
 
     const resultFlatUserData = resultUserData.flat();
-    const reduce = resultFlatUserData.reduce((prev, current) => {
-      const amount = current.usd * current.holding;
-      return prev + amount;
-    }, 0);
+    if (resultFlatUserData) {
+      const currentAmount = resultFlatUserData.reduce((prev, current) => {
+        return prev?.totalAmount + current?.totalAmount;
+      });
+      setTotalAmount(currentAmount);
+    }
 
-    setTotalAmount(reduce);
     setUserData(resultFlatUserData);
   }, [coinData, coinDataApi, coins]);
 
