@@ -99,9 +99,7 @@ export default function NavBarProfile() {
       >
         <Box sx={{ display: "flex", alignItems: "center " }}>
           <MenuItem>Hola</MenuItem>
-          {/* <Typography component="span" textAlign="center">
-            Hola
-          </Typography> */}
+
           <Typography textAlign="center" sx={{ paddingRight: "16px" }}>
             {userEmail}
           </Typography>

@@ -19,6 +19,7 @@ import PortfolioTable from "components/PortfolioTable";
 import Image from "next/image";
 
 import screenApp from "../public/screen-app.png";
+import { urlCoin } from "lib/apiUrl";
 interface UserDataTypes {
   _id: string;
   name: string;
@@ -49,13 +50,8 @@ interface CoinFilter {
   usd?: number;
 }
 
-const urlCoin =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
-
 export default function Porfolio({ data }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
-  const loading = !coinDataApi;
-  console.log(loading);
   const { spacing } = useTheme();
 
   const { authenticated, coins, coinData } = data;
@@ -67,12 +63,15 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   const handleClickAddCoin = () => {
     setOpen(true);
   };
+  useEffect(() => {
+    console.log(open);
+  }, [open]);
 
   useEffect(() => {
     const resultUserData = coins.map((userData, i) => {
       const lastPrice = coinData[i][userData.name];
       const totalAmount = lastPrice?.usd * userData?.holding;
-      const profit = (userData?.avgPrice - lastPrice?.usd) * userData?.holding;
+      const profit = (lastPrice?.usd - userData?.avgPrice) * userData?.holding;
 
       const filter = coinDataApi?.filter(
         (coin: CoinFilter) => coin?.id === userData?.name
@@ -91,17 +90,17 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     });
 
     const resultFlatUserData = resultUserData.flat();
-    if (resultFlatUserData) {
-      const currentAmount = resultFlatUserData.reduce((prev, current) => {
-        return prev?.totalAmount + current?.totalAmount;
-      });
+    if (resultFlatUserData.length > 0) {
+      const currentAmount = resultFlatUserData?.reduce((prev, current) => {
+        return prev + current?.totalAmount;
+      }, 0);
       setTotalAmount(currentAmount);
     }
+    console.log(resultFlatUserData);
 
     setUserData(resultFlatUserData);
   }, [coinData, coinDataApi, coins]);
 
-  console.log(userData);
   if (!authenticated) {
     return (
       <div>
@@ -168,44 +167,47 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     );
   }
 
-  if (userData.length < 0) {
-    <Box
-      sx={{
-        flexDirection: "column ",
-        justifyContent: "center ",
-        alignItems: "center ",
-        top: 0,
-        left: 0,
-        width: "100%",
-        zIndex: "10",
-      }}
-    >
+  if (userData.length <= 0) {
+    return (
       <Box
         sx={{
-          paddingTop: spacing(10),
-          display: "flex",
           flexDirection: "column ",
           justifyContent: "center ",
           alignItems: "center ",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: "10",
         }}
       >
-        <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-          Este portafolio está vacío
-        </Typography>
-        <Typography sx={{ marginTop: "8px" }}>
-          Agregue cualquier moneda para comenzar
-        </Typography>
-        <Box sx={{ marginTop: "32px" }}>
-          <Button
-            onClick={handleClickAddCoin}
-            text="Añadir nueva moneda"
-            variant="contained"
-          >
-            <AddCircleOutlineIcon />
-          </Button>
+        <Box
+          sx={{
+            paddingTop: spacing(10),
+            display: "flex",
+            flexDirection: "column ",
+            justifyContent: "center ",
+            alignItems: "center ",
+          }}
+        >
+          <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
+            Este portafolio está vacío
+          </Typography>
+          <Typography sx={{ marginTop: "8px" }}>
+            Agregue cualquier moneda para comenzar
+          </Typography>
+          <Box sx={{ marginTop: "32px" }}>
+            <Button
+              onClick={handleClickAddCoin}
+              text="Añadir nueva moneda"
+              variant="contained"
+            >
+              <AddCircleOutlineIcon />
+            </Button>
+          </Box>
+          <BasicModal open={open} setOpen={setOpen} />
         </Box>
       </Box>
-    </Box>;
+    );
   }
 
   return (

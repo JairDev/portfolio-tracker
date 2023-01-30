@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import Router, { useRouter } from "next/router";
-
-import { useFormik } from "formik";
-
-import { validationSchema } from "schema/yup";
+import { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
@@ -14,15 +10,15 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useTheme } from "@mui/material/styles";
 
-import Input from "./Input";
-import SelectCoin from "./Select";
-import BasicTabs from "./Tabs";
 import fetchJson from "lib/fetchJson";
 import useUser from "lib/useUser";
 import useSWR from "swr";
-import useCoin from "lib/useCoin";
-import getApiCoinData from "lib/getApiCoinData";
 import formatCurrency from "lib/formatCurrency";
+import { urlCoin } from "lib/apiUrl";
+
+import Input from "./Input";
+import SelectCoin from "./Select";
+import BasicTabs from "./Tabs";
 
 const style = {
   position: "absolute" as "absolute",
@@ -64,8 +60,6 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const [isSell, setIsSell] = useState(false);
   const [open, setOpen] = React.useState(false);
   let total = Number(coinAvgPrice) * Number(coinHolding);
-
-  // console.log(coinName);
 
   const find = coinDataApi.find((coin) => coin.id === coinName);
 
@@ -256,17 +250,14 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
 
 export default function BasicModal({ open, setOpen }: BasicModalProps) {
   const { spacing } = useTheme();
-  const urlCoin =
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
   const { data: coinData } = useSWR(urlCoin);
   const [value, setValue] = useState("");
+
   const handleClose = () => {
-    // console.log("close basic");
     setOpen(false);
     setValue("");
   };
-  useEffect(() => {});
-  // console.log(value);
+
   return (
     <Box sx={{ position: "absolute" }}>
       <Modal

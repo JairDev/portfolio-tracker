@@ -17,6 +17,16 @@ interface JwtPayload {
   userEmail: string;
 }
 
+const getAllUserData = function (id: string) {
+  const initState = {
+    coins: [],
+  };
+  if (!id) {
+    return initState;
+  }
+  return User.findById(id).populate({ path: "coins", model: Coin });
+};
+
 async function auth(req: NextApiRequest, res: NextApiResponse) {
   const initState = {
     authenticated: false,
@@ -30,9 +40,7 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
 
     const decodeToken = jwt.verify(token, serverRuntimeConfig.secret);
     const user = decodeToken;
-    // console.log("authuser", user);
     const { coins } = await getAllUserData(user.userId);
-    // console.log("authcoin", coins);
     res.status(200).json({
       message: "auth success",
       authenticated: true,
@@ -49,13 +57,3 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 }
-
-const getAllUserData = function (id: string) {
-  const initState = {
-    coins: [],
-  };
-  if (!id) {
-    return initState;
-  }
-  return User.findById(id).populate({ path: "coins", model: Coin });
-};
