@@ -65,18 +65,6 @@ export default function Register() {
         marginTop: spacing(14),
       }}
     >
-      {/* <Box
-        sx={{
-          background: "rgba(255, 0, 200, 0.262)",
-          filter: "blur(200px)",
-          position: "absolute",
-          top: "-80%",
-          right: 0,
-          borderRadius: "50%",
-          width: "60%",
-          height: "100%",
-        }}
-      /> */}
       <Box sx={{ marginBottom: spacing(6) }}>
         <Typography variant="h1">Regístrate</Typography>
       </Box>

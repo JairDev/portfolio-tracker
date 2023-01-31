@@ -17,23 +17,6 @@ interface JwtPayload {
 async function user(req: NextApiRequest, res: NextApiResponse) {
   const userSession = req?.session?.user;
 
-  // if (userSession) {
-  //   const { coins } = await getAllUserData(userSession?.userId);
-  //   res.status(200).json({
-  //     authenticated: true,
-  //     userId: userSession?.userId,
-  //     userEmail: userSession?.userEmail,
-  //     coins,
-  //     message: "Inicio de sesión exitoso!",
-  //   });
-  // }
-
-  // res.status(404).json({
-  //   authenticated: false,
-  //   userId: null,
-  //   userEmail: null,
-  // });
-
   try {
     const userSession = req?.session?.user;
     const { token } = userSession;
@@ -43,8 +26,7 @@ async function user(req: NextApiRequest, res: NextApiResponse) {
     ) as JwtPayload;
 
     const user = decodeToken;
-    // console.log("user", user);
-    // console.log("usersession", user);
+
     const { coins } = await getAllUserData(user?.userId);
     res.status(200).json({
       authenticated: true,

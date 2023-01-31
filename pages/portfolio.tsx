@@ -58,7 +58,7 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   const [totalAmount, setTotalAmount] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const [userData, setUserData] = useState(Array<UserDataTypes>);
+  const [userData, setUserData] = useState([]);
 
   const handleClickAddCoin = () => {
     setOpen(true);
@@ -68,24 +68,25 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
   }, [open]);
 
   useEffect(() => {
-    const resultUserData = coins.map((userData, i) => {
-      const lastPrice = coinData[i][userData.name];
-      const totalAmount = lastPrice?.usd * userData?.holding;
-      const profit = (lastPrice?.usd - userData?.avgPrice) * userData?.holding;
+    const resultUserData = coins.map((userDatadb, i) => {
+      const lastPrice = coinData[i][userDatadb.name];
+      const totalAmount = lastPrice?.usd * userDatadb?.holding;
+      const profit =
+        (lastPrice?.usd - userDatadb?.avgPrice) * userDatadb?.holding;
 
       const filter = coinDataApi?.filter(
-        (coin: CoinFilter) => coin?.id === userData?.name
+        (coin: CoinFilter) => coin?.id === userDatadb?.name
       );
 
       const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
-        ...userData,
+        ...userDatadb,
         market_cap_rank: coin?.market_cap_rank,
         image: coin?.image,
         totalAmount,
-        usd: lastPrice?.usd,
+        current_price: lastPrice?.usd,
         profit,
       }));
-
+      console.log(userDatadb);
       return resultNewUserDataObject;
     });
 
@@ -101,14 +102,16 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
     setUserData(resultFlatUserData);
   }, [coinData, coinDataApi, coins]);
 
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
   if (!authenticated) {
     return (
       <div>
         <Box
           sx={{
-            border: "1px solid red",
             display: "flex",
-
             paddingTop: spacing(14),
           }}
         >

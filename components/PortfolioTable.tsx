@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-import useSWR from "swr";
-
 import {
   Table,
   TableBody,
@@ -23,7 +21,6 @@ import useUser from "lib/useUser";
 import formatCurrency from "lib/formatCurrency";
 
 import { Button } from "./Button";
-import { urlCoin } from "lib/apiUrl";
 interface CoinsLastPrice {
   _id: string;
   market_cap_rank: string;
@@ -34,7 +31,6 @@ interface CoinsLastPrice {
   profit: number;
   avgPrice: number;
   holding: number;
-  usd: number;
 }
 
 interface TablePropsArray {
@@ -48,7 +44,10 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleDeleteClick = async (e, coinId: string) => {
+  const handleDeleteClick = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    coinId: string
+  ) => {
     const objectToSend = {
       id: coinId,
       userEmail,
@@ -61,7 +60,6 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
       },
       body: JSON.stringify(objectToSend),
     });
-    console.log(resDeleteCoin);
 
     await fetch("api/delete-user-coin", {
       method: "DELETE",
@@ -73,7 +71,10 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
     });
 
     const resultDeleteCoin = await resDeleteCoin.json();
+
     console.log(resultDeleteCoin);
+    //{message: 'Activo removido'}
+
     if (resDeleteCoin.ok) {
       setSuccessMessage(resultDeleteCoin.message);
     }
@@ -87,10 +88,6 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
 
     router.replace(router.asPath);
   };
-
-  // React.useEffect(() => {
-  //   // console.log(data);
-  // }, [coinData, data]);
 
   return (
     <Box sx={{ position: "relative " }}>
@@ -170,10 +167,7 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                     {coin?.name}
                   </Box>
                   <TableCell sx={{ borderBottom: borderStyle }}>
-                    $
-                    {coin?.usd
-                      ? formatCurrency(coin?.usd, "usd")
-                      : formatCurrency(coin?.current_price, "usd")}
+                    ${formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
                     {coin?.avgPrice}
@@ -199,8 +193,11 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
                     <Button
                       size="small"
-                      onClick={(e) => handleDeleteClick(e, coin?._id)}
+                      onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                        handleDeleteClick(e, coin?._id)
+                      }
                     >
+                      {/* <button onClick={}>Click</button> */}
                       <DeleteOutlineIcon />
                     </Button>
                   </TableCell>

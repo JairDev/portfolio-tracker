@@ -21,8 +21,6 @@ export default function CryptoNewsData() {
     setCoinNameValue(inputRef?.current?.value);
   };
 
-  console.log(cryptoNewsData);
-
   return (
     <Box
       sx={{

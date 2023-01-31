@@ -19,18 +19,17 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const user = await User.findOne({ email: email });
     if (!user) {
-      res.status(403).send({ message: "User not found", ...initState });
+      res.status(403).send({ message: "Usuario no encontrado", ...initState });
     }
     if (user) {
       const checkPassword = await bcrypt.compare(password, user.password);
       if (!checkPassword) {
         res
           .status(400)
-          .send({ message: "Passwords does not match", ...initState });
+          .send({ message: "Las contraseñas no coinciden ", ...initState });
       }
 
       if (checkPassword) {
-        // console.log("login", user);
         const token = jwt.sign(
           {
             userId: user._id,

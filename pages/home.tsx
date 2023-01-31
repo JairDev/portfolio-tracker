@@ -53,6 +53,8 @@ interface SetCoin {
   setSingleCoin: (singleCoin: ResponseSearchCoin) => void;
 }
 
+const API_NEWS = process.env.API_NEWS;
+
 export default function Home() {
   const { spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);

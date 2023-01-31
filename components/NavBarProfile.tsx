@@ -98,7 +98,11 @@ export default function NavBarProfile() {
         onClose={handleCloseUserMenu}
       >
         <Box sx={{ display: "flex", alignItems: "center " }}>
-          <MenuItem>Hola</MenuItem>
+          <Typography
+            sx={{ fontSize: "18px", fontWeight: "500 ", padding: "16px " }}
+          >
+            Hola
+          </Typography>
 
           <Typography textAlign="center" sx={{ paddingRight: "16px" }}>
             {userEmail}

@@ -36,7 +36,6 @@ export default function Login() {
         email: values.email,
         password: values.password,
       };
-      console.log("hola");
       const res = mutateUser(
         await fetchJson("api/login", {
           method: "POST",
