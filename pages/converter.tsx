@@ -15,39 +15,33 @@ const urlCoin =
 
 const urlVs = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies";
 
-const priceVsCurrency =
-  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eth";
-
 export default function Converter() {
   const { data: coinDataApi } = useSWR(urlCoin);
   const { data: coinDataVsCurrency } = useSWR(urlVs);
-  // console.log(coinDataVsCurrency);
   const { spacing } = useTheme();
   const [quantity, setQuantity] = useState(1);
   const [coinValue, setCoinValue] = useState("bitcoin");
   const [fiatValue, setFiatValue] = useState("usd");
   const [result, setResult] = useState("");
 
-  const handleChangeCoinValue = (value) => {
+  const handleChangeCoinValue = (value: string) => {
     setCoinValue(value);
   };
-  const handleChangeFiatValue = (value) => {
+  const handleChangeFiatValue = (value: string) => {
     setFiatValue(value);
   };
 
-  const handleChangeQuantity = (e) => {
-    console.log(e.target.value);
-    setQuantity(e.target.value);
+  const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(Number(e.target.value));
   };
 
   useEffect(() => {
     const priceVsCurrency = `https://api.coingecko.com/api/v3/simple/price?ids=${coinValue}&vs_currencies=${fiatValue}`;
-    // console.log(priceVsCurrency);
     async function getPrice() {
       const res = await fetchJson(priceVsCurrency);
-      console.log(res);
+      //@ts-ignore
       const price = res[coinValue][fiatValue] * quantity;
-      console.log(price);
+      //@ts-ignore
       setResult(price);
     }
     // getPrice();
@@ -76,20 +70,13 @@ export default function Converter() {
             gap: "16px",
             justifyContent: "space-between",
             alignItems: "center",
-            // height: "64px",
           }}
         >
           <Box sx={{ flex: "0 1 45%" }}>
-            <SelectCoin
-              data={coinDataApi}
-              setValue={handleChangeCoinValue}
-              value="bitcoin"
-            />
+            <SelectCoin data={coinDataApi} setValue={handleChangeCoinValue} />
           </Box>
           <Box
             sx={{
-              // height: "100px",
-              // border: "1px solid red",
               overflow: "hidden",
             }}
           >
@@ -103,7 +90,6 @@ export default function Converter() {
                   position: "relative",
                   height: "40px",
                   width: "40px",
-                  // border: "1px solid yellow",
                 }}
               >
                 <ArrowRightAltIcon
@@ -129,7 +115,6 @@ export default function Converter() {
             <SelectCoin
               data={coinDataVsCurrency}
               setValue={handleChangeFiatValue}
-              value="usd"
               isFiat
             />
           </Box>

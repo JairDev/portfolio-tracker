@@ -86,7 +86,6 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
         current_price: lastPrice?.usd,
         profit,
       }));
-      console.log(userDatadb);
       return resultNewUserDataObject;
     });
 
@@ -97,14 +96,9 @@ export default function Porfolio({ data }: { data: PortfolioProps }) {
       }, 0);
       setTotalAmount(currentAmount);
     }
-    console.log(resultFlatUserData);
-
+    //@ts-ignore
     setUserData(resultFlatUserData);
   }, [coinData, coinDataApi, coins]);
-
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   if (!authenticated) {
     return (

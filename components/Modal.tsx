@@ -56,12 +56,13 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const [coinHolding, setCoinHolding] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [transactionType, setTransactionType] = useState(null);
+  const [transactionType, setTransactionType] = useState<string | null>(null);
   const [isSell, setIsSell] = useState(false);
   const [open, setOpen] = React.useState(false);
   let total = Number(coinAvgPrice) * Number(coinHolding);
+  console.log(coinDataApi);
 
-  const find = coinDataApi.find((coin) => coin.id === coinName);
+  const find = coinDataApi.find((coin: { id: string }) => coin.id === coinName);
 
   const handleOpen = () => {
     setOpen(true);
@@ -72,8 +73,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
     setOpenParent(false);
   };
 
-  const handleTransactionType = (value) => {
-    console.log(value);
+  const handleTransactionType = (value: string) => {
     setTransactionType(value);
     if (value === "sell") {
       setIsSell(true);
@@ -273,10 +273,14 @@ export default function BasicModal({ open, setOpen }: BasicModalProps) {
                 Seleccionar moneda
               </Typography>
             </Box>
+
             <Box>
               <Box sx={{ marginTop: spacing(1) }}>
                 <form>
-                  <SelectCoin data={coinData} setValue={setValue} />
+                  {
+                    //@ts-ignore
+                    <SelectCoin data={coinData} setValue={setValue} />
+                  }
                 </form>
               </Box>
             </Box>

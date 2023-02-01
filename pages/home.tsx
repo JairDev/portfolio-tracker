@@ -50,17 +50,15 @@ type InputRef = {
 
 interface SetCoin {
   singleCoin: ResponseSearchCoin;
-  setSingleCoin: (singleCoin: ResponseSearchCoin) => void;
+  // setSingleCoin: (singleCoin: ResponseSearchCoin) => void;
 }
 
-const API_NEWS = process.env.API_NEWS;
-
-export default function Home() {
+export default function Home<T>() {
   const { spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
   const loading = !coinData;
   const [fullData, setFullData] = useState([]);
-  const [singleCoin, setSingleCoin] = useState<SetCoin>();
+  const [singleCoin, setSingleCoin] = useState<Array<T>>();
   const inputRef: React.RefObject<InputRef> = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState<undefined | string>(
@@ -88,7 +86,7 @@ export default function Home() {
       image: res?.image?.small,
       market_cap_rank: res?.market_cap_rank,
     };
-
+    //@ts-ignore
     setSingleCoin((prev) => [...prev, newObj]);
   };
 
@@ -99,16 +97,21 @@ export default function Home() {
   useEffect(() => {
     async function change() {
       if (coinData) {
-        const changeObj = coinData.slice(0, 4).map(async (coin) => {
-          const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
-          const res = await fetchJson(priceRange);
-          const newObj = {
-            ...coin,
-            priceChart: res.prices,
-          };
-          return newObj;
-        });
+        const changeObj = coinData
+          .slice(0, 4)
+          .map(async (coin: { id: string }) => {
+            const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
+            const res = await fetchJson(priceRange);
+            const newObj = {
+              ...coin,
+              //@ts-ignore
+              priceChart: res.prices,
+            };
+            return newObj;
+          });
         const result = await Promise.all(changeObj);
+        //@ts-ignore
+
         setFullData(result);
       }
     }
@@ -195,6 +198,7 @@ export default function Home() {
                       current_price: number;
                       price_change_percentage_24h: number;
                       image: string;
+                      priceChart: Array<T>;
                     }) => (
                       <Grid key={id} xs item>
                         <MarketTrendCard
@@ -255,15 +259,26 @@ export default function Home() {
           </Box>
 
           <Box>
-            {singleCoin?.length > 0 ? (
-              <Table data={singleCoin} />
-            ) : (
-              !loading && <Table data={fullData} />
-            )}
+            {
+              //@ts-ignore
+              singleCoin?.length > 0 ? (
+                //@ts-ignore
+                <Table data={singleCoin} />
+              ) : (
+                !loading && <Table data={fullData} />
+              )
+            }
 
-            {singleCoin?.length > 0 && (
-              <Button variant="text" text="Ver top 10" onClick={handleClick} />
-            )}
+            {
+              //@ts-ignore
+              singleCoin?.length > 0 && (
+                <Button
+                  variant="text"
+                  text="Ver top 10"
+                  onClick={handleClick}
+                />
+              )
+            }
           </Box>
         </Box>
         <Box

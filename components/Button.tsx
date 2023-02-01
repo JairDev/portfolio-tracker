@@ -3,12 +3,12 @@ import React from "react";
 import { useTheme } from "@mui/material/styles";
 import { Box, Button } from "@mui/material";
 interface ButtonProps {
-  text: string;
+  text?: string;
   icon?: boolean;
   variant?: "text" | "outlined" | "contained";
   children?: React.ReactNode;
   size?: "small" | "medium" | "large" | undefined;
-  onClick?: () => void | (() => Promise<void>);
+  onClick?: (e: any) => Promise<void> | void;
 }
 
 function ButtonComponent({

@@ -37,17 +37,20 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs({ handleTransactionType }) {
+export default function BasicTabs({
+  handleTransactionType,
+}: {
+  handleTransactionType: (value: string) => void;
+}) {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    // console.log(value);
+  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleClick = (e) => {
-    // console.log(e.target.dataset.action);
-    handleTransactionType(e.target.dataset.action);
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    //@ts-ignore
+    handleTransactionType(e.target?.dataset.action);
   };
 
   return (
@@ -58,13 +61,8 @@ export default function BasicTabs({ handleTransactionType }) {
           onChange={handleChange}
           aria-label="basic tabs example"
           sx={{
-            // border: "2px solid red",
             button: {
               color: "text.primary",
-              // padding: "0px",
-              // "&.Mui-selected": {
-              //   background: "red",
-              // },
             },
           }}
         >
@@ -74,13 +72,13 @@ export default function BasicTabs({ handleTransactionType }) {
             label="Comprar"
             {...a11yProps(0)}
           />
+
           <Tab
             onClick={handleClick}
             data-action="sell"
             label="Vender"
             {...a11yProps(1)}
           />
-          {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -89,9 +87,6 @@ export default function BasicTabs({ handleTransactionType }) {
       <TabPanel value={value} index={1}>
         Vender
       </TabPanel>
-      {/* <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel> */}
     </Box>
   );
 }

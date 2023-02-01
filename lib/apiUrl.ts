@@ -6,7 +6,7 @@ export const urlCoin =
 export const priceRange =
   "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1";
 
-export const coinId = (id: string) =>
+export const coinId = (id: string | null | undefined) =>
   `https://api.coingecko.com/api/v3/coins/${id}?tickers=false&community_data=false&developer_data=false`;
 
 export const cryptoNews = (name: string | undefined) =>

@@ -13,10 +13,6 @@ export default async function deleteUserCoin(
       $pull: {
         coins: id,
       },
-    },
-    function (data, error) {
-      console.log(data);
-      console.log(error);
     }
   );
 

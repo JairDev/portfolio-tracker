@@ -5,20 +5,24 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-export default function SelectCoin({ data = [], setValue, isFiat, value }) {
+interface SelectCoinProps {
+  data: Array<{ id: string; name: string }>;
+  // setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue: (value: string) => void;
+  isFiat?: boolean;
+}
+//@ts-ignore
+export default function SelectCoin({
+  data = [],
+  setValue,
+  isFiat,
+}: SelectCoinProps) {
   const [coin, setCoin] = React.useState("");
-  // console.log("data", data);
 
   const handleChange = (event: SelectChangeEvent) => {
-    // console.log(event.target.value);
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
   };
-
-  React.useEffect(() => {
-    // isFiat ? setCoin(data[0]) : setCoin(data[0]?.name);
-    // console.log(data[0]?.name);
-  }, [data, isFiat]);
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -33,7 +37,6 @@ export default function SelectCoin({ data = [], setValue, isFiat, value }) {
             border: "1px solid rgba(255, 255, 255, 0.103)",
             borderRadius: "8px",
             background: "#160C24",
-            // background: "grey",
             "&  > div": {
               padding: "16px",
             },
@@ -43,13 +46,18 @@ export default function SelectCoin({ data = [], setValue, isFiat, value }) {
           }}
         >
           {data &&
+            isFiat &&
             data.map((coin) => (
-              <MenuItem
-                key={isFiat ? coin : coin.name}
-                value={isFiat ? coin : coin.id}
-              >
-                {isFiat ? coin : coin.name}
-                {/* {coin} */}
+              //@ts-ignore
+              <MenuItem key={coin} value={coin}>
+                {coin}
+              </MenuItem>
+            ))}
+
+          {data &&
+            data.map((coin: { name: string; id: string }) => (
+              <MenuItem key={coin.name} value={coin.id}>
+                {coin.name}
               </MenuItem>
             ))}
         </Select>

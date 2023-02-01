@@ -24,12 +24,20 @@ ChartJS.register(
   TimeScale
 );
 
-export default function LineChart({ priceChartData, chartValueClassName }) {
+export default function LineChart<T>({
+  priceChartData,
+  chartValueClassName,
+}: {
+  priceChartData: Array<T>;
+  chartValueClassName: string;
+}) {
   const chartData = {
+    //@ts-ignore
     labels: priceChartData?.map((row) => row[0]),
     datasets: [
       {
         label: "",
+        //@ts-ignore
         data: priceChartData?.map((row) => row[1]),
         backgroundColor: [
           "rgba(75,192,192,1)",

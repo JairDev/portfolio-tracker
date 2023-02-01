@@ -193,11 +193,8 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
                     <Button
                       size="small"
-                      onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                        handleDeleteClick(e, coin?._id)
-                      }
+                      onClick={(e) => handleDeleteClick(e, coin?._id)}
                     >
-                      {/* <button onClick={}>Click</button> */}
                       <DeleteOutlineIcon />
                     </Button>
                   </TableCell>

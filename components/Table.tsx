@@ -19,6 +19,7 @@ import LineChart from "./LineChart";
 import Input from "./Input";
 
 interface CoinData {
+  priceChart: unknown[];
   avgPrice: number;
   holding: number;
   name: string;
@@ -149,7 +150,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
                     align="center"
                   >
                     {formatCurrency(
-                      coin?.price_change_percentage_24h.toFixed(2),
+                      Number(coin?.price_change_percentage_24h.toFixed(2)),
                       "usd"
                     )}
                     %
@@ -160,7 +161,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
                   >
                     <Box sx={{ width: "120px" }}>
                       <LineChart
-                        priceChartData={coin.priceChart}
+                        priceChartData={coin?.priceChart}
                         chartValueClassName={
                           Number(coin?.price_change_percentage_24h) < 0
                             ? "#d32f2f"

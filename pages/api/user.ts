@@ -19,6 +19,7 @@ async function user(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const userSession = req?.session?.user;
+    //@ts-ignore
     const { token } = userSession;
     const decodeToken = jwt.verify(
       token,

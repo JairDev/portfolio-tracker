@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 
 const MONGO_URI = process.env.DB_URL;
 const MONGODB_DB = process.env.MONGODB_DB;
-
+//@ts-ignore
 let cached = global.mongoose;
 
 if (!cached) {
+  //@ts-ignore
+
   cached = global.mongoose = { conn: null, promise: null };
 }
 
@@ -25,7 +27,7 @@ export async function dbConnect() {
     const opts = {
       bufferCommands: false,
     };
-
+    //@ts-ignore
     cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
       console.log("connect db");
       return mongoose;

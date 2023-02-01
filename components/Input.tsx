@@ -8,11 +8,11 @@ import { FormikTouched, FormikErrors } from "formik";
 import { useState } from "react";
 
 interface InputProps {
-  id: string;
-  name: string;
-  label: string;
+  id?: string;
+  name?: string;
+  label?: string;
   type: string;
-  value: string;
+  value?: string;
   placeHolder?: string | undefined;
   error?: any;
   helperText?: any;

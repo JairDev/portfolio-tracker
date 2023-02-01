@@ -5,9 +5,20 @@ import Box from "@mui/material/Box";
 import { Button, Link, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
+import {
+  Formik,
+  FormikHelpers,
+  FormikProps,
+  Form,
+  Field,
+  FieldProps,
+} from "formik";
+
 import Input from "./Input";
 
-export default function LoginView({ formik }) {
+interface LoginViewProps {}
+
+export default function LoginView({ formik }: { formik: any }) {
   const { spacing, shape } = useTheme();
 
   return (

@@ -40,11 +40,15 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
 
     const decodeToken = jwt.verify(token, serverRuntimeConfig.secret);
     const user = decodeToken;
-    const { coins } = await getAllUserData(user.userId);
+    //@ts-ignore
+    const { userId } = user;
+    const { coins } = await getAllUserData(userId);
     res.status(200).json({
       message: "auth success",
       authenticated: true,
+      //@ts-ignore
       userId: user.userId,
+      //@ts-ignore
       userEmail: user.userEmail,
       coins,
       auth: "auth",

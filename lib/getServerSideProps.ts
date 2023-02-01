@@ -7,7 +7,7 @@ interface CoinsLastPriceArgument {
   holding: number;
   __v: number;
 }
-
+//@ts-ignore
 export const withGetServerSideProps = async function ({ req }) {
   const api_server = "http://localhost:3000";
   let userSession = req?.session?.user;

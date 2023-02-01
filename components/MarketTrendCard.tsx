@@ -4,24 +4,27 @@ import Image from "next/image";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import Icon from "@mui/material/Icon";
 import LineChart from "./LineChart";
-import useSWR from "swr";
 import formatCurrency from "lib/formatCurrency";
 
-export default function MarketTrendCard({
+interface MarketTrendCardProps<T> {
+  name: string;
+  currentPrice: number;
+  priceChange: number;
+  image: string;
+  priceChartData: Array<T>;
+}
+
+export default function MarketTrendCard<T>({
   name,
   currentPrice,
   priceChange,
   image,
   priceChartData,
-}) {
+}: MarketTrendCardProps<T>) {
   const { spacing } = useTheme();
   const priceValueClassName = priceChange < 0 ? "error.main" : "primary.main";
   const chartValueClassName = priceChange < 0 ? "#d32f2f" : "#0FAE96";
@@ -58,7 +61,7 @@ export default function MarketTrendCard({
               ${currentPrice}
             </Typography>
             <Typography sx={{ color: priceValueClassName }}>
-              {formatCurrency(priceChange.toFixed(2), "usd")}%
+              {formatCurrency(Number(priceChange.toFixed(2)), "usd")}%
             </Typography>
           </Box>
           <Box
