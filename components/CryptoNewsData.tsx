@@ -9,16 +9,19 @@ import { cryptoNews } from "lib/apiUrl";
 import ArticleCard from "./ArticleCard";
 
 export default function CryptoNewsData() {
-  const { palette, spacing } = useTheme();
-  const inputRef = useRef(null);
-  const [coinNameValue, setCoinNameValue] = useState("bitcoin");
+  const { spacing } = useTheme();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [coinNameValue, setCoinNameValue] = useState<string | undefined>(
+    "bitcoin"
+  );
 
   const { data: cryptoNewsData } = useSWR(cryptoNews(coinNameValue));
   const loading = !cryptoNewsData;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCoinNameValue(inputRef?.current?.value);
+    const value = inputRef.current?.value;
+    setCoinNameValue(value);
   };
 
   return (
