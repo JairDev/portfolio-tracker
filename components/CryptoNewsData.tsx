@@ -8,6 +8,14 @@ import { useRef, useState } from "react";
 import { cryptoNews } from "lib/apiUrl";
 import ArticleCard from "./ArticleCard";
 
+interface ArticleData {
+  title: string;
+  description: string;
+  urlToImage: string;
+  author: string;
+  url: string;
+}
+
 export default function CryptoNewsData() {
   const { spacing } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,22 +73,24 @@ export default function CryptoNewsData() {
               <CircularProgress />
             </Box>
           ) : (
-            cryptoNewsData?.articles.slice(0, 10).map((article, i: number) => (
-              <Grid
-                key={article.title}
-                xs={i === 0 ? 8 : 4}
-                sx={{ heigth: "100%" }}
-                item
-              >
-                <ArticleCard
-                  title={article.title}
-                  subTitle={article.description}
-                  image={article.urlToImage}
-                  author={article.author}
-                  toUrl={article.url}
-                />
-              </Grid>
-            ))
+            cryptoNewsData?.articles
+              .slice(0, 10)
+              .map((article: ArticleData, i: number) => (
+                <Grid
+                  key={article.title}
+                  xs={i === 0 ? 8 : 4}
+                  sx={{ heigth: "100%" }}
+                  item
+                >
+                  <ArticleCard
+                    title={article.title}
+                    subTitle={article.description}
+                    image={article.urlToImage}
+                    author={article.author}
+                    toUrl={article.url}
+                  />
+                </Grid>
+              ))
           )}
         </Grid>
       </Grid>
