@@ -10,4 +10,4 @@ export const coinId = (id: string | null | undefined) =>
   `https://api.coingecko.com/api/v3/coins/${id}?tickers=false&community_data=false&developer_data=false`;
 
 export const cryptoNews = (name: string | undefined) =>
-  `https://newsapi.org/v2/everything?q=${name}&apiKey=${API_NEWS}`;
+  `https://newsapi.org/v2/everything?q=${name}&apiKey=${"28d89ba563644bf397ab0a8e7b46fa4d"}`;
