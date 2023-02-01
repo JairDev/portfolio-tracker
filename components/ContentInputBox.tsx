@@ -1,12 +1,16 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
-export default function ContenInputBox({ children }) {
+interface ContenInputBoxProps {
+  children: React.ReactNode;
+}
+
+export default function ContenInputBox({ children }: ContenInputBoxProps) {
   const { spacing } = useTheme();
   return (
     <Box
       sx={{
-        // "& .MuiTextField-root": { my: 1 },
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
