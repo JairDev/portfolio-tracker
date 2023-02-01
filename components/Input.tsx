@@ -31,37 +31,17 @@ export default function Input({
   type,
 }: InputProps) {
   const { spacing, palette } = useTheme();
-  const [inputCoinName, setInputCoinName] = useState("");
-  const classError = error ? "none" : "1px solid rgba(255, 255, 255, 0.103)";
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("q");
-    setInputCoinName(e.target.value);
-  };
-
-  // const theme= useTheme();
-  // console.log(palette.error.main);
-  // console.log(placeHolder);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // console.log(e);
-    // onChange();
-    setInputCoinName("");
-  };
 
   return (
     <Box
       sx={{
         width: "100%",
-        // height: "100px",
-        // marginBottom: spacing(2),
       }}
     >
       <InputLabel sx={{ color: "white", marginBottom: spacing(1) }}>
         {label}
       </InputLabel>
 
-      {/* <form onSubmit={handleSubmit}> */}
       <TextField
         required
         id={id}
@@ -79,12 +59,8 @@ export default function Input({
         error={error}
         type={type}
       />
-      {/* </form> */}
-      {/* <input value={value} onChange={handleChange} /> */}
       <Box
         sx={{
-          // border: "1px solid red",
-          // height: "24px",
           color: palette.error.main,
           marginTop: spacing(1),
         }}
