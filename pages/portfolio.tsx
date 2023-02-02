@@ -51,7 +51,7 @@ interface CoinFilter {
 }
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
-  // const { data: coinDataApi } = useSWR(urlCoin);
+  const { data: coinDataApi } = useSWR(urlCoin);
   const { spacing } = useTheme();
 
   const { authenticated, coins, coinData } = data;
