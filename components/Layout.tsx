@@ -38,7 +38,7 @@ export default function Layout({ children }: LayoutProps) {
         }}
         maxWidth="lg"
       >
-        <NavBar />
+        {/* <NavBar /> */}
         {children}
         <Footer />
       </Container>
