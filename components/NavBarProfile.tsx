@@ -46,13 +46,13 @@ export default function NavBarProfile() {
     router.replace(router.asPath);
   };
 
-  // if (loading) {
-  //   return (
-  //     <Box>
-  //       <CircularProgress />
-  //     </Box>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <Box>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   if (!authenticated) {
     return (

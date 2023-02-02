@@ -15,10 +15,9 @@ interface JwtPayload {
 }
 
 async function user(req: NextApiRequest, res: NextApiResponse) {
-  const userSession = req?.session?.user;
-
   try {
     const userSession = req?.session?.user;
+    console.log("session", userSession);
     //@ts-ignore
     const { token } = userSession;
     const decodeToken = jwt.verify(

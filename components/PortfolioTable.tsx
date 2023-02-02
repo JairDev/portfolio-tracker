@@ -156,16 +156,21 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                     {coin?.market_cap_rank}
                   </TableCell>
 
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <TableCell
-                      sx={{ borderBottom: borderStyle }}
-                      component="th"
-                      scope="row"
-                    >
+                  <TableCell
+                    sx={{
+                      borderBottom: borderStyle,
+                      border: "2px solid yellow",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    component="th"
+                    scope="row"
+                  >
+                    <Box sx={{ marginRight: "8px" }}>
                       <Image src={coin?.image} alt="" width={40} height={40} />
-                    </TableCell>
+                    </Box>
                     {coin?.name}
-                  </Box>
+                  </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }}>
                     ${formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
