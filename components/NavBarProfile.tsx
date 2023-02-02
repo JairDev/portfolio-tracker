@@ -22,7 +22,7 @@ export default function NavBarProfile() {
   const router = useRouter();
   const { spacing, shape } = useTheme();
   const { userEmail, authenticated, loading, mutateUser } = useUser({});
-
+  console.log(loading);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -46,13 +46,13 @@ export default function NavBarProfile() {
     router.replace(router.asPath);
   };
 
-  if (loading) {
-    return (
-      <Box>
-        <CircularProgress />;
-      </Box>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Box>
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
 
   if (!authenticated) {
     return (
