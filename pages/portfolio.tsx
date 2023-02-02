@@ -161,7 +161,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
     );
   }
 
-  if (userData.length <= 0) {
+  if (authenticated && userData.length <= 0) {
     return (
       <Box
         sx={{
