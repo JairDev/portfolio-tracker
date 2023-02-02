@@ -63,9 +63,6 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   const handleClickAddCoin = () => {
     setOpen(true);
   };
-  useEffect(() => {
-    console.log(open);
-  }, [open]);
 
   useEffect(() => {
     const resultUserData = coins.map((userDatadb, i) => {
