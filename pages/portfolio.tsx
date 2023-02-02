@@ -65,38 +65,38 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
     setOpen(true);
   };
 
-  useEffect(() => {
-    const resultUserData = coins.map((userDatadb, i) => {
-      const lastPrice = coinData[i][userDatadb.name];
-      const totalAmount = lastPrice?.usd * userDatadb?.holding;
-      const profit =
-        (lastPrice?.usd - userDatadb?.avgPrice) * userDatadb?.holding;
+  // useEffect(() => {
+  //   const resultUserData = coins.map((userDatadb, i) => {
+  //     const lastPrice = coinData[i][userDatadb.name];
+  //     const totalAmount = lastPrice?.usd * userDatadb?.holding;
+  //     const profit =
+  //       (lastPrice?.usd - userDatadb?.avgPrice) * userDatadb?.holding;
 
-      const filter = coinDataApi?.filter(
-        (coin: CoinFilter) => coin?.id === userDatadb?.name
-      );
+  //     const filter = coinDataApi?.filter(
+  //       (coin: CoinFilter) => coin?.id === userDatadb?.name
+  //     );
 
-      const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
-        ...userDatadb,
-        market_cap_rank: coin?.market_cap_rank,
-        image: coin?.image,
-        totalAmount,
-        current_price: lastPrice?.usd,
-        profit,
-      }));
-      return resultNewUserDataObject;
-    });
+  //     const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
+  //       ...userDatadb,
+  //       market_cap_rank: coin?.market_cap_rank,
+  //       image: coin?.image,
+  //       totalAmount,
+  //       current_price: lastPrice?.usd,
+  //       profit,
+  //     }));
+  //     return resultNewUserDataObject;
+  //   });
 
-    const resultFlatUserData = resultUserData.flat();
-    if (resultFlatUserData.length > 0) {
-      const currentAmount = resultFlatUserData?.reduce((prev, current) => {
-        return prev + current?.totalAmount;
-      }, 0);
-      setTotalAmount(currentAmount);
-    }
-    //@ts-ignore
-    setUserData(resultFlatUserData);
-  }, [coinData, coinDataApi, coins]);
+  //   const resultFlatUserData = resultUserData.flat();
+  //   if (resultFlatUserData.length > 0) {
+  //     const currentAmount = resultFlatUserData?.reduce((prev, current) => {
+  //       return prev + current?.totalAmount;
+  //     }, 0);
+  //     setTotalAmount(currentAmount);
+  //   }
+  //   //@ts-ignore
+  //   setUserData(resultFlatUserData);
+  // }, [coinData, coinDataApi, coins]);
 
   // if (!authenticated) {
   //   return (
