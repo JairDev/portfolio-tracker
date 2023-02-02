@@ -248,7 +248,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             </Typography>
           )}
 
-          {!userData[0] ? (
+          {/* {!userData[0] ? (
             <Box
               sx={{
                 display: "flex",
@@ -262,7 +262,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             <>
               <PortfolioTable data={userData} />
             </>
-          )}
+          )} */}
 
           <Box sx={{ marginTop: "16px" }}></Box>
         </Box>
