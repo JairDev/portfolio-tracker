@@ -339,7 +339,7 @@ export default function Home<T>() {
           </Box>
         </Box>
 
-        <CryptoNewsData />
+        {/* <CryptoNewsData /> */}
       </main>
     </div>
   );
