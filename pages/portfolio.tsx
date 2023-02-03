@@ -236,7 +236,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
               <AddCircleOutlineIcon />
             </Button>
           </Box>
-          <BasicModal open={open} setOpen={setOpen} />
+          {/* <BasicModal open={open} setOpen={setOpen} /> */}
         </Box>
         <Box sx={{ marginTop: spacing(10) }}>
           {/* {userData.length > 0 && (
