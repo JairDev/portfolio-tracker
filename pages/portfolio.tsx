@@ -52,7 +52,15 @@ interface CoinFilter {
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   // const { data: coinDataApi } = useSWR(urlCoin);
+  const [mounted, setMounted] = useState(false);
   const { spacing } = useTheme();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   // const { authenticated, coins, coinData } = data;
   // console.log(authenticated);
