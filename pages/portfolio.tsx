@@ -51,19 +51,19 @@ interface CoinFilter {
 }
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
-  const { data: coinDataApi } = useSWR(urlCoin);
+  // const { data: coinDataApi } = useSWR(urlCoin);
   const { spacing } = useTheme();
 
-  const { authenticated, coins, coinData } = data;
-  console.log(authenticated);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [open, setOpen] = useState(false);
+  // const { authenticated, coins, coinData } = data;
+  // console.log(authenticated);
+  // const [totalAmount, setTotalAmount] = useState(0);
+  // const [open, setOpen] = useState(false);
 
-  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([]);
 
-  const handleClickAddCoin = () => {
-    setOpen(true);
-  };
+  // const handleClickAddCoin = () => {
+  //   setOpen(true);
+  // };
 
   // useEffect(() => {
   //   const resultUserData = coins.map((userDatadb, i) => {
@@ -224,12 +224,12 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           <Box>
             <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
             <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-              ${formatCurrency(totalAmount, "usd")}
+              {/* ${formatCurrency(totalAmount, "usd")} */}
             </Typography>
           </Box>
           <Box>
             <Button
-              onClick={handleClickAddCoin}
+              // onClick={handleClickAddCoin}
               text="Añadir nueva moneda"
               variant="contained"
             >
