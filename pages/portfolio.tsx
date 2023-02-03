@@ -239,14 +239,14 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           <BasicModal open={open} setOpen={setOpen} />
         </Box>
         <Box sx={{ marginTop: spacing(10) }}>
-          {userData.length > 0 && (
+          {/* {userData.length > 0 && (
             <Typography
               variant="h5"
               sx={{ marginBottom: "16px", fontWeight: "bold" }}
             >
               Tus activos
             </Typography>
-          )}
+          )} */}
 
           {/* {!userData[0] ? (
             <Box
