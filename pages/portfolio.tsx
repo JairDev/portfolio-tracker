@@ -28,7 +28,7 @@ interface UserDataTypes {
   usd: number;
   __v: number;
 }
-export const getServerSideProps = withSessionSsr(withGetServerSideProps);
+// export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
 interface PortfolioProps {
   message: string;
@@ -48,6 +48,15 @@ interface CoinFilter {
   market_cap_rank?: number;
   image?: string;
   usd?: number;
+}
+export async function getServerSideProps() {
+  const data = {};
+
+  return {
+    props: {
+      data,
+    },
+  };
 }
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
