@@ -28,7 +28,7 @@ interface UserDataTypes {
   usd: number;
   __v: number;
 }
-// export const getServerSideProps = withSessionSsr(withGetServerSideProps);
+export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
 interface PortfolioProps {
   message: string;
@@ -53,7 +53,7 @@ interface CoinFilter {
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   // const { data: coinDataApi } = useSWR(urlCoin);
   const [mounted, setMounted] = useState(false);
-  const { spacing } = useTheme();
+  // const { spacing } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -62,6 +62,8 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   if (!mounted) {
     return null;
   }
+
+  return <div>Hello World</div>;
 
   // const { authenticated, coins, coinData } = data;
   // console.log(authenticated);
@@ -214,69 +216,69 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   //   );
   // }
   // if (!mounted) {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        marginTop: spacing(14),
-      }}
-    >
-      <Box sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            position: "relative",
-            zIndex: " 50",
-          }}
-        >
-          <Box>
-            <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
-            <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-              {/* ${formatCurrency(totalAmount, "usd")} */}
-            </Typography>
-          </Box>
-          <Box>
-            <Button
-              // onClick={handleClickAddCoin}
-              text="Añadir nueva moneda"
-              variant="contained"
-            >
-              <AddCircleOutlineIcon />
-            </Button>
-          </Box>
-          {/* <BasicModal open={open} setOpen={setOpen} /> */}
-        </Box>
-        <Box sx={{ marginTop: spacing(10) }}>
-          {/* {userData.length > 0 && (
-            <Typography
-              variant="h5"
-              sx={{ marginBottom: "16px", fontWeight: "bold" }}
-            >
-              Tus activos
-            </Typography>
-          )} */}
+  // return (
+  //   <Box
+  //     sx={{
+  //       display: "flex",
+  //       marginTop: spacing(14),
+  //     }}
+  //   >
+  //     <Box sx={{ width: "100%" }}>
+  //       <Box
+  //         sx={{
+  //           display: "flex",
+  //           justifyContent: "space-between",
+  //           position: "relative",
+  //           zIndex: " 50",
+  //         }}
+  //       >
+  //         <Box>
+  //           <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
+  //           <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
+  //             {/* ${formatCurrency(totalAmount, "usd")} */}
+  //           </Typography>
+  //         </Box>
+  //         <Box>
+  //           <Button
+  //             // onClick={handleClickAddCoin}
+  //             text="Añadir nueva moneda"
+  //             variant="contained"
+  //           >
+  //             <AddCircleOutlineIcon />
+  //           </Button>
+  //         </Box>
+  //         {/* <BasicModal open={open} setOpen={setOpen} /> */}
+  //       </Box>
+  //       <Box sx={{ marginTop: spacing(10) }}>
+  //         {/* {userData.length > 0 && (
+  //           <Typography
+  //             variant="h5"
+  //             sx={{ marginBottom: "16px", fontWeight: "bold" }}
+  //           >
+  //             Tus activos
+  //           </Typography>
+  //         )} */}
 
-          {/* {!userData[0] ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                paddingTop: spacing(2),
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <>
-              <PortfolioTable data={userData} />
-            </>
-          )} */}
+  //         {/* {!userData[0] ? (
+  //           <Box
+  //             sx={{
+  //               display: "flex",
+  //               justifyContent: "center",
+  //               paddingTop: spacing(2),
+  //             }}
+  //           >
+  //             <CircularProgress />
+  //           </Box>
+  //         ) : (
+  //           <>
+  //             <PortfolioTable data={userData} />
+  //           </>
+  //         )} */}
 
-          <Box sx={{ marginTop: "16px" }}></Box>
-        </Box>
-      </Box>
-    </Box>
-  );
+  //         <Box sx={{ marginTop: "16px" }}></Box>
+  //       </Box>
+  //     </Box>
+  //   </Box>
+  // );
   // }
 }
