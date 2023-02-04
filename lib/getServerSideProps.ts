@@ -9,18 +9,18 @@ interface CoinsLastPriceArgument {
 }
 //@ts-ignore
 export const withGetServerSideProps = async function ({ req }) {
-  const api_server = "http://localhost:3000";
-  let userSession = req?.session?.user;
+  // const api_server = "http://localhost:3000";
+  // let userSession = req?.session?.user;
 
-  const res = await fetch(`${api_server}/api/auth`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+  // const res = await fetch(`${api_server}/api/auth`, {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
 
-      Authorization: `Bearer ${userSession?.token}`,
-    },
-  });
+  //     Authorization: `Bearer ${userSession?.token}`,
+  //   },
+  // });
 
   // const userData = await res.json();
   // const coinsLastPrice = userData.coins.map(
