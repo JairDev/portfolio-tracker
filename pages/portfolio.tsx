@@ -307,6 +307,14 @@ const sessionOptions: IronSessionOptions = {
 };
 
 export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
+  let userSession = req?.session?.user;
+
+  if (!userSession) {
+    return {
+      notFound: true,
+    };
+  }
+
   const data = {};
 
   return {
