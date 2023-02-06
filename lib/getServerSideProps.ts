@@ -11,7 +11,7 @@ interface CoinsLastPriceArgument {
 export const withGetServerSideProps = async function ({ req }) {
   try {
     const api_server = "http://localhost:3000";
-    let userSession = req?.session?.user;
+    // let userSession = req?.session?.user;
 
     // console.log(userSession);
     // const res = await fetch(`http://localhost:3000/api/auth`, {
