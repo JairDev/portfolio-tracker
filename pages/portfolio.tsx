@@ -28,7 +28,7 @@ interface UserDataTypes {
   usd: number;
   __v: number;
 }
-// export const getServerSideProps = withSessionSsr(withGetServerSideProps);
+export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
 interface PortfolioProps {
   message: string;
@@ -49,15 +49,17 @@ interface CoinFilter {
   image?: string;
   usd?: number;
 }
-export async function getServerSideProps() {
-  const data = {};
 
-  return {
-    props: {
-      data,
-    },
-  };
-}
+// export async function getServerSideProps() {
+//   const data = {};
+
+//   return {
+//     props: {
+//       data,
+//     },
+//   };
+// }
+
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   // const { data: coinDataApi } = useSWR(urlCoin);
