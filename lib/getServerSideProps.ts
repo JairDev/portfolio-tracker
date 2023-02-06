@@ -9,9 +9,11 @@ interface CoinsLastPriceArgument {
 }
 //@ts-ignore
 export const withGetServerSideProps = async function ({ req }) {
-  const api_server = "http://localhost:3000";
-  let userSession = req?.session?.user;
   try {
+    const api_server = "http://localhost:3000";
+    let userSession = req?.session?.user;
+
+    // console.log(userSession);
     const res = await fetch(`${api_server}/api/auth`, {
       method: "POST",
       headers: {
@@ -23,15 +25,15 @@ export const withGetServerSideProps = async function ({ req }) {
     });
 
     const userData = await res.json();
-    const coinsLastPrice = userData.coins.map(
-      async (coin: CoinsLastPriceArgument) => {
-        const coinData = await getApiCoinData(coin.name);
-        return coinData;
-      }
-    );
+    console.log(userData);
+    //@ts-ignore
+    const coinsLastPrice = userData.coins.map(async (coin) => {
+      const coinData = await getApiCoinData(coin.name);
+      return coinData;
+    });
 
     const resultAllCoinsData = await Promise.all(coinsLastPrice);
-    console.log(resultAllCoinsData);
+    // console.log(resultAllCoinsData);
 
     const data = JSON.parse(
       JSON.stringify({ ...userData, coinData: resultAllCoinsData })
@@ -43,8 +45,6 @@ export const withGetServerSideProps = async function ({ req }) {
       },
     };
   } catch (error) {
-    return {
-      props: {},
-    };
+    return { props: {} };
   }
 };

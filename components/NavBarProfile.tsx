@@ -22,7 +22,7 @@ export default function NavBarProfile() {
   const router = useRouter();
   const { spacing, shape } = useTheme();
   const { userEmail, authenticated, loading, mutateUser } = useUser({});
-  console.log(loading);
+  console.log("loading", loading);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
