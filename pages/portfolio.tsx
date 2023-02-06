@@ -296,7 +296,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
     </Box>
   );
 }
-//@ts-ignore
+
 export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
 // const sessionOptions: IronSessionOptions = {
