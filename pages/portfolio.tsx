@@ -299,53 +299,15 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
 
 // export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
-const sessionOptions: IronSessionOptions = {
-  password: process.env.COOKIE_PASSWORD as string,
-  cookieName: process.env.COOKIE_NAME as string,
-  // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-  cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
-  },
-};
-export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
-  const api_server = "http://localhost:3000";
-  let userSession = req?.session?.user;
-  // // console.log(userSession);
-  // const res = await fetch(`${api_server}/api/auth`, {
-  //   method: "POST",
-  //   headers: {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json",
-
-  //     Authorization: `Bearer ${userSession?.token}`,
-  //   },
-  // });
-
-  // const userData = await res.json();
-  // //@ts-ignore
-  // const coinsLastPrice = userData.coins.map(async (coin) => {
-  //   const coinData = await getApiCoinData(coin.name);
-  //   return coinData;
-  // });
-
-  // const resultAllCoinsData = await Promise.all(coinsLastPrice);
-  // // console.log(resultAllCoinsData);
-
-  // const data = JSON.parse(
-  //   JSON.stringify({ ...userData, coinData: resultAllCoinsData })
-  // );
-
-  const data = {};
-
-  return {
-    props: {
-      data,
-    },
-  };
-}, sessionOptions);
-
-//@ts-ignore
-// export const getServerSideProps = async function ({ req }) {
+// const sessionOptions: IronSessionOptions = {
+//   password: process.env.COOKIE_PASSWORD as string,
+//   cookieName: process.env.COOKIE_NAME as string,
+//   // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
+//   cookieOptions: {
+//     secure: process.env.NODE_ENV === "production",
+//   },
+// };
+// export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
 //   const api_server = "http://localhost:3000";
 //   let userSession = req?.session?.user;
 //   // // console.log(userSession);
@@ -380,4 +342,46 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
 //       data,
 //     },
 //   };
-// };
+// }, sessionOptions);
+
+//@ts-ignore
+export const getServerSideProps = async function ({ req }) {
+  const api_server = "http://localhost:3000";
+  let userSession = req?.session?.user;
+  const res = await fetch(
+    "www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata"
+  );
+  console.log(res);
+  // // console.log(userSession);
+  // const res = await fetch(`${api_server}/api/auth`, {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+
+  //     Authorization: `Bearer ${userSession?.token}`,
+  //   },
+  // });
+
+  // const userData = await res.json();
+  // //@ts-ignore
+  // const coinsLastPrice = userData.coins.map(async (coin) => {
+  //   const coinData = await getApiCoinData(coin.name);
+  //   return coinData;
+  // });
+
+  // const resultAllCoinsData = await Promise.all(coinsLastPrice);
+  // // console.log(resultAllCoinsData);
+
+  // const data = JSON.parse(
+  //   JSON.stringify({ ...userData, coinData: resultAllCoinsData })
+  // );
+
+  const data = {};
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
