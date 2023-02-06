@@ -14,18 +14,18 @@ export const withGetServerSideProps = async function ({ req }) {
     let userSession = req?.session?.user;
 
     // console.log(userSession);
-    const res = await fetch(`http://localhost:3000/api/auth`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+    // const res = await fetch(`http://localhost:3000/api/auth`, {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
 
-        Authorization: `Bearer ${userSession?.token}`,
-      },
-    });
+    //     Authorization: `Bearer ${userSession?.token}`,
+    //   },
+    // });
 
-    const userData = await res.json();
-    console.log(userData);
+    // const userData = await res.json();
+    // console.log(userData);
     //@ts-ignore
     // const coinsLastPrice = userData.coins.map(async (coin) => {
     //   const coinData = await getApiCoinData(coin.name);
