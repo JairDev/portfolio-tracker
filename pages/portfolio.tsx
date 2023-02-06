@@ -23,6 +23,7 @@ import Image from "next/image";
 
 import screenApp from "../public/screen-app.png";
 import { urlCoin } from "lib/apiUrl";
+import getApiCoinData from "lib/getApiCoinData";
 interface UserDataTypes {
   _id: string;
   name: string;
@@ -305,21 +306,38 @@ const sessionOptions: IronSessionOptions = {
     secure: process.env.NODE_ENV === "production",
   },
 };
-
-export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
+//@ts-ignore
+export const getServerSideProps = async function ({ req }) {
+  const api_server = "http://localhost:3000";
   let userSession = req?.session?.user;
+  // console.log(userSession);
+  const res = await fetch(`${api_server}/api/auth`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
 
-  if (!userSession) {
-    return {
-      notFound: true,
-    };
-  }
+      Authorization: `Bearer ${userSession?.token}`,
+    },
+  });
 
-  const data = {};
+  const userData = await res.json();
+  //@ts-ignore
+  const coinsLastPrice = userData.coins.map(async (coin) => {
+    const coinData = await getApiCoinData(coin.name);
+    return coinData;
+  });
+
+  const resultAllCoinsData = await Promise.all(coinsLastPrice);
+  // console.log(resultAllCoinsData);
+
+  const data = JSON.parse(
+    JSON.stringify({ ...userData, coinData: resultAllCoinsData })
+  );
 
   return {
     props: {
       data,
     },
   };
-}, sessionOptions);
+};
