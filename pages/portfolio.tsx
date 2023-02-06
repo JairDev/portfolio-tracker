@@ -335,6 +335,8 @@ export const getServerSideProps = async function ({ req }) {
   //   JSON.stringify({ ...userData, coinData: resultAllCoinsData })
   // );
 
+  const data = {};
+
   return {
     props: {
       data,
