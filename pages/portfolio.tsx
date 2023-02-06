@@ -4,6 +4,8 @@ import { default as NextLink } from "next/link";
 
 import useSWR from "swr";
 
+import { withIronSessionApiRoute, withIronSessionSsr } from "iron-session/next";
+
 import { Box, Typography, Link } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useTheme } from "@mui/material/styles";
@@ -294,3 +296,13 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
 }
 
 export const getServerSideProps = withSessionSsr(withGetServerSideProps);
+// export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
+
+//   const data = {};
+
+//   return {
+//     props: {
+//       data,
+//     },
+//   };
+// }, sessionOptions);
