@@ -5,6 +5,7 @@ import { default as NextLink } from "next/link";
 import useSWR from "swr";
 
 import { withIronSessionApiRoute, withIronSessionSsr } from "iron-session/next";
+import type { IronSessionOptions } from "iron-session";
 
 import { Box, Typography, Link } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -295,14 +296,22 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   // }
 }
 
-export const getServerSideProps = withSessionSsr(withGetServerSideProps);
-// export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
+// export const getServerSideProps = withSessionSsr(withGetServerSideProps);
+const sessionOptions: IronSessionOptions = {
+  password: process.env.COOKIE_PASSWORD as string,
+  cookieName: process.env.COOKIE_NAME as string,
+  // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
+  cookieOptions: {
+    secure: process.env.NODE_ENV === "production",
+  },
+};
 
-//   const data = {};
+export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
+  const data = {};
 
-//   return {
-//     props: {
-//       data,
-//     },
-//   };
-// }, sessionOptions);
+  return {
+    props: {
+      data,
+    },
+  };
+}, sessionOptions);
