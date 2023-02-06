@@ -28,7 +28,6 @@ interface UserDataTypes {
   usd: number;
   __v: number;
 }
-export const getServerSideProps = withSessionSsr(withGetServerSideProps);
 
 interface PortfolioProps {
   message: string;
@@ -293,3 +292,5 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   // );
   // }
 }
+
+export const getServerSideProps = withSessionSsr(withGetServerSideProps);
