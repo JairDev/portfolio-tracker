@@ -27,17 +27,18 @@ export const withGetServerSideProps = async function ({ req }) {
     const userData = await res.json();
     console.log(userData);
     //@ts-ignore
-    const coinsLastPrice = userData.coins.map(async (coin) => {
-      const coinData = await getApiCoinData(coin.name);
-      return coinData;
-    });
+    // const coinsLastPrice = userData.coins.map(async (coin) => {
+    //   const coinData = await getApiCoinData(coin.name);
+    //   return coinData;
+    // });
 
-    const resultAllCoinsData = await Promise.all(coinsLastPrice);
-    // console.log(resultAllCoinsData);
+    // const resultAllCoinsData = await Promise.all(coinsLastPrice);
+    // // console.log(resultAllCoinsData);
 
-    const data = JSON.parse(
-      JSON.stringify({ ...userData, coinData: resultAllCoinsData })
-    );
+    // const data = JSON.parse(
+    //   JSON.stringify({ ...userData, coinData: resultAllCoinsData })
+    // );
+    const data = {};
 
     return {
       props: {
