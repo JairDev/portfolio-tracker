@@ -349,7 +349,7 @@ export const getServerSideProps = async function ({ req }) {
   const api_server = "http://localhost:3000";
   let userSession = req?.session?.user;
   const res = await fetch(
-    "www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata"
+    "https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata"
   );
 
   console.log(res);
