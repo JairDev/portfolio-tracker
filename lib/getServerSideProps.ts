@@ -14,32 +14,31 @@ export const withGetServerSideProps = async function ({ req }) {
     try {
       const api_server = "http://localhost:3000";
 
-      // console.log(userSession);
-      // const res = await fetch(`http://localhost:3000/api/auth`, {
-      //   method: "POST",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
+      console.log(userSession);
+      const res = await fetch(`http://localhost:3000/api/auth`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
 
-      //     Authorization: `Bearer ${userSession?.token}`,
-      //   },
-      // });
+          Authorization: `Bearer ${userSession?.token}`,
+        },
+      });
 
-      // const userData = await res.json();
-      // console.log(userData);
-      //@ts-ignore
-      // const coinsLastPrice = userData.coins.map(async (coin) => {
-      //   const coinData = await getApiCoinData(coin.name);
-      //   return coinData;
-      // });
+      const userData = await res.json();
+      console.log(userData);
+      // @ts-ignore
+      const coinsLastPrice = userData.coins.map(async (coin) => {
+        const coinData = await getApiCoinData(coin.name);
+        return coinData;
+      });
 
-      // const resultAllCoinsData = await Promise.all(coinsLastPrice);
-      // // console.log(resultAllCoinsData);
+      const resultAllCoinsData = await Promise.all(coinsLastPrice);
+      // console.log(resultAllCoinsData);
 
-      // const data = JSON.parse(
-      //   JSON.stringify({ ...userData, coinData: resultAllCoinsData })
-      // );
-      const data = {};
+      const data = JSON.parse(
+        JSON.stringify({ ...userData, coinData: resultAllCoinsData })
+      );
 
       return {
         props: {
@@ -51,11 +50,7 @@ export const withGetServerSideProps = async function ({ req }) {
     }
   }
 
-  const data = {};
-
   return {
-    props: {
-      data,
-    },
+    props: {},
   };
 };
