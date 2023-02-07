@@ -159,7 +159,6 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                   <TableCell
                     sx={{
                       borderBottom: borderStyle,
-                      border: "2px solid yellow",
                       display: "flex",
                       alignItems: "center",
                     }}
