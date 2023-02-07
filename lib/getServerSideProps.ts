@@ -1,3 +1,4 @@
+import { Router } from "next/router";
 import getApiCoinData from "./getApiCoinData";
 
 interface CoinsLastPriceArgument {
@@ -12,10 +13,7 @@ export const withGetServerSideProps = async function ({ req }) {
   let userSession = req?.session?.user;
   if (userSession) {
     try {
-      const api_server = "http://localhost:3000";
-
-      // console.log(userSession);
-      const res = await fetch(`http://localhost:3000/api/auth`, {
+      const res = await fetch(`http://${req.headers.host}/api/auth`, {
         method: "POST",
         headers: {
           Accept: "application/json",
