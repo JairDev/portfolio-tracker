@@ -43,6 +43,7 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
     //@ts-ignore
     const { userId } = user;
     const { coins } = await getAllUserData(userId);
+    console.log("auth api", coins);
     res.status(200).json({
       message: "auth success",
       authenticated: true,

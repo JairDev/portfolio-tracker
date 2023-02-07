@@ -14,7 +14,7 @@ export const withGetServerSideProps = async function ({ req }) {
     try {
       const api_server = "http://localhost:3000";
 
-      console.log(userSession);
+      // console.log(userSession);
       const res = await fetch(`http://localhost:3000/api/auth`, {
         method: "POST",
         headers: {
