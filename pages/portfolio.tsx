@@ -237,19 +237,19 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           <Box>
             <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
             <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-              {/* ${formatCurrency(totalAmount, "usd")} */}
+              ${formatCurrency(totalAmount, "usd")}
             </Typography>
           </Box>
           <Box>
             <Button
-              // onClick={handleClickAddCoin}
+              onClick={handleClickAddCoin}
               text="Añadir nueva moneda"
               variant="contained"
             >
               <AddCircleOutlineIcon />
             </Button>
           </Box>
-          {/* <BasicModal open={open} setOpen={setOpen} /> */}
+          <BasicModal open={open} setOpen={setOpen} />
         </Box>
         <Box sx={{ marginTop: spacing(10) }}>
           {userData.length > 0 && (
