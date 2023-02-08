@@ -13,21 +13,37 @@ export default async function coinApi(
   const { name, avgPrice, holding, sell, lastPrice } = req.body;
   const coinFind = await Coin.findOne({ name: name });
 
+  const profit = (lastPrice - avgPrice) * holding;
+  const avgPriceNumber = Number(avgPrice);
+
   if (coinFind) {
     if (sell) {
-      const sellAmount = avgPrice * holding;
       const updateHolding = Number(coinFind.holding) - Number(holding);
+      const sellProfit = (avgPrice - lastPrice) * holding;
+      const resultSellProfit = coinFind.profit + sellProfit;
       const update = await Coin.findOneAndUpdate(
         { name: name },
-        { holding: updateHolding }
+        {
+          avgPrice: avgPriceNumber,
+          holding: updateHolding,
+          profit: resultSellProfit,
+        },
+        { returnDocument: "after" }
       );
       res.status(201).json({ message: "Activo actualizado" });
     } else {
       const updateHolding = Number(coinFind.holding) + Number(holding);
+      const resultUpdateBuyProfit = coinFind.profit + profit;
+
       const update = await Coin.findOneAndUpdate(
         { name: name },
-        { holding: updateHolding }
+        {
+          avgPrice: avgPriceNumber,
+          holding: updateHolding,
+          profit: resultUpdateBuyProfit,
+        }
       );
+
       res.status(201).json({ message: "Activo actualizado" });
     }
   } else {
@@ -36,6 +52,7 @@ export default async function coinApi(
         name,
         avgPrice,
         holding,
+        profit,
       });
       const result = await coin.save();
       res.status(201).json({ message: "Activo añadido", coinId: result._id });

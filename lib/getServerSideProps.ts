@@ -24,7 +24,7 @@ export const withGetServerSideProps = async function ({ req }) {
       });
 
       const userData = await res.json();
-      console.log(userData);
+      // console.log(userData);
       // @ts-ignore
       const coinsLastPrice = userData.coins.map(async (coin) => {
         const coinData = await getApiCoinData(coin.name);

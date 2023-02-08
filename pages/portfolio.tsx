@@ -27,6 +27,7 @@ interface UserDataTypes {
   avgPrice: number;
   holding: number;
   usd: number;
+  profit: number;
   __v: number;
 }
 
@@ -61,7 +62,6 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   }, []);
 
   const { authenticated, coins, coinData } = data;
-  console.log(authenticated);
   const [totalAmount, setTotalAmount] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -72,12 +72,16 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
+    console.log(data);
     if (coins) {
+      const coinsLastPrice = coins.map(async (coin) => {
+        const coinData = await getApiCoinData(coin.name);
+        console.log("coinData", coinData);
+        // return coinData;
+      });
       const resultUserData = coins.map((userDatadb, i) => {
         const lastPrice = coinData[i][userDatadb.name];
         const totalAmount = lastPrice?.usd * userDatadb?.holding;
-        const profit =
-          (lastPrice?.usd - userDatadb?.avgPrice) * userDatadb?.holding;
 
         const filter = coinDataApi?.filter(
           (coin: CoinFilter) => coin?.id === userDatadb?.name
@@ -89,7 +93,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           image: coin?.image,
           totalAmount,
           current_price: lastPrice?.usd,
-          profit,
+          profit: userDatadb.profit,
         }));
         return resultNewUserDataObject;
       });
@@ -109,8 +113,6 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   if (!mounted) {
     return null;
   }
-
-  console.log("authenticated", authenticated);
 
   if (!authenticated) {
     return (

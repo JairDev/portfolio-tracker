@@ -60,7 +60,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const [isSell, setIsSell] = useState(false);
   const [open, setOpen] = React.useState(false);
   let total = Number(coinAvgPrice) * Number(coinHolding);
-  console.log(coinDataApi);
+  // console.log(coinDataApi);
 
   const find = coinDataApi.find((coin: { id: string }) => coin.id === coinName);
 
@@ -74,6 +74,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   };
 
   const handleTransactionType = (value: string) => {
+    // console.log(value);
     setTransactionType(value);
     if (value === "sell") {
       setIsSell(true);
