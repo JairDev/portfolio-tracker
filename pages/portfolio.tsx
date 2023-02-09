@@ -61,7 +61,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
     setMounted(true);
   }, []);
 
-  const { authenticated, coins, coinData } = data;
+  const { authenticated, coins } = data;
   const [totalAmount, setTotalAmount] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -72,43 +72,42 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   };
 
   useEffect(() => {
-    console.log(data);
     if (coins) {
-      const coinsLastPrice = coins.map(async (coin) => {
-        const coinData = await getApiCoinData(coin.name);
-        console.log("coinData", coinData);
-        // return coinData;
-      });
-      const resultUserData = coins.map((userDatadb, i) => {
-        const lastPrice = coinData[i][userDatadb.name];
-        const totalAmount = lastPrice?.usd * userDatadb?.holding;
+      const getLastPrice = async () => {
+        const resultUserData = coins.map(async (userDatadb, i) => {
+          const lastPrice = { usd: 16000 };
+          const totalAmount = lastPrice?.usd * userDatadb?.holding;
+          const filter = coinDataApi?.filter(
+            (coin: CoinFilter) => coin?.id === userDatadb?.name
+          );
 
-        const filter = coinDataApi?.filter(
-          (coin: CoinFilter) => coin?.id === userDatadb?.name
-        );
+          const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
+            ...userDatadb,
+            market_cap_rank: coin?.market_cap_rank,
+            image: coin?.image,
+            totalAmount,
+            current_price: lastPrice?.usd,
+            profit: userDatadb.profit,
+          }));
+          return resultNewUserDataObject;
+        });
 
-        const resultNewUserDataObject = filter?.map((coin: CoinFilter) => ({
-          ...userDatadb,
-          market_cap_rank: coin?.market_cap_rank,
-          image: coin?.image,
-          totalAmount,
-          current_price: lastPrice?.usd,
-          profit: userDatadb.profit,
-        }));
-        return resultNewUserDataObject;
-      });
+        const resultData = await Promise.all(resultUserData);
+        const resultFlatUserData = resultData.flat();
 
-      const resultFlatUserData = resultUserData.flat();
-      if (resultFlatUserData.length > 0) {
-        const currentAmount = resultFlatUserData?.reduce((prev, current) => {
-          return prev + current?.totalAmount;
-        }, 0);
-        setTotalAmount(currentAmount);
-      }
-      //@ts-ignore
-      setUserData(resultFlatUserData);
+        if (resultFlatUserData.length > 0) {
+          const currentAmount = resultFlatUserData?.reduce((prev, current) => {
+            return prev + current?.totalAmount;
+          }, 0);
+          setTotalAmount(currentAmount);
+        }
+
+        //@ts-ignore
+        setUserData(resultFlatUserData);
+      };
+      getLastPrice();
     }
-  }, [coinData, coinDataApi, coins]);
+  }, [coinDataApi, coins]);
 
   if (!mounted) {
     return null;
