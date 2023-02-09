@@ -236,7 +236,9 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           }}
         >
           <Box>
-            <Typography sx={{ fontSize: "14px" }}>Balance actual</Typography>
+            <Typography sx={{ fontSize: "14px", fontWeight: "500" }}>
+              Balance actual
+            </Typography>
             <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
               ${formatCurrency(totalAmount, "usd")}
             </Typography>
