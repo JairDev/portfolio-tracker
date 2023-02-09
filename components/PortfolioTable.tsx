@@ -168,7 +168,7 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                     <Box sx={{ marginRight: "8px" }}>
                       <Image src={coin?.image} alt="" width={40} height={40} />
                     </Box>
-                    {coin?.name}
+                    {`${coin?.name[0].toUpperCase()}${coin?.name.slice(1)}`}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }}>
                     ${formatCurrency(coin?.current_price, "usd")}

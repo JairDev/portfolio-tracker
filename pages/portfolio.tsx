@@ -101,7 +101,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           }, 0);
           setTotalAmount(currentAmount);
         }
-
+        console.log("resultFlatUserData", resultFlatUserData);
         //@ts-ignore
         setUserData(resultFlatUserData);
       };
