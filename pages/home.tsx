@@ -48,11 +48,6 @@ type InputRef = {
   value: null;
 };
 
-interface SetCoin {
-  singleCoin: ResponseSearchCoin;
-  // setSingleCoin: (singleCoin: ResponseSearchCoin) => void;
-}
-
 export default function Home<T>() {
   const { spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
@@ -95,27 +90,34 @@ export default function Home<T>() {
   };
 
   useEffect(() => {
-    async function change() {
+    async function getChartData() {
       if (coinData) {
-        const changeObj = coinData
+        const getChartPrice = coinData
           .slice(0, 4)
           .map(async (coin: { id: string }) => {
             const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
             const res = await fetchJson(priceRange);
+            return res;
+          });
+
+        const result = await Promise.all(getChartPrice);
+
+        const createNewObject = result.map(
+          (chartPrice: { prices: Array<T> }, i) => {
+            const chart = chartPrice.prices;
+            const coin = coinData[i];
             const newObj = {
               ...coin,
-              //@ts-ignore
-              priceChart: res.prices,
+              priceChart: chart,
             };
             return newObj;
-          });
-        const result = await Promise.all(changeObj);
+          }
+        );
         //@ts-ignore
-
-        setFullData(result);
+        setFullData(createNewObject);
       }
     }
-    change();
+    getChartData();
   }, [coinData]);
 
   return (
