@@ -22,12 +22,9 @@ const pages = [
   { link: "Noticias", path: "#news" },
   { link: "Conversor", path: "converter" },
 ];
-const settings = ["mail@mail.com"];
 
 export default function NavBar() {
-  const { palette, spacing, shape } = useTheme();
-  const theme = useTheme();
-  // console.log(theme);
+  const { palette, spacing } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -37,10 +34,6 @@ export default function NavBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
-  React.useEffect(() => {
-    // pages.map((page) => console.log(page.path));
-  }, []);
 
   return (
     <AppBar
@@ -61,7 +54,7 @@ export default function NavBar() {
             component="a"
             href="/"
             sx={{
-              display: { xs: "none", md: "flex" },
+              // display: { xs: "none", md: "flex" },
               fontSize: "24px",
               fontFamily: "monospace",
               fontWeight: 700,
@@ -80,13 +73,15 @@ export default function NavBar() {
           </Typography>
         </Box>
 
-        <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+        {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleOpenNavMenu}
+            // color="inherit"
+            sx={{ color: "text.primary" }}
           >
             <MenuIcon />
           </IconButton>
@@ -108,13 +103,20 @@ export default function NavBar() {
               display: { xs: "block", md: "none" },
             }}
           >
-            {/* {pages.map((page) => (
-              <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Link href={page === "Mercado" ? "#market" : page}>{page}</Link>
+            {pages.map((page) => (
+              <MenuItem key={page.path} onClick={handleCloseNavMenu}>
+                <Link
+                  component={NextLink}
+                  underline="none"
+                  href={page.path}
+                  color="text.primary"
+                >
+                  {page.link}
+                </Link>
               </MenuItem>
-            ))} */}
+            ))}
           </Menu>
-        </Box>
+        </Box> */}
 
         {/*  */}
 

@@ -5,8 +5,7 @@ import getConfig from "next/config";
 
 import { withSessionRoute } from "lib/sessions";
 
-import User from "models/User";
-import Coin from "models/Coin";
+import getAllUserData from "lib/getAllUserData";
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -16,16 +15,6 @@ interface JwtPayload {
   userId: string;
   userEmail: string;
 }
-
-const getAllUserData = function (id: string) {
-  const initState = {
-    coins: [],
-  };
-  if (!id) {
-    return initState;
-  }
-  return User.findById(id).populate({ path: "coins", model: Coin });
-};
 
 async function auth(req: NextApiRequest, res: NextApiResponse) {
   const initState = {
@@ -43,7 +32,6 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
     //@ts-ignore
     const { userId } = user;
     const { coins } = await getAllUserData(userId);
-    // console.log("auth api", coins);
     res.status(200).json({
       message: "auth success",
       authenticated: true,
