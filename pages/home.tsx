@@ -93,7 +93,7 @@ export default function Home<T>() {
     async function getChartData() {
       if (coinData) {
         const getChartPrice = coinData
-          .slice(0, 4)
+          .slice(0, 10)
           .map(async (coin: { id: string }) => {
             const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
             const res = await fetchJson(priceRange);
@@ -144,9 +144,9 @@ export default function Home<T>() {
               variant="subtitle1"
               sx={{ textAlign: "center", color: " #B6B6B6" }}
             >
-              Solo en CoinMarketApp, puede realizar un seguimiento del precio de
-              sus criptomonedas favoritas y estar al tanto de las últimas
-              noticias del criptomundo.
+              Solo en CoinMarketApp, puede realizar un seguimiento de sus
+              ganancias y pérdidas y estar al tanto de las últimas noticias del
+              criptomundo.
             </Typography>
           </Box>
           <Box sx={{ marginTop: spacing(8) }}>

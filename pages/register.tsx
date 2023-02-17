@@ -15,11 +15,14 @@ import BoxAuth from "components/BoxAuth";
 
 import { validationSchema } from "schema/yup";
 import ContentBox from "components/ContentInputBox";
+import useUser from "lib/useUser";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const { spacing, shape } = useTheme();
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -51,6 +54,7 @@ export default function Register() {
         setSuccessMessage(null);
         setErrorMessage(null);
       }, 1500);
+      router.push("/login");
     },
   });
 

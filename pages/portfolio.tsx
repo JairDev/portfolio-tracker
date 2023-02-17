@@ -19,8 +19,9 @@ import PortfolioTable from "components/PortfolioTable";
 import Image from "next/image";
 
 import screenApp from "../public/screen-app.png";
-import { urlCoin } from "lib/apiUrl";
+import { coinId, coinSinglePrice, urlCoin } from "lib/apiUrl";
 import getApiCoinData from "lib/getApiCoinData";
+import fetchJson from "lib/fetchJson";
 interface UserDataTypes {
   _id: string;
   name: string;
@@ -75,8 +76,10 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
     if (coins) {
       const getLastPrice = async () => {
         const resultUserData = coins.map(async (userDatadb, i) => {
-          const lastPrice = { usd: 16000 };
-          const totalAmount = lastPrice?.usd * userDatadb?.holding;
+          const lastPriceeUrl = coinSinglePrice(userDatadb.name);
+          const lastPrice: any = await fetchJson(lastPriceeUrl);
+          const totalAmount =
+            lastPrice[userDatadb.name].usd * userDatadb?.holding;
           const filter = coinDataApi?.filter(
             (coin: CoinFilter) => coin?.id === userDatadb?.name
           );
@@ -86,7 +89,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             market_cap_rank: coin?.market_cap_rank,
             image: coin?.image,
             totalAmount,
-            current_price: lastPrice?.usd,
+            current_price: lastPrice[userDatadb.name].usd,
             profit: userDatadb.profit,
           }));
           return resultNewUserDataObject;
