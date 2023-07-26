@@ -14,6 +14,8 @@ import {
   TextField,
   Grid,
 } from "@mui/material";
+import Container from "@mui/material/Container";
+
 import { useTheme } from "@mui/material/styles";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
@@ -59,6 +61,7 @@ export default function Home<T>() {
   const [errorMessage, setErrorMessage] = useState<undefined | string>(
     undefined
   );
+  // console.log(coinData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,29 +95,28 @@ export default function Home<T>() {
   useEffect(() => {
     async function getChartData() {
       if (coinData) {
-        const getChartPrice = coinData
-          .slice(0, 10)
-          .map(async (coin: { id: string }) => {
-            const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
-            const res = await fetchJson(priceRange);
-            return res;
-          });
+        // const getChartPrice = coinData
+        //   .slice(0, 10)
+        //   .map(async (coin: { id: string }) => {
+        //     const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
+        //     const res = await fetchJson(priceRange);
+        //     return res;
+        //   });
+        // const result = await Promise.all(getChartPrice);
+        // const createNewObject = result.map(
+        //   (chartPrice: { prices: Array<T> }, i) => {
+        //     const chart = chartPrice.prices;
+        //     const coin = coinData[i];
+        //     const newObj = {
+        //       ...coin,
+        //       priceChart: chart,
+        //     };
+        //     return newObj;
+        //   }
+        // );
 
-        const result = await Promise.all(getChartPrice);
-
-        const createNewObject = result.map(
-          (chartPrice: { prices: Array<T> }, i) => {
-            const chart = chartPrice.prices;
-            const coin = coinData[i];
-            const newObj = {
-              ...coin,
-              priceChart: chart,
-            };
-            return newObj;
-          }
-        );
         //@ts-ignore
-        setFullData(createNewObject);
+        setFullData(coinData.slice(0, 10));
       }
     }
     getChartData();
@@ -283,13 +285,14 @@ export default function Home<T>() {
             }
           </Box>
         </Box>
-        <Box
+        {/* <Box
           sx={{
-            display: "flex",
+            // display: "flex",
             justifyContent: "space-between",
             marginTop: spacing(16),
           }}
-        >
+          > */}
+        <Grid container columns={{ lg: 2 }}>
           <Box>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
               Como empezar
@@ -339,7 +342,8 @@ export default function Home<T>() {
               <ManageAccountsIcon sx={{ fontSize: "32px" }} />
             </StepCard>
           </Box>
-        </Box>
+        </Grid>
+        {/* </Box> */}
 
         {/* <CryptoNewsData /> */}
       </main>

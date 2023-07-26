@@ -20,10 +20,11 @@ export default function Login() {
   const { spacing } = useTheme();
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const { mutateUser } = useUser({
+  const { mutateUser, loading } = useUser({
     redirectTo: "/portfolio",
     redirectIfFound: true,
   });
+  const [call, setCall] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -32,6 +33,8 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      // console.log("aaaa");
+      setCall(true);
       const data = {
         email: values.email,
         password: values.password,
@@ -49,8 +52,11 @@ export default function Login() {
       );
 
       const { authenticated, message } = await res;
+      console.log(authenticated);
 
       if (authenticated) {
+        setCall(false);
+
         setSuccessMessage(message);
       } else {
         setErrorMessage(message);
@@ -96,7 +102,7 @@ export default function Login() {
             </Alert>
           )}
 
-          <LoginView formik={formik} />
+          <LoginView formik={formik} call={call} />
         </BoxAuth>
       </Box>
     </>

@@ -114,7 +114,6 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   if (!mounted) {
     return null;
   }
-  console.log(authenticated);
   if (!authenticated) {
     return (
       <div>
@@ -126,7 +125,8 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
         >
           <Box
             sx={{
-              width: "40%",
+              // width: "40%",
+              zIndex: 10,
             }}
           >
             <Typography
@@ -164,9 +164,11 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           </Box>
           <Box
             sx={{
-              position: "relative",
-              marginTop: spacing(10),
-              transform: "translateX(20%)",
+              position: "absolute",
+              // marginTop: spacing(10),
+              // transform: "translateX(20%)",
+              right: 0,
+              zIndex: 1,
             }}
           >
             <Image

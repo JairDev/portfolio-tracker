@@ -32,8 +32,8 @@ export default function Layout({ children }: LayoutProps) {
           justifyContent: "space-between",
           position: "relative",
           zIndex: "10",
-          paddingLeft: 0,
-          paddingRight: 0,
+          // paddingLeft: 0,
+          // paddingRight: 0,
           minHeight: "100vh",
         }}
         maxWidth="lg"
