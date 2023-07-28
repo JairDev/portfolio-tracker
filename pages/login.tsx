@@ -20,11 +20,12 @@ export default function Login() {
   const { spacing } = useTheme();
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [call, setCall] = useState(false);
   const { mutateUser, loading } = useUser({
     redirectTo: "/portfolio",
     redirectIfFound: true,
+    initLogIn: call,
   });
-  const [call, setCall] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -56,9 +57,9 @@ export default function Login() {
 
       if (authenticated) {
         setCall(false);
-
         setSuccessMessage(message);
       } else {
+        setCall(false);
         setErrorMessage(message);
       }
 

@@ -57,16 +57,13 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   const { data: coinDataApi } = useSWR(urlCoin);
   const [mounted, setMounted] = useState(false);
   const { spacing } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const { authenticated, coins } = data;
   const [totalAmount, setTotalAmount] = useState(0);
   const [open, setOpen] = useState(false);
-
   const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleClickAddCoin = () => {
     setOpen(true);
@@ -164,6 +161,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           </Box>
           <Box
             sx={{
+              // border: "1px solid red",
               position: "absolute",
               // marginTop: spacing(10),
               // transform: "translateX(20%)",
@@ -171,6 +169,15 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
               zIndex: 1,
             }}
           >
+            <Box
+              sx={{
+                // border: "1px solid red",
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                background: "linear-gradient(to right, black, transparent)",
+              }}
+            ></Box>
             <Image
               src={screenApp}
               alt="Imagen de un portafolio de criptomonedas"

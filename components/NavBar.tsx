@@ -121,7 +121,7 @@ export default function NavBar() {
         {/*  */}
 
         {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
-        <Typography
+        {/* <Typography
           variant="h5"
           noWrap
           component="a"
@@ -135,7 +135,7 @@ export default function NavBar() {
             letterSpacing: ".3rem",
             textDecoration: "none",
           }}
-        ></Typography>
+        ></Typography> */}
         <Box
           sx={{
             flexGrow: 0,

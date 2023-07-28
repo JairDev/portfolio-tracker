@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CircularProgress from "@mui/material/CircularProgress";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import { Paper } from "@mui/material";
 
 import useUser from "lib/useUser";
@@ -105,9 +106,12 @@ export default function NavBarProfile() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              sx={{ color: "text.primary", position: "relative" }}
+              sx={{
+                color: "text.primary",
+                position: "relative",
+              }}
             >
-              <MenuIcon />
+              {anchorElNav ? <CloseIcon /> : <MenuIcon />}
             </IconButton>
 
             <Menu
@@ -128,21 +132,22 @@ export default function NavBarProfile() {
                 style: {
                   width: "100%",
                   height: "100%",
-                  maxHeight: "600px",
-                  maxWidth: "400px",
+                  maxWidth: "300px",
                   background: "transparent",
                 },
               }}
               MenuListProps={{
                 style: {
                   background: "rgba(17, 1, 30, 1)",
+                  borderRadius: "8px",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   alignItems: "center",
                   width: "100%",
-                  height: "90% ",
+                  height: "80% ",
                   padding: spacing(6, 0),
+                  top: "70px",
                 },
               }}
             >

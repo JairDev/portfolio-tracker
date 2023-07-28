@@ -15,7 +15,7 @@ interface MarketTrendCardProps<T> {
   currentPrice: number;
   priceChange: number;
   image: string;
-  priceChartData: Array<T>;
+  price7d: Array<T>;
 }
 
 export default function MarketTrendCard<T>({
@@ -23,12 +23,12 @@ export default function MarketTrendCard<T>({
   currentPrice,
   priceChange,
   image,
-  priceChartData,
+  price7d,
 }: MarketTrendCardProps<T>) {
   const { spacing } = useTheme();
   const priceValueClassName = priceChange < 0 ? "error.main" : "primary.main";
   const chartValueClassName = priceChange < 0 ? "#d32f2f" : "#0FAE96";
-
+  // console.log(price7d);
   return (
     <Card
       sx={{
@@ -70,8 +70,8 @@ export default function MarketTrendCard<T>({
             }}
           >
             <LineChart
-              priceChartData={priceChartData}
               chartValueClassName={chartValueClassName}
+              price7d={price7d}
             />
           </Box>
         </Box>

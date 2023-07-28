@@ -102,7 +102,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
                 Cambio
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="center">
-                Últimas 24h
+                7d
               </TableCell>
             </TableRow>
           </TableHead>
@@ -161,7 +161,8 @@ function TableComponent({ data = [] }: TablePropsArray) {
                   >
                     <Box sx={{ width: "120px" }}>
                       <LineChart
-                        priceChartData={coin?.priceChart}
+                        // priceChartData={coin?.sparkline_in_7d}
+                        price7d={coin?.sparkline_in_7d}
                         chartValueClassName={
                           Number(coin?.price_change_percentage_24h) < 0
                             ? "#d32f2f"

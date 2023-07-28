@@ -1,4 +1,4 @@
-import { Box, Typography, Link, Icon, MenuItem } from "@mui/material";
+import { Box, Grid, Typography, Link, Icon, MenuItem } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -13,11 +13,12 @@ export default function Footer() {
         marginBottom: spacing(4),
       }}
     >
-      <Box
+      <Grid
+        container
         sx={{
-          display: "flex",
-          height: "200px",
           position: "relative",
+          justifyContent: "space-between",
+          rowGap: spacing(2),
         }}
       >
         <Box
@@ -57,26 +58,25 @@ export default function Footer() {
               App
             </Typography>
           </Box>
-          <Box sx={{ marginTop: spacing(2) }}>
+          <Grid container sx={{ marginTop: spacing(2), gap: spacing(1) }}>
             <Icon>
               <InstagramIcon />
             </Icon>
-            <Icon sx={{ marginLeft: "8px" }}>
+            <Icon>
               <TwitterIcon />
             </Icon>
-            <Icon sx={{ marginLeft: "8px" }}>
+            <Icon>
               <LinkedInIcon />
             </Icon>
-          </Box>
+          </Grid>
         </Box>
 
         <Box
           sx={{
-            marginLeft: "48px",
             height: "100%",
           }}
         >
-          <Box sx={{ paddingLeft: "16px" }}>
+          <Box>
             <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
               Aprender
             </Typography>
@@ -87,6 +87,7 @@ export default function Footer() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
+                padding: 0,
               }}
             >
               <Link
@@ -113,7 +114,7 @@ export default function Footer() {
             </MenuItem>
           </Box>
         </Box>
-      </Box>
+      </Grid>
       <Box
         sx={{
           display: "flex",

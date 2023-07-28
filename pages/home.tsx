@@ -52,16 +52,15 @@ type InputRef = {
 
 export default function Home<T>() {
   const { spacing } = useTheme();
-  const { data: coinData } = useSWR(urlCoin);
+  // const { data: coinData } = useSWR(urlCoin);
+  const coinData = [];
   const loading = !coinData;
-  const [fullData, setFullData] = useState([]);
   const [singleCoin, setSingleCoin] = useState<Array<T>>();
   const inputRef: React.RefObject<InputRef> = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState<undefined | string>(
     undefined
   );
-  // console.log(coinData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,36 +90,6 @@ export default function Home<T>() {
   const handleClick = () => {
     setSingleCoin([]);
   };
-
-  useEffect(() => {
-    async function getChartData() {
-      if (coinData) {
-        // const getChartPrice = coinData
-        //   .slice(0, 10)
-        //   .map(async (coin: { id: string }) => {
-        //     const priceRange = `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=1`;
-        //     const res = await fetchJson(priceRange);
-        //     return res;
-        //   });
-        // const result = await Promise.all(getChartPrice);
-        // const createNewObject = result.map(
-        //   (chartPrice: { prices: Array<T> }, i) => {
-        //     const chart = chartPrice.prices;
-        //     const coin = coinData[i];
-        //     const newObj = {
-        //       ...coin,
-        //       priceChart: chart,
-        //     };
-        //     return newObj;
-        //   }
-        // );
-
-        //@ts-ignore
-        setFullData(coinData.slice(0, 10));
-      }
-    }
-    getChartData();
-  }, [coinData]);
 
   return (
     <div>
@@ -185,9 +154,9 @@ export default function Home<T>() {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              {fullData &&
-                fullData
-                  .slice(0, 4)
+              {coinData &&
+                coinData
+                  .slice(0, 3)
                   .map(
                     ({
                       id,
@@ -195,14 +164,14 @@ export default function Home<T>() {
                       current_price,
                       price_change_percentage_24h,
                       image,
-                      priceChart,
+                      sparkline_in_7d,
                     }: {
                       id: string;
                       name: string;
                       current_price: number;
                       price_change_percentage_24h: number;
                       image: string;
-                      priceChart: Array<T>;
+                      sparkline_in_7d: Array<T>;
                     }) => (
                       <Grid key={id} xs item>
                         <MarketTrendCard
@@ -210,7 +179,7 @@ export default function Home<T>() {
                           currentPrice={current_price}
                           priceChange={price_change_percentage_24h}
                           image={image}
-                          priceChartData={priceChart}
+                          price7d={sparkline_in_7d}
                         />
                       </Grid>
                     )
@@ -223,13 +192,16 @@ export default function Home<T>() {
             paddingTop: spacing(18),
           }}
         >
-          <Box
+          <Grid
+            container
+            columns={{ lg: 2 }}
             id="market"
             sx={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
               paddingBottom: spacing(2),
+              rowGap: spacing(1),
             }}
           >
             <Typography variant="h4" sx={{ fontWeight: "500" }}>
@@ -260,7 +232,7 @@ export default function Home<T>() {
                 />
               </form>
             </Box>
-          </Box>
+          </Grid>
 
           <Box>
             {
@@ -269,7 +241,7 @@ export default function Home<T>() {
                 //@ts-ignore
                 <Table data={singleCoin} />
               ) : (
-                !loading && <Table data={fullData} />
+                !loading && <Table data={coinData} />
               )
             }
 
@@ -285,14 +257,15 @@ export default function Home<T>() {
             }
           </Box>
         </Box>
-        {/* <Box
+        <Grid
+          container
+          columns={{ lg: 2 }}
           sx={{
-            // display: "flex",
-            justifyContent: "space-between",
             marginTop: spacing(16),
+            justifyContent: "space-between",
+            rowGap: spacing(4),
           }}
-          > */}
-        <Grid container columns={{ lg: 2 }}>
+        >
           <Box>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
               Como empezar
@@ -343,7 +316,6 @@ export default function Home<T>() {
             </StepCard>
           </Box>
         </Grid>
-        {/* </Box> */}
 
         {/* <CryptoNewsData /> */}
       </main>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Typography, Link } from "@mui/material";
+import { Button, Typography, Link, CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
@@ -22,6 +22,8 @@ export default function Register() {
   const { spacing, shape } = useTheme();
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [call, setCall] = useState(false);
+
   const router = useRouter();
 
   const formik = useFormik({
@@ -31,6 +33,7 @@ export default function Register() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      setCall(true);
       const data = {
         email: values.email,
         password: values.password,
@@ -46,8 +49,10 @@ export default function Register() {
       const result = await res.json();
 
       if (res.ok) {
+        setCall(false);
         setSuccessMessage(result.message);
       } else {
+        setCall(false);
         setErrorMessage(result.message);
       }
       setTimeout(() => {
@@ -113,13 +118,20 @@ export default function Register() {
               sx={{
                 color: "white",
                 width: "100%",
+                height: "56px",
                 padding: spacing(2, 0),
                 marginTop: spacing(2),
                 borderRadius: shape.borderRadius,
               }}
               type="submit"
             >
-              Regístrate
+              {call ? (
+                <CircularProgress
+                  sx={{ color: "#ffffff", position: "absolute" }}
+                />
+              ) : (
+                "Regístrate"
+              )}
             </Button>
           </ContentBox>
           <Box

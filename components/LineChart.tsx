@@ -10,7 +10,6 @@ import {
   Legend,
   TimeScale,
 } from "chart.js";
-import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -25,20 +24,20 @@ ChartJS.register(
 );
 
 export default function LineChart<T>({
-  priceChartData,
   chartValueClassName,
+  price7d,
 }: {
-  priceChartData: Array<T>;
+  price7d: Array<T>;
   chartValueClassName: string;
 }) {
   const chartData = {
     //@ts-ignore
-    labels: priceChartData?.map((row) => row[0]),
+    labels: ["l", "m", "m", "j", "v", "s", "d"],
     datasets: [
       {
         label: "",
         //@ts-ignore
-        data: priceChartData?.map((row) => row[1]),
+        data: price7d.price.map((row) => row),
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",

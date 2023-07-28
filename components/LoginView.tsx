@@ -3,8 +3,7 @@ import { default as NextLink } from "next/link";
 import ContentBox from "components/ContentInputBox";
 
 import Box from "@mui/material/Box";
-import { Button, Link, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Button, Link, Typography, CircularProgress } from "@mui/material";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -23,7 +22,7 @@ interface LoginViewProps {}
 
 export default function LoginView({ formik, call }: { formik: any }) {
   const { spacing, shape } = useTheme();
-  console.log("call ->", call);
+  // console.log("call ->", call);
   return (
     <form onSubmit={formik.handleSubmit}>
       <ContentBox>
@@ -67,7 +66,6 @@ export default function LoginView({ formik, call }: { formik: any }) {
           ) : (
             "Iniciar sesión"
           )}
-          {/* <CircularProgress sx={{ color: "#ffffff", position: "absolute" }} /> */}
         </Button>
       </ContentBox>
       <Box
