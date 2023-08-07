@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,13 +16,20 @@ export default function SelectCoin({
   data = [],
   setValue,
   isFiat,
+  selectValue,
 }: SelectCoinProps) {
-  const [coin, setCoin] = React.useState("");
+  const [coin, setCoin] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
   };
+  // useEffect(() => {
+  //   setCoin("");
+  // }, [isFiat]);
+
+  // console.log(data);
+  // console.log(coin);
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -30,7 +37,7 @@ export default function SelectCoin({
         <Select
           id="demo-simple-select"
           name="select-coin"
-          value={coin}
+          value={selectValue}
           onChange={handleChange}
           displayEmpty
           sx={{
@@ -49,8 +56,8 @@ export default function SelectCoin({
             isFiat &&
             data.map((coin) => (
               //@ts-ignore
-              <MenuItem key={coin} value={coin}>
-                {coin}
+              <MenuItem key={coin} value={coin[0]}>
+                {coin[0]} - {coin[1]}
               </MenuItem>
             ))}
 
