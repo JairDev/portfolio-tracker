@@ -6,12 +6,17 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 interface SelectCoinProps {
-  data: Array<{ id: string; name: string }>;
+  data: Array<{
+    id: string;
+    name: string;
+    fiatSymbol: string;
+    fiatName: string;
+  }>;
+  selectValue: string;
   // setValue: React.Dispatch<React.SetStateAction<string>>;
   setValue: (value: string) => void;
   isFiat?: boolean;
 }
-//@ts-ignore
 export default function SelectCoin({
   data = [],
   setValue,
@@ -24,12 +29,6 @@ export default function SelectCoin({
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
   };
-  // useEffect(() => {
-  //   setCoin("");
-  // }, [isFiat]);
-
-  // console.log(data);
-  // console.log(coin);
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -55,9 +54,8 @@ export default function SelectCoin({
           {data &&
             isFiat &&
             data.map((coin) => (
-              //@ts-ignore
-              <MenuItem key={coin} value={coin[0]}>
-                {coin[0]} - {coin[1]}
+              <MenuItem key={coin.fiatSymbol} value={coin.fiatSymbol}>
+                {coin.fiatSymbol} - {coin.fiatName}
               </MenuItem>
             ))}
 

@@ -12,7 +12,7 @@ interface InputProps {
   name?: string;
   label?: string;
   type: string;
-  value?: string;
+  value?: string | number;
   placeHolder?: string | undefined;
   error?: any;
   helperText?: any;

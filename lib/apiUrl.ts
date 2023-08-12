@@ -14,3 +14,5 @@ export const cryptoNews = (name: string | undefined) =>
 
 export const coinSinglePrice = (name: string) =>
   `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=usd`;
+
+export const CURRENCY_FIAT_DATA = "https://api.apilayer.com/currency_data/list";
