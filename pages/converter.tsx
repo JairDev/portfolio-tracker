@@ -62,7 +62,6 @@ export default function Converter() {
         }
       }
     }
-    // console.log(newObject);
     const result = Object.entries(newObject).map((item) => {
       return { fiatSymbol: item[0], fiatName: item[1] as string };
     });
