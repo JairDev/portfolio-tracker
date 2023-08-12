@@ -63,7 +63,11 @@ export default function ArticleCard({
                 >
                   {title}
                 </Typography>
-                <Typography variant="body2" color="text.primary">
+                <Typography
+                  variant="body2"
+                  color="text.primary"
+                  sx={{ marginTop: spacing(2) }}
+                >
                   {subTitle}
                 </Typography>
               </Box>
@@ -80,7 +84,7 @@ export default function ArticleCard({
                 component="span"
                 sx={{ fontSize: "14px", marginRight: spacing(1) }}
               >
-                by
+                por
               </Typography>
               <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
                 {author ? author : "unknown author"}

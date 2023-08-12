@@ -317,7 +317,7 @@ export default function Home<T>() {
           </Box>
         </Grid>
 
-        {/* <CryptoNewsData /> */}
+        <CryptoNewsData />
       </main>
     </div>
   );
