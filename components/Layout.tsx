@@ -16,12 +16,13 @@ export default function Layout({ children }: LayoutProps) {
         sx={{
           background: "rgba(255, 0, 200, 0.5)",
           borderRadius: "50%",
-          position: "fixed",
+          position: "absolute",
           top: "0%",
           right: "0%",
           width: "55%",
-          height: "55%",
+          height: "15%",
           filter: "blur(200px)",
+          opacity: 0,
           zIndex: "0",
         }}
       ></Box>

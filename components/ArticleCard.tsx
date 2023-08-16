@@ -58,7 +58,11 @@ export default function ArticleCard({
               <Box sx={{ marginTop: spacing(2) }}>
                 <Typography
                   variant="subtitle1"
-                  sx={{ fontWeight: "bold" }}
+                  sx={{
+                    fontWeight: "bold",
+                    lineHeight: "1.5",
+                    color: "primary.main",
+                  }}
                   component="div"
                 >
                   {title}
@@ -66,7 +70,7 @@ export default function ArticleCard({
                 <Typography
                   variant="body2"
                   color="text.primary"
-                  sx={{ marginTop: spacing(2) }}
+                  sx={{ marginTop: spacing(2), fontSize: "16px" }}
                 >
                   {subTitle}
                 </Typography>
@@ -87,7 +91,7 @@ export default function ArticleCard({
                 por
               </Typography>
               <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                {author ? author : "unknown author"}
+                {author ? author : "Autor desconocido"}
               </Typography>
             </Box>
           </CardContent>

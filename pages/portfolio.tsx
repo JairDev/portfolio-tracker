@@ -113,78 +113,77 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   }
   if (!authenticated) {
     return (
-      <div>
+      <Box
+        sx={{
+          display: "flex",
+          paddingTop: spacing(14),
+          marginBottom: spacing(8),
+        }}
+      >
         <Box
           sx={{
-            display: "flex",
-            paddingTop: spacing(14),
+            // width: "40%",
+            zIndex: 10,
+          }}
+        >
+          <Typography
+            variant="caption"
+            sx={{ fontWeight: "700", color: "primary.main" }}
+          >
+            Regístrese hoy
+          </Typography>
+
+          <Typography variant="h4" sx={{ fontWeight: "700" }}>
+            Rastreador de cartera criptográfica
+          </Typography>
+          <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
+            <Typography variant="subtitle1" sx={{ color: " #B6B6B6" }}>
+              Realice un seguimiento de sus ganancias y pérdidas con nuestra
+              plataforma fácil de usar.
+            </Typography>
+          </Box>
+          <Box sx={{ marginTop: spacing(8) }}>
+            <Link
+              component={NextLink}
+              underline="none"
+              color="text.primary"
+              sx={{
+                bgcolor: "primary.main",
+                padding: spacing(2, 5),
+                borderRadius: "8px",
+                fontWeight: "600",
+              }}
+              href="/register"
+            >
+              Crea tu portafolio
+            </Link>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            // border: "1px solid red",
+            position: "absolute",
+            // marginTop: spacing(10),
+            // transform: "translateX(20%)",
+            right: 0,
+            zIndex: 1,
           }}
         >
           <Box
             sx={{
-              // width: "40%",
-              zIndex: 10,
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{ fontWeight: "700", color: "primary.main" }}
-            >
-              Regístrese hoy
-            </Typography>
-
-            <Typography variant="h4" sx={{ fontWeight: "700" }}>
-              Rastreador de cartera criptográfica
-            </Typography>
-            <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
-              <Typography variant="subtitle1" sx={{ color: " #B6B6B6" }}>
-                Realice un seguimiento de sus ganancias y pérdidas con nuestra
-                plataforma fácil de usar.
-              </Typography>
-            </Box>
-            <Box sx={{ marginTop: spacing(8) }}>
-              <Link
-                component={NextLink}
-                underline="none"
-                color="text.primary"
-                sx={{
-                  bgcolor: "primary.main",
-                  padding: spacing(2, 5),
-                  borderRadius: "8px",
-                  fontWeight: "600",
-                }}
-                href="/register"
-              >
-                Crea tu portafolio
-              </Link>
-            </Box>
-          </Box>
-          <Box
-            sx={{
               // border: "1px solid red",
               position: "absolute",
-              // marginTop: spacing(10),
-              // transform: "translateX(20%)",
-              right: 0,
-              zIndex: 1,
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(to right, black, transparent)",
             }}
-          >
-            <Box
-              sx={{
-                // border: "1px solid red",
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                background: "linear-gradient(to right, black, transparent)",
-              }}
-            ></Box>
-            <Image
-              src={screenApp}
-              alt="Imagen de un portafolio de criptomonedas"
-            />
-          </Box>
+          ></Box>
+          <Image
+            src={screenApp}
+            alt="Imagen de un portafolio de criptomonedas"
+          />
         </Box>
-      </div>
+      </Box>
     );
   }
 

@@ -8,6 +8,7 @@ export default function Footer() {
   const { spacing, palette } = useTheme();
   return (
     <Box
+      id="learn"
       sx={{
         marginTop: spacing(20),
         marginBottom: spacing(4),
@@ -119,9 +120,9 @@ export default function Footer() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: spacing(2),
+          // justifyContent: "center",
+          // alignItems: "center",
+          marginTop: spacing(4),
         }}
       >
         <Box sx={{ display: "flex" }}>

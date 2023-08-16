@@ -110,7 +110,7 @@ export default function Home<T>() {
           <Typography variant="h1">
             Comience y construya su portafolio de criptomonedas
           </Typography>
-          <Box maxWidth="600px" sx={{ marginTop: spacing(3) }}>
+          <Box maxWidth="800px" sx={{ marginTop: spacing(3) }}>
             <Typography
               variant="subtitle1"
               sx={{ textAlign: "center", color: " #B6B6B6" }}
@@ -186,6 +186,58 @@ export default function Home<T>() {
                   )}
             </Grid>
           </Grid>
+        </Box>
+
+        <Box
+          sx={{
+            border: "1px solid rgba(255, 255, 255, 0.05)",
+            borderRadius: "4px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: spacing(12),
+            padding: `${spacing(3)} ${spacing(6)}`,
+            position: "relative",
+          }}
+        >
+          <Box
+            sx={{
+              background: "#60FFE7",
+              borderRadius: "50%",
+              position: "absolute",
+              top: "0%",
+              right: "0%",
+              width: "55%",
+              height: "100%",
+              filter: "blur(200px)",
+              opacity: "0.5",
+              zIndex: "0",
+            }}
+          ></Box>
+
+          <Box>
+            <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
+              Conoces sobre criptomonedas?
+            </Typography>
+            <Typography sx={{ marginTop: spacing(1) }}>
+              Aprende acerca de criptomonedas ahora mismo.{" "}
+            </Typography>
+          </Box>
+          <Box>
+            <Link
+              underline="none"
+              color="text.primary"
+              sx={{
+                bgcolor: "primary.main",
+                padding: spacing(2, 5),
+                borderRadius: "8px",
+                fontWeight: "600",
+              }}
+              href="#learn"
+            >
+              Aprender
+            </Link>
+          </Box>
         </Box>
         <Box
           sx={{
@@ -264,8 +316,23 @@ export default function Home<T>() {
             marginTop: spacing(16),
             justifyContent: "space-between",
             rowGap: spacing(4),
+            position: "relative",
           }}
         >
+          <Box
+            sx={{
+              background: "#FF00C7",
+              borderRadius: "50%",
+              position: "absolute",
+              top: "0%",
+              left: "0%",
+              width: "55%",
+              height: "15%",
+              filter: "blur(200px)",
+              opacity: "0.5",
+              zIndex: "0",
+            }}
+          ></Box>
           <Box>
             <Typography variant="h4" sx={{ fontWeight: "700" }}>
               Como empezar

@@ -1,13 +1,12 @@
+import { useRef, useState } from "react";
+
 import useSWR from "swr";
 
 import { Box, Typography, TextField, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { useRef, useState } from "react";
-import { cryptoNews } from "lib/apiUrl";
 import ArticleCard from "./ArticleCard";
-
 interface ArticleData {
   title: string;
   description: string;
@@ -22,13 +21,17 @@ export default function CryptoNewsData() {
   const [coinNameValue, setCoinNameValue] = useState<string | undefined>(
     "bitcoin"
   );
-
-  const { data: cryptoNewsData } = useSWR(cryptoNews(coinNameValue));
+  const { data: cryptoNewsData } = useSWR(
+    `api/crypto-news-data?cryptoName=${coinNameValue}`
+  );
   const loading = !cryptoNewsData;
+
+  console.log(cryptoNewsData);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const value = inputRef.current?.value;
+    console.log(value);
     setCoinNameValue(value);
   };
 
@@ -39,7 +42,9 @@ export default function CryptoNewsData() {
       }}
     >
       <Box id="news" sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h4">Noticias sobre criptomonedas</Typography>
+        <Typography variant="h4" sx={{ fontWeight: "700" }}>
+          Noticias en tendencia
+        </Typography>
         <Box>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -73,7 +78,8 @@ export default function CryptoNewsData() {
               <CircularProgress />
             </Box>
           ) : (
-            cryptoNewsData?.articles
+            cryptoNewsData &&
+            cryptoNewsData.news.articles
               .slice(0, 10)
               .map((article: ArticleData, i: number) => (
                 <Grid

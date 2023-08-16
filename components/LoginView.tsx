@@ -57,7 +57,7 @@ export default function LoginView({ formik, call }: { formik: any }) {
             height: "56px",
             padding: spacing(2, 0),
             marginTop: spacing(2),
-            borderRadius: shape.borderRadius,
+            borderRadius: "8px",
           }}
           type="submit"
         >
