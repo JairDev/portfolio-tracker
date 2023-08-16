@@ -99,7 +99,7 @@ function TableComponent({ data = [] }: TablePropsArray) {
                 Último precio
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="center">
-                Cambio
+                Cambio/24h
               </TableCell>
               <TableCell sx={{ borderBottom: borderStyle }} align="center">
                 7d

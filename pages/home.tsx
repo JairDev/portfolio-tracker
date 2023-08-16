@@ -30,7 +30,7 @@ import CryptoNewsData from "components/CryptoNewsData";
 import fetchJson from "lib/fetchJson";
 import { coinId, urlCoin } from "lib/apiUrl";
 
-type ResponseSearchCoin = {
+type ResponseSearchCoin<T> = {
   id?: string;
   name?: string;
   market_data?: {
@@ -38,6 +38,9 @@ type ResponseSearchCoin = {
       usd: number;
     };
     price_change_percentage_24h: number;
+    sparkline_7d: {
+      price: Array<T>;
+    };
   };
   image?: {
     small: string;
@@ -55,7 +58,7 @@ export default function Home<T>() {
   // const { data: coinData } = useSWR(urlCoin);
   const coinData = [];
   const loading = !coinData;
-  const [singleCoin, setSingleCoin] = useState<Array<T>>();
+  const [singleCoin, setSingleCoin] = useState<Array<T>>([]);
   const inputRef: React.RefObject<InputRef> = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState<undefined | string>(
@@ -65,8 +68,7 @@ export default function Home<T>() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const idCoinName = coinId(inputRef?.current?.value);
-    const res: ResponseSearchCoin = await fetchJson(idCoinName);
-
+    const res: ResponseSearchCoin<T> = await fetchJson(idCoinName);
     if (res?.error) {
       setErrorMessage("Moneda no encontrada");
       setTimeout(() => {
@@ -82,6 +84,7 @@ export default function Home<T>() {
         res?.market_data?.price_change_percentage_24h,
       image: res?.image?.small,
       market_cap_rank: res?.market_cap_rank,
+      sparkline_in_7d: res?.market_data?.sparkline_7d,
     };
     //@ts-ignore
     setSingleCoin((prev) => [...prev, newObj]);
@@ -384,7 +387,7 @@ export default function Home<T>() {
           </Box>
         </Grid>
 
-        <CryptoNewsData />
+        {/* <CryptoNewsData /> */}
       </main>
     </div>
   );
