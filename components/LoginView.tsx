@@ -20,7 +20,7 @@ import Input from "./Input";
 
 interface LoginViewProps {}
 
-export default function LoginView({ formik, call }: { formik: any }) {
+export default function LoginView({ formik, startLogin }) {
   const { spacing, shape } = useTheme();
   // console.log("call ->", call);
   return (
@@ -61,7 +61,7 @@ export default function LoginView({ formik, call }: { formik: any }) {
           }}
           type="submit"
         >
-          {call ? (
+          {startLogin ? (
             <CircularProgress sx={{ color: "#ffffff", position: "absolute" }} />
           ) : (
             "Iniciar sesión"
