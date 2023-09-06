@@ -19,7 +19,7 @@ import {
 import Input from "./Input";
 
 interface LoginViewProps {}
-
+// @ts-ignore
 export default function LoginView({ formik, startLogin }) {
   const { spacing, shape } = useTheme();
   // console.log("call ->", call);
