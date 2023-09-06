@@ -8,8 +8,6 @@ import User from "models/User";
 
 const { serverRuntimeConfig } = getConfig();
 
-export default withSessionRoute(loginRoute);
-
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
 
@@ -56,3 +54,5 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     }
   }
 }
+
+export default withSessionRoute(loginRoute);

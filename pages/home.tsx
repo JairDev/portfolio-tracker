@@ -28,7 +28,7 @@ import { Table } from "components/Table";
 import CryptoNewsData from "components/CryptoNewsData";
 
 import fetchJson from "lib/fetchJson";
-import { coinId, urlCoin } from "lib/apiUrl";
+import { coinId, testData, urlCoin } from "lib/apiUrl";
 
 type ResponseSearchCoin<T> = {
   id?: string;
@@ -53,46 +53,11 @@ type InputRef = {
   value: null;
 };
 
-export default function Home<T>() {
+export default function Home() {
   const { spacing } = useTheme();
   // const { data: coinData } = useSWR(urlCoin);
-  const coinData = [];
+  const coinData = testData;
   const loading = !coinData;
-  const [singleCoin, setSingleCoin] = useState<Array<T>>([]);
-  const inputRef: React.RefObject<InputRef> = useRef(null);
-
-  const [errorMessage, setErrorMessage] = useState<undefined | string>(
-    undefined
-  );
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const idCoinName = coinId(inputRef?.current?.value);
-    const res: ResponseSearchCoin<T> = await fetchJson(idCoinName);
-    if (res?.error) {
-      setErrorMessage("Moneda no encontrada");
-      setTimeout(() => {
-        setErrorMessage(undefined);
-      }, 1500);
-      return;
-    }
-    const newObj = {
-      id: res?.id,
-      name: res?.name,
-      current_price: res?.market_data?.current_price?.usd,
-      price_change_percentage_24h:
-        res?.market_data?.price_change_percentage_24h,
-      image: res?.image?.small,
-      market_cap_rank: res?.market_cap_rank,
-      sparkline_in_7d: res?.market_data?.sparkline_7d,
-    };
-    //@ts-ignore
-    setSingleCoin((prev) => [...prev, newObj]);
-  };
-
-  const handleClick = () => {
-    setSingleCoin([]);
-  };
 
   return (
     <div>
@@ -247,70 +212,7 @@ export default function Home<T>() {
             paddingTop: spacing(18),
           }}
         >
-          <Grid
-            container
-            columns={{ lg: 2 }}
-            id="market"
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingBottom: spacing(2),
-              rowGap: spacing(1),
-            }}
-          >
-            <Typography variant="h4" sx={{ fontWeight: "500" }}>
-              Actualización del mercado
-            </Typography>
-            <Box sx={{ position: "relative" }}>
-              {errorMessage && (
-                <Alert
-                  sx={{ position: "absolute", top: "-90px" }}
-                  severity="error"
-                >
-                  <AlertTitle>Error</AlertTitle>
-                  {errorMessage}
-                </Alert>
-              )}
-
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  inputRef={inputRef}
-                  placeholder="Buscar criptomoneda"
-                  sx={{
-                    width: "100%",
-                    border: "1px solid rgba(255, 255, 255, 0.103)",
-                    borderRadius: "8px",
-                    background: "#160C24",
-                    margin: "0px",
-                  }}
-                />
-              </form>
-            </Box>
-          </Grid>
-
-          <Box>
-            {
-              //@ts-ignore
-              singleCoin?.length > 0 ? (
-                //@ts-ignore
-                <Table data={singleCoin} />
-              ) : (
-                !loading && <Table data={coinData} />
-              )
-            }
-
-            {
-              //@ts-ignore
-              singleCoin?.length > 0 && (
-                <Button
-                  variant="text"
-                  text="Ver top 10"
-                  onClick={handleClick}
-                />
-              )
-            }
-          </Box>
+          <Box>{!loading && <Table data={coinData} />}</Box>
         </Box>
         <Grid
           container

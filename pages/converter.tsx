@@ -136,8 +136,6 @@ export default function Converter() {
               isFiat={isCryptoData ? false : true}
               selectValue={isCryptoData ? cryptoName : fiatName}
             />
-            {isCryptoData ? "crypto" : "fiat"}
-            {isCryptoData ? "cryptoselect" : "fiatselect"}
           </Box>
           <Box
             sx={{
@@ -183,8 +181,6 @@ export default function Converter() {
               isFiat={isFiatData ? true : false}
               selectValue={isFiatData ? fiatName : cryptoName}
             />
-            {isFiatData ? "fiat" : "crypto"}
-            {isFiatData ? "fiatselect" : "cryptoselect"}
           </Box>
         </Box>
       </Box>

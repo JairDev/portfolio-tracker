@@ -1,27 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 
-import Image from "next/image";
+import { coinId } from "lib/apiUrl";
+import fetchJson from "lib/fetchJson";
 
 import { useTheme } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
+import {
+  Grid,
+  TextField,
+  Typography,
+  Alert,
+  AlertTitle,
+  Box,
+} from "@mui/material";
 
-import formatCurrency from "lib/formatCurrency";
-import LineChart from "./LineChart";
-import Input from "./Input";
+import { Button } from "./Button";
+import TableView from "./TableView";
+
+type ResponseSearchCoin<T> = {
+  id?: string;
+  name?: string;
+  market_data?: {
+    current_price: {
+      usd: number;
+    };
+    price_change_percentage_24h: number;
+    sparkline_7d: {
+      price: Array<T>;
+    };
+  };
+  image?: {
+    small: string;
+  };
+  market_cap_rank?: number;
+  error: string;
+};
 
 interface CoinData {
   priceChart: unknown[];
   avgPrice: number;
-  holding: number;
   name: string;
   usd: number;
   market_cap_rank: string;
@@ -29,9 +45,8 @@ interface CoinData {
   current_price: number;
   price_change_percentage_24h: number;
   high_24h: string;
-  profit: number;
-  amountCoin: number;
   _id: string;
+  sparkline_in_7d: [];
 }
 
 interface TablePropsArray {
@@ -39,143 +54,105 @@ interface TablePropsArray {
   tableHome?: boolean;
 }
 
-function TableComponent({ data = [] }: TablePropsArray) {
-  const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [priceChart, setPriceChart] = useState([]);
-  const [inputCoinName, setInputCoinName] = useState("");
+type InputRef = {
+  value: null;
+};
 
+function TableComponent<T>({ data = [] }: TablePropsArray) {
   const { spacing } = useTheme();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log("q");
-    // setInputCoinName(e.target.value);
-  };
+  const [singleCoin, setSingleCoin] = useState<Array<T>>([]);
+  const loading = !data;
+
+  const inputRef: React.RefObject<InputRef> = useRef(null);
+
+  const [errorMessage, setErrorMessage] = useState<undefined | string>(
+    undefined
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const idCoinName = coinId(inputRef?.current?.value);
+    const res: ResponseSearchCoin<T> = await fetchJson(idCoinName);
+    if (res?.error) {
+      setErrorMessage("Moneda no encontrada");
+      setTimeout(() => {
+        setErrorMessage(undefined);
+      }, 1500);
+      return;
+    }
+    const newObj = {
+      id: res?.id,
+      name: res?.name,
+      current_price: res?.market_data?.current_price?.usd,
+      price_change_percentage_24h:
+        res?.market_data?.price_change_percentage_24h,
+      image: res?.image?.small,
+      market_cap_rank: res?.market_cap_rank,
+      sparkline_in_7d: res?.market_data?.sparkline_7d,
+    };
+    //@ts-ignore
+    setSingleCoin((prev) => [...prev, newObj]);
+  };
 
-    setInputCoinName("");
+  const handleClick = () => {
+    setSingleCoin([]);
   };
 
   return (
-    <Box sx={{ position: "relative " }}>
-      {/* {errorMessage && (
-        <Alert sx={{ position: "absolute", top: "-70px" }} severity="error">
-          <AlertTitle>Error</AlertTitle>
-          {errorMessage}
-        </Alert>
-      )}
-      {successMessage && (
-        <Alert sx={{ position: "absolute", top: "-70px" }} severity="success">
-          <AlertTitle>Success</AlertTitle>
-          {successMessage}
-        </Alert>
-      )} */}
-      {/* <form onSubmit={handleSubmit}> */}
-      {/* <Input
-        onChange={handleChange}
-        placeHolder="Buscar criptomoneda"
-        value={inputCoinName}
-        type="text"
-      /> */}
-      {/* </form> */}
+    <Box sx={{ position: "relative" }}>
+      <Grid
+        container
+        columns={{ lg: 2 }}
+        id="market"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingBottom: spacing(2),
+          rowGap: spacing(1),
+        }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: "500" }}>
+          Actualización del mercado
+        </Typography>
+        <Box sx={{ position: "relative" }}>
+          {errorMessage && (
+            <Alert sx={{ position: "absolute", top: "-90px" }} severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {errorMessage}
+            </Alert>
+          )}
 
-      <TableContainer component={Paper}>
-        <Table
-          sx={{
-            minWidth: 650,
-            background: "rgba(255, 255, 255, 0.02)",
-            // background: "red",
-            border: borderStyle,
-          }}
-          aria-label="simple table"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ borderBottom: borderStyle }}>Rank</TableCell>
-              <TableCell sx={{ borderBottom: borderStyle }}>Nombre</TableCell>
-              <TableCell sx={{ borderBottom: borderStyle }}>
-                Último precio
-              </TableCell>
-              <TableCell sx={{ borderBottom: borderStyle }} align="center">
-                Cambio/24h
-              </TableCell>
-              <TableCell sx={{ borderBottom: borderStyle }} align="center">
-                7d
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data &&
-              data.slice(0, 10).map((coin) => (
-                <TableRow
-                  key={coin?.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell
-                    sx={{ borderBottom: borderStyle }}
-                    component="th"
-                    scope="row"
-                  >
-                    {coin?.market_cap_rank}
-                  </TableCell>
-
-                  <TableCell
-                    sx={{ borderBottom: borderStyle }}
-                    component="th"
-                    scope="row"
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Image src={coin?.image} alt="" width={40} height={40} />
-                      <Box sx={{ marginLeft: spacing(1) }}>{coin?.name}</Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ borderBottom: borderStyle }}>
-                    ${formatCurrency(coin?.current_price, "usd")}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderBottom: borderStyle,
-                      color:
-                        Number(coin?.price_change_percentage_24h) < 0
-                          ? "error.main"
-                          : "primary.main",
-                    }}
-                    align="center"
-                  >
-                    {formatCurrency(
-                      Number(coin?.price_change_percentage_24h.toFixed(2)),
-                      "usd"
-                    )}
-                    %
-                  </TableCell>
-                  <TableCell
-                    sx={{ borderBottom: borderStyle, width: "120px" }}
-                    align="right"
-                  >
-                    <Box sx={{ width: "120px" }}>
-                      <LineChart
-                        // priceChartData={coin?.sparkline_in_7d}
-                        price7d={coin?.sparkline_in_7d}
-                        chartValueClassName={
-                          Number(coin?.price_change_percentage_24h) < 0
-                            ? "#d32f2f"
-                            : "#0FAE96"
-                        }
-                      />
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              inputRef={inputRef}
+              placeholder="Buscar criptomoneda"
+              sx={{
+                width: "100%",
+                border: "1px solid rgba(255, 255, 255, 0.103)",
+                borderRadius: "8px",
+                background: "#160C24",
+                margin: "0px",
+              }}
+            />
+          </form>
+        </Box>
+      </Grid>
+      {
+        //@ts-ignore
+        singleCoin?.length > 0 ? (
+          //@ts-ignore
+          <TableView data={singleCoin} />
+        ) : (
+          !loading && <TableView data={data} />
+        )
+      }
+      {
+        //@ts-ignore
+        singleCoin?.length > 0 && (
+          <Button variant="text" text="Ver top 10" onClick={handleClick} />
+        )
+      }
     </Box>
   );
 }

@@ -60,9 +60,12 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const [isSell, setIsSell] = useState(false);
   const [open, setOpen] = React.useState(false);
   let total = Number(coinAvgPrice) * Number(coinHolding);
-  // console.log(coinDataApi);
+  console.log(coinDataApi, coinName);
 
-  const find = coinDataApi.find((coin: { id: string }) => coin.id === coinName);
+  const find = coinDataApi?.find(
+    (coin: { id: string }) => coin.id === coinName
+  );
+  // const find = {};
 
   const handleOpen = () => {
     setOpen(true);
@@ -87,6 +90,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
     e.preventDefault();
     const coinNameToLowerCase = coinName.toLowerCase();
     const lastPrice = find.current_price;
+    // const lastPrice = 2222;
 
     const form = {
       name: coinNameToLowerCase,
@@ -252,7 +256,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
 export default function BasicModal({ open, setOpen }: BasicModalProps) {
   const { spacing } = useTheme();
   const { data: coinData } = useSWR(urlCoin);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("bitcoin");
 
   const handleClose = () => {
     setOpen(false);
@@ -279,8 +283,11 @@ export default function BasicModal({ open, setOpen }: BasicModalProps) {
               <Box sx={{ marginTop: spacing(1) }}>
                 <form>
                   {
-                    //@ts-ignore
-                    <SelectCoin data={coinData} setValue={setValue} />
+                    <SelectCoin
+                      data={coinData}
+                      setValue={setValue}
+                      selectValue={value}
+                    />
                   }
                 </form>
               </Box>
