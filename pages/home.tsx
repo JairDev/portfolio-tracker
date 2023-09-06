@@ -55,8 +55,8 @@ type InputRef = {
 
 export default function Home() {
   const { spacing } = useTheme();
-  // const { data: coinData } = useSWR(urlCoin);
-  const coinData = testData;
+  const { data: coinData } = useSWR(urlCoin);
+  // const coinData = testData;
   const loading = !coinData;
 
   return (
