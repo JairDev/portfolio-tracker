@@ -123,35 +123,35 @@ export default function Home() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               {coinData &&
-                coinData
-                  .slice(0, 3)
-                  .map(
-                    ({
-                      id,
-                      name,
-                      current_price,
-                      price_change_percentage_24h,
-                      image,
-                      sparkline_in_7d,
-                    }: {
-                      id: string;
-                      name: string;
-                      current_price: number;
-                      price_change_percentage_24h: number;
-                      image: string;
-                      sparkline_in_7d: Array<T>;
-                    }) => (
-                      <Grid key={id} xs item>
-                        <MarketTrendCard
-                          name={name}
-                          currentPrice={current_price}
-                          priceChange={price_change_percentage_24h}
-                          image={image}
-                          price7d={sparkline_in_7d}
-                        />
-                      </Grid>
-                    )
-                  )}
+                coinData.slice(0, 3).map(
+                  //@ts-ignore
+                  ({
+                    id,
+                    name,
+                    current_price,
+                    price_change_percentage_24h,
+                    image,
+                    sparkline_in_7d,
+                  }: {
+                    id: string;
+                    name: string;
+                    current_price: number;
+                    price_change_percentage_24h: number;
+                    image: string;
+                    //@ts-ignore
+                    sparkline_in_7d: Array;
+                  }) => (
+                    <Grid key={id} xs item>
+                      <MarketTrendCard
+                        name={name}
+                        currentPrice={current_price}
+                        priceChange={price_change_percentage_24h}
+                        image={image}
+                        price7d={sparkline_in_7d}
+                      />
+                    </Grid>
+                  )
+                )}
             </Grid>
           </Grid>
         </Box>
@@ -207,6 +207,7 @@ export default function Home() {
             </Link>
           </Box>
         </Box>
+
         <Box
           sx={{
             paddingTop: spacing(18),

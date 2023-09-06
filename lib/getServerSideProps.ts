@@ -1,5 +1,7 @@
+import dbConnect from "lib/mongodb";
 //@ts-ignore
 export const withGetServerSideProps = async function ({ req }) {
+  await dbConnect();
   let userSession = req?.session?.user;
   if (userSession) {
     try {
@@ -8,15 +10,11 @@ export const withGetServerSideProps = async function ({ req }) {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-
           Authorization: `Bearer ${userSession?.token}`,
         },
       });
-
       const userData = await res.json();
-
       const data = JSON.parse(JSON.stringify({ ...userData }));
-
       return {
         props: {
           data,
@@ -26,7 +24,6 @@ export const withGetServerSideProps = async function ({ req }) {
       console.log(error);
     }
   }
-
   return {
     props: {},
   };

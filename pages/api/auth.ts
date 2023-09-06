@@ -26,9 +26,9 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const token = req.headers.authorization?.split(" ")[1] as string;
-
     const decodeToken = jwt.verify(token, serverRuntimeConfig.secret);
     const user = decodeToken;
+    // console.log(token);
     //@ts-ignore
     const { userId } = user;
     const { coins } = await getAllUserData(userId);
@@ -43,6 +43,7 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
       auth: "auth",
     });
   } catch (error) {
+    console.log(error);
     res.status(401).json({
       ...initState,
       error,
