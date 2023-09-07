@@ -13,7 +13,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 
   const initState = { authenticated: false, userId: null, userEmail: null };
   const { email, password } = req.body;
-  console.log("login api");
   if (req.method === "POST") {
     const user = await User.findOne({ email: email });
     if (!user) {
