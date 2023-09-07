@@ -11,6 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { withGetServerSideProps } from "lib/getServerSideProps";
 import { withSessionSsr } from "lib/sessions";
+import { testData } from "lib/apiUrl";
 
 import { Button } from "components/Button";
 import BasicModal from "components/Modal";
@@ -54,7 +55,8 @@ interface CoinFilter {
 
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
-  const { data: coinDataApi } = useSWR(urlCoin);
+  // const { data: coinDataApi } = useSWR(urlCoin);
+  const coinDataApi = testData;
   const [mounted, setMounted] = useState(false);
   const { spacing } = useTheme();
   const { authenticated, coins } = data;

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 import getConfig from "next/config";
 
@@ -9,14 +9,14 @@ import getAllUserData from "lib/getAllUserData";
 
 const { serverRuntimeConfig } = getConfig();
 
-export default withSessionRoute(auth);
+export default withSessionRoute(userAuthenticated);
 
-interface JwtPayload {
+interface JwtTypes {
   userId: string;
   userEmail: string;
 }
 
-async function auth(req: NextApiRequest, res: NextApiResponse) {
+async function userAuthenticated(req: NextApiRequest, res: NextApiResponse) {
   const initState = {
     authenticated: false,
     userId: null,
@@ -32,27 +32,23 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
     if (!req.headers.authorization) {
       return null;
     }
-    const decodeToken = jwt.verify(token, serverRuntimeConfig.secret);
-    const user = decodeToken;
-    //@ts-ignore
-    const { userId } = user;
+    const decodeToken = jwt.verify(
+      token,
+      serverRuntimeConfig.secret
+    ) as JwtTypes;
+    const { userId, userEmail } = decodeToken;
     const { coins } = await getAllUserData(userId);
     res.status(200).json({
-      message: "auth success",
       authenticated: true,
-      //@ts-ignore
-      userId: user.userId,
-      //@ts-ignore
-      userEmail: user.userEmail,
+      userId: userId,
+      userEmail: userEmail,
       coins,
-      auth: "auth",
     });
   } catch (error) {
     console.log(error);
     res.status(401).json({
       ...initState,
       error,
-      other: "error",
     });
   }
 }

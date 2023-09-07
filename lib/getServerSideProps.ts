@@ -1,11 +1,18 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "lib/mongodb";
-//@ts-ignore
-export const withGetServerSideProps = async function ({ req }) {
+
+export const withGetServerSideProps = async function ({
+  req,
+  res,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}) {
   await dbConnect();
   let userSession = req?.session?.user;
   if (userSession) {
     try {
-      const res = await fetch(`https://${req.headers.host}/api/auth`, {
+      const res = await fetch(`http://${req.headers.host}/api/auth`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -22,7 +29,7 @@ export const withGetServerSideProps = async function ({ req }) {
         },
       };
     } catch (error) {
-      console.log(error);
+      res.status(401).send({ message: "Usuario no autorizado" });
     }
   }
   return {
