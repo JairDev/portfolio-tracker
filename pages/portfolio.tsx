@@ -111,7 +111,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   if (!mounted) {
     return null;
   }
-  // console.log(authenticated);
+  console.log(authenticated);
   if (!authenticated) {
     return (
       <Box
