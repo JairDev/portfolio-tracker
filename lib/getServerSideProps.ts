@@ -13,6 +13,7 @@ export const withGetServerSideProps = async function ({ req }) {
           Authorization: `Bearer ${userSession?.token}`,
         },
       });
+
       const userData = await res.json();
       const data = JSON.parse(JSON.stringify({ ...userData }));
       return {
