@@ -5,7 +5,7 @@ export const withGetServerSideProps = async function ({ req }) {
   let userSession = req?.session?.user;
   if (userSession) {
     try {
-      const res = await fetch(`http://${req.headers.host}/api/auth`, {
+      const res = await fetch(`https://${req.headers.host}/api/auth`, {
         method: "POST",
         headers: {
           Accept: "application/json",
