@@ -19,12 +19,12 @@ interface JwtPayload {
 export default withSessionRoute(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const token = req.headers.authorization?.split(" ")[1] as string;
+    console.log(token);
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     try {
       const decoded = jwt.verify(token, serverRuntimeConfig.secret);
-      // console.log(decoded);
       //@ts-ignore
       const userData = await getAllUserData(decoded.userId);
       return res.status(200).json({ ...userData, authenticated: true });
