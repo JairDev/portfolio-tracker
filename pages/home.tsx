@@ -55,8 +55,8 @@ type InputRef = {
 
 export default function Home() {
   const { spacing } = useTheme();
-  // const { data: coinData } = useSWR(urlCoin);
-  const coinData = testData;
+  const { data: coinData } = useSWR(urlCoin);
+  // const coinData = testData;
   const loading = !coinData;
 
   return (
@@ -165,7 +165,6 @@ export default function Home() {
             justifyContent: "space-between",
             alignItems: { sm: "center" },
             marginTop: spacing(12),
-            // padding: `${spacing(3)} ${spacing(6)}`,
             padding: { xs: `${spacing(3)} ${spacing(2)}`, sm: 2, md: 3 },
             position: "relative",
           }}
