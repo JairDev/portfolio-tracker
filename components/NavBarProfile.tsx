@@ -72,7 +72,9 @@ export default function NavBarProfile() {
         <CircularProgress />
       </Box>
     );
+    // return null;
   }
+  // console.log(authenticated);
 
   if (!authenticated) {
     return (

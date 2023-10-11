@@ -32,6 +32,7 @@ function ButtonComponent({
         alignItems: "center",
         justifyContent: "center",
         fontWeight: "600",
+        width: "100%",
       }}
     >
       <Box

@@ -122,12 +122,13 @@ export default function Converter() {
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             gap: "16px",
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: { sm: "center" },
           }}
         >
-          <Box sx={{ flex: "0 1 45%" }}>
+          <Box sx={{ flex: "1" }}>
             <SelectCoin
               data={isCryptoData ? cryptoData : fiatData}
               setValue={

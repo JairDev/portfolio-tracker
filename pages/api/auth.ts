@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 import getConfig from "next/config";
 
@@ -29,9 +29,6 @@ async function userAuthenticated(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    if (!req.headers.authorization) {
-      return null;
-    }
     const decodeToken = jwt.verify(
       token,
       serverRuntimeConfig.secret

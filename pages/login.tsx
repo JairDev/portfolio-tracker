@@ -52,7 +52,6 @@ export default function Login() {
       );
 
       const { authenticated, message } = await res;
-      // console.log(authenticated);
 
       if (authenticated) {
         setStartLogin(false);

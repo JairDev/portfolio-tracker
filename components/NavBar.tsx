@@ -67,9 +67,13 @@ export default function NavBar() {
           </Typography>
           <Typography
             component="span"
-            sx={{ color: palette.primary.main, fontWeight: "700" }}
+            sx={{
+              color: palette.primary.main,
+              fontWeight: "700",
+              fontFamily: "monospace",
+            }}
           >
-            App
+            Track
           </Typography>
         </Box>
 
