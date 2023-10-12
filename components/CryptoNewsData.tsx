@@ -26,8 +26,6 @@ export default function CryptoNewsData() {
   );
   const loading = !cryptoNewsData;
 
-  console.log(cryptoNewsData);
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const value = inputRef.current?.value;

@@ -53,12 +53,17 @@ type InputRef = {
   value: null;
 };
 
+const INTERVAL = 60000;
+
 export default function Home() {
   const { spacing } = useTheme();
-  const { data: coinData } = useSWR(urlCoin);
+  const { data: coinData, error } = useSWR(urlCoin, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: INTERVAL,
+  });
   // const coinData = testData;
   const loading = !coinData;
-
   return (
     <div>
       <Head>
@@ -291,7 +296,7 @@ export default function Home() {
           </Box>
         </Grid>
 
-        {/* <CryptoNewsData /> */}
+        <CryptoNewsData />
       </main>
     </div>
   );

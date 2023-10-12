@@ -123,13 +123,13 @@ export default function Footer() {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          // justifyContent: "center",
+          // flexDirection: "column",
+          justifyContent: "center",
           // alignItems: "center",
           marginTop: spacing(4),
         }}
       >
-        <Box sx={{ display: "flex" }}>
+        {/* <Box sx={{ display: "flex" }}>
           <Typography sx={{ fontSize: "14px", marginRight: spacing(1) }}>
             Diseño
           </Typography>
@@ -140,7 +140,7 @@ export default function Footer() {
           >
             @Bdyhm
           </Link>
-        </Box>
+        </Box> */}
 
         <Box sx={{ display: "flex", marginTop: spacing(1) }}>
           <Typography sx={{ fontSize: "14px", marginRight: spacing(1) }}>
