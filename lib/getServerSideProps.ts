@@ -23,6 +23,7 @@ export const withGetServerSideProps = async function ({
 
       const userData = await res.json();
       const data = JSON.parse(JSON.stringify({ ...userData }));
+      // console.log(data);
       return {
         props: {
           data,

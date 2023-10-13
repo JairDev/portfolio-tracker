@@ -1,18 +1,31 @@
 import mongoose from "mongoose";
 import dbConnect from "lib/mongodb";
 
-const CoinSchema = new mongoose.Schema({
-  name: {
+const transactionSchema = new mongoose.Schema({
+  type: {
     type: String,
+    enum: ["buy", "sell"],
+    required: true,
   },
-  avgPrice: {
+  price: {
     type: Number,
+    required: true,
   },
   holding: {
     type: Number,
+    required: true,
   },
+});
+
+const CoinSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  transactions: [transactionSchema],
   profit: {
     type: Number,
+    default: 0,
   },
 });
 

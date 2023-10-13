@@ -8,58 +8,59 @@ export default async function coinApi(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await dbConnect();
+  try {
+    await dbConnect();
 
-  const { name, avgPrice, holding, sell, lastPrice } = req.body;
-  const coinFind = await Coin.findOne({ name: name });
+    const { name, avgPrice, holding, sell, lastPrice } = req.body;
+    const coinFind = await Coin.findOne({ name });
 
-  const profit = (lastPrice - avgPrice) * holding;
-  const avgPriceNumber = Number(avgPrice);
+    const avgPriceNumber = Number(avgPrice);
+    const profit =
+      (sell ? avgPrice - lastPrice : lastPrice - avgPrice) * holding;
 
-  if (coinFind) {
-    if (sell) {
-      const updateHolding = Number(coinFind.holding) - Number(holding);
-      const sellProfit = (avgPrice - lastPrice) * holding;
-      const resultSellProfit = coinFind.profit + sellProfit;
+    if (coinFind) {
+      const updateHolding =
+        Number(coinFind.holding) + (sell ? Number(-holding) : Number(holding));
+      const updatedProfit = coinFind.profit + profit;
+
       const update = await Coin.findOneAndUpdate(
-        { name: name },
+        { name },
         {
-          avgPrice: avgPriceNumber,
-          holding: updateHolding,
-          profit: resultSellProfit,
+          transactions: [
+            {
+              type: sell ? "sell" : "buy",
+              price: avgPriceNumber,
+              holding,
+            },
+          ],
+          profit: updatedProfit,
         },
         { returnDocument: "after" }
       );
+
       res.status(201).json({ message: "Activo actualizado" });
     } else {
-      const updateHolding = Number(coinFind.holding) + Number(holding);
-      const resultUpdateBuyProfit = coinFind.profit + profit;
+      if (!(name && avgPrice && holding)) {
+        throw new Error("Invalid input data");
+      }
 
-      const update = await Coin.findOneAndUpdate(
-        { name: name },
-        {
-          avgPrice: avgPriceNumber,
-          holding: updateHolding,
-          profit: resultUpdateBuyProfit,
-        }
-      );
-
-      res.status(201).json({ message: "Activo actualizado" });
-    }
-  } else {
-    if (name && avgPrice && holding) {
-      const coin = await new Coin({
+      const coin = new Coin({
         name,
-        avgPrice,
-        holding,
-        profit,
+        transactions: [
+          {
+            type: sell ? "sell" : "buy",
+            price: avgPriceNumber,
+            holding,
+          },
+        ],
+        profit: profit,
       });
+      // console.log(coin);
       const result = await coin.save();
+
       res.status(201).json({ message: "Activo añadido", coinId: result._id });
-    } else {
-      res
-        .status(500)
-        .json({ message: " Error al añadir un activo", coinId: null });
     }
+  } catch (error) {
+    res.status(500).json({ message: "Error al procesar la solicitud", error });
   }
 }

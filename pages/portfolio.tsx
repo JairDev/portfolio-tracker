@@ -53,10 +53,16 @@ interface CoinFilter {
   usd?: number;
 }
 
+const INTERVAL = 60000;
+
 //@ts-ignore
 export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
-  // const { data: coinDataApi } = useSWR(urlCoin);
-  const coinDataApi = testData;
+  const { data: coinDataApi } = useSWR(urlCoin, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: INTERVAL,
+  });
+  // const coinDataApi = testData;
   const [mounted, setMounted] = useState(false);
   const { spacing } = useTheme();
   const { authenticated, coins } = data;
@@ -73,12 +79,27 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
 
   useEffect(() => {
     if (coins) {
+      // console.log(coins);
       const getLastPrice = async () => {
         const resultUserData = coins.map(async (userDatadb, i) => {
-          const lastPriceeUrl = coinSinglePrice(userDatadb.name);
-          const lastPrice: any = await fetchJson(lastPriceeUrl);
-          const totalAmount =
-            lastPrice[userDatadb.name].usd * userDatadb?.holding;
+          const lastPriceUrl = coinSinglePrice(userDatadb.name);
+          // const lastPrice: any = await fetchJson(lastPriceUrl);
+          const lastPrice: any = coinDataApi?.find(
+            (coin: { id: string }) => coin.id === userDatadb.name
+          );
+          let profit = 0;
+          userDatadb.transactions.forEach((transaction) => {
+            const { type, price, holding } = transaction;
+
+            if (type === "buy") {
+              profit = (lastPrice.current_price - price) * holding;
+            } else if (type === "sell") {
+              profit = (price - lastPrice.current_price) * holding;
+            }
+          });
+          // console.log(profit);
+          // console.log(userDatadb);
+          const totalAmount = lastPrice?.current_price * userDatadb?.holding;
           const filter = coinDataApi?.filter(
             (coin: CoinFilter) => coin?.id === userDatadb?.name
           );
@@ -88,8 +109,8 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             market_cap_rank: coin?.market_cap_rank,
             image: coin?.image,
             totalAmount,
-            current_price: lastPrice[userDatadb.name].usd,
-            profit: userDatadb.profit,
+            current_price: lastPrice?.current_price,
+            profit: userDatadb?.profit,
           }));
           return resultNewUserDataObject;
         });
@@ -226,7 +247,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
               <AddCircleOutlineIcon />
             </Button>
           </Box>
-          <BasicModal open={open} setOpen={setOpen} />
+          <BasicModal open={open} setOpen={setOpen} coinData={coinDataApi} />
         </Box>
       </Box>
     );
@@ -294,6 +315,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
 
           <Box sx={{ marginTop: "16px" }}></Box>
         </Box>
+        <BasicModal open={open} setOpen={setOpen} coinData={coinDataApi} />
       </Box>
     </Box>
   );

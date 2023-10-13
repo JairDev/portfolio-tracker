@@ -35,6 +35,7 @@ async function userAuthenticated(req: NextApiRequest, res: NextApiResponse) {
     ) as JwtTypes;
     const { userId, userEmail } = decodeToken;
     const { coins } = await getAllUserData(userId);
+    // console.log(coins);
     res.status(200).json({
       authenticated: true,
       userId: userId,

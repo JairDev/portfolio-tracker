@@ -44,11 +44,14 @@ interface BasicModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+const INTERVAL = 60000;
 
-function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
-  const urlCoin =
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
-  const { data: coinDataApi } = useSWR(urlCoin);
+function ChildModal({
+  coinName,
+  setOpenParent,
+  setValue,
+  coinData,
+}: ChildModalProps) {
   const router = useRouter();
   const { userId } = useUser({});
   const { spacing, shape } = useTheme();
@@ -60,12 +63,9 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   const [isSell, setIsSell] = useState(false);
   const [open, setOpen] = React.useState(false);
   let total = Number(coinAvgPrice) * Number(coinHolding);
-  console.log(coinDataApi, coinName);
+  // console.log(coinData);
 
-  const find = coinDataApi?.find(
-    (coin: { id: string }) => coin.id === coinName
-  );
-  // const find = {};
+  const find = coinData?.find((coin: { id: string }) => coin.id === coinName);
 
   const handleOpen = () => {
     setOpen(true);
@@ -91,6 +91,7 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
     const coinNameToLowerCase = coinName.toLowerCase();
     const lastPrice = find.current_price;
     // const lastPrice = 2222;
+    console.log(lastPrice);
 
     const form = {
       name: coinNameToLowerCase,
@@ -253,11 +254,14 @@ function ChildModal({ coinName, setOpenParent, setValue }: ChildModalProps) {
   );
 }
 
-export default function BasicModal({ open, setOpen }: BasicModalProps) {
+export default function BasicModal({
+  open,
+  setOpen,
+  coinData,
+}: BasicModalProps) {
   const { spacing } = useTheme();
-  const { data: coinData } = useSWR(urlCoin);
   const [value, setValue] = useState("bitcoin");
-
+  // console.log(coinData);
   const handleClose = () => {
     setOpen(false);
     setValue("");
@@ -296,6 +300,7 @@ export default function BasicModal({ open, setOpen }: BasicModalProps) {
               coinName={value}
               setOpenParent={setOpen}
               setValue={setValue}
+              coinData={coinData}
             />
           </Box>
         </div>
