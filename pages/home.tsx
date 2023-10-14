@@ -296,7 +296,7 @@ export default function Home() {
           </Box>
         </Grid>
 
-        <CryptoNewsData />
+        {/* <CryptoNewsData /> */}
       </main>
     </div>
   );
