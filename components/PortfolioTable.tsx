@@ -43,7 +43,6 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
   const borderStyle = "1px solid rgba(255, 255, 255, 0.05)";
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  console.log(data);
   const handleDeleteClick = async (
     e: React.MouseEvent<HTMLButtonElement>,
     coinId: string

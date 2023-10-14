@@ -273,7 +273,6 @@ export default function BasicModal({
 }: BasicModalProps) {
   const { spacing } = useTheme();
   const [value, setValue] = useState("bitcoin");
-  console.log(coinData);
   const handleClose = () => {
     setOpen(false);
     setValue("");
