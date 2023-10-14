@@ -32,7 +32,7 @@ export default function CryptoNewsData() {
     console.log(value);
     setCoinNameValue(value);
   };
-  console.log(cryptoNewsData);
+  // console.log(cryptoNewsData);
 
   return (
     <Box
