@@ -55,7 +55,6 @@ export default async function coinApi(
         ],
         profit: profit,
       });
-      // console.log(coin);
       const result = await coin.save();
 
       res.status(201).json({ message: "Activo añadido", coinId: result._id });

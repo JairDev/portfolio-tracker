@@ -23,6 +23,9 @@ import screenApp from "../public/screen-app.png";
 import { coinId, coinSinglePrice, urlCoin } from "lib/apiUrl";
 import getApiCoinData from "lib/getApiCoinData";
 import fetchJson from "lib/fetchJson";
+import calculateProfit from "lib/calculateProfit";
+import holdingAmount from "lib/holdingAmount";
+import calculateAvgPrice from "lib/calculateAvgPrice";
 interface UserDataTypes {
   _id: string;
   name: string;
@@ -84,26 +87,13 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
           const lastPrice: any = coinDataApi?.find(
             (coin: { id: string }) => coin.id === userDatadb.name
           );
-          let profit = 0;
-          let totalHolding = 0;
-          const transactionData = userDatadb?.transactions.map(
-            (transaction, i, array) => {
-              const { type, price, holding } = transaction;
-              const priceSum = array.reduce((prev, current) => {
-                return prev + current.price;
-              }, 0);
-              const avgPrice = priceSum / array.length;
-              if (type === "buy") {
-                profit += (lastPrice?.current_price - price) * holding;
-                totalHolding += holding;
-              } else if (type === "sell") {
-                profit += (price - lastPrice?.current_price) * holding;
-                totalHolding -= holding;
-              }
-              return { avgPrice, holding };
-            }
+
+          const profit = calculateProfit(
+            userDatadb?.transactions,
+            lastPrice?.current_price
           );
-          const objectResult = Object.assign({}, ...transactionData);
+          const totalHolding = holdingAmount(userDatadb?.transactions);
+          const { avgPrice } = calculateAvgPrice(userDatadb?.transactions);
           const totalAmount = lastPrice?.current_price * totalHolding;
           const filter = coinDataApi?.filter(
             (coin: CoinFilter) => coin?.id === userDatadb?.name
@@ -116,7 +106,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             totalAmount,
             current_price: lastPrice?.current_price,
             profit,
-            avgPrice: objectResult.avgPrice,
+            avgPrice,
             holding: totalHolding,
           }));
           return resultNewUserDataObject;
