@@ -79,27 +79,32 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
 
   useEffect(() => {
     if (coins) {
-      // console.log(coins);
       const getLastPrice = async () => {
         const resultUserData = coins.map(async (userDatadb, i) => {
-          const lastPriceUrl = coinSinglePrice(userDatadb.name);
-          // const lastPrice: any = await fetchJson(lastPriceUrl);
           const lastPrice: any = coinDataApi?.find(
             (coin: { id: string }) => coin.id === userDatadb.name
           );
           let profit = 0;
-          userDatadb?.transactions.forEach((transaction) => {
-            const { type, price, holding } = transaction;
-
-            if (type === "buy") {
-              profit += (lastPrice?.current_price - price) * holding;
-            } else if (type === "sell") {
-              profit += (price - lastPrice?.current_price) * holding;
+          let totalHolding = 0;
+          const transactionData = userDatadb?.transactions.map(
+            (transaction, i, array) => {
+              const { type, price, holding } = transaction;
+              const priceSum = array.reduce((prev, current) => {
+                return prev + current.price;
+              }, 0);
+              const avgPrice = priceSum / array.length;
+              if (type === "buy") {
+                profit += (lastPrice?.current_price - price) * holding;
+                totalHolding += holding;
+              } else if (type === "sell") {
+                profit += (price - lastPrice?.current_price) * holding;
+                totalHolding -= holding;
+              }
+              return { avgPrice, holding };
             }
-          });
-          console.log(profit);
-          // console.log(userDatadb);
-          const totalAmount = lastPrice?.current_price * userDatadb?.holding;
+          );
+          const objectResult = Object.assign({}, ...transactionData);
+          const totalAmount = lastPrice?.current_price * totalHolding;
           const filter = coinDataApi?.filter(
             (coin: CoinFilter) => coin?.id === userDatadb?.name
           );
@@ -110,7 +115,9 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             image: coin?.image,
             totalAmount,
             current_price: lastPrice?.current_price,
-            profit: userDatadb?.profit,
+            profit,
+            avgPrice: objectResult.avgPrice,
+            holding: totalHolding,
           }));
           return resultNewUserDataObject;
         });

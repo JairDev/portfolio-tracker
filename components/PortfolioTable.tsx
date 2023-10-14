@@ -174,7 +174,7 @@ export default function PortfolioTable({ data = [] }: TablePropsArray) {
                     ${formatCurrency(coin?.current_price, "usd")}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
-                    {coin?.avgPrice}
+                    ${formatCurrency(coin?.avgPrice, "usd")}
                   </TableCell>
                   <TableCell sx={{ borderBottom: borderStyle }} align="right">
                     {coin?.holding}
