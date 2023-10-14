@@ -26,13 +26,13 @@ export default async function coinApi(
       const update = await Coin.findOneAndUpdate(
         { name },
         {
-          transactions: [
-            {
+          $push: {
+            transactions: {
               type: sell ? "sell" : "buy",
               price: avgPriceNumber,
               holding,
             },
-          ],
+          },
           profit: updatedProfit,
         },
         { returnDocument: "after" }
@@ -41,7 +41,7 @@ export default async function coinApi(
       res.status(201).json({ message: "Activo actualizado" });
     } else {
       if (!(name && avgPrice && holding)) {
-        throw new Error("Invalid input data");
+        throw new Error("Entrada inválida");
       }
 
       const coin = new Coin({
@@ -61,6 +61,7 @@ export default async function coinApi(
       res.status(201).json({ message: "Activo añadido", coinId: result._id });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error al procesar la solicitud", error });
   }
 }

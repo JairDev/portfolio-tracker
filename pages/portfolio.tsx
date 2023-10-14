@@ -88,16 +88,16 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
             (coin: { id: string }) => coin.id === userDatadb.name
           );
           let profit = 0;
-          userDatadb.transactions.forEach((transaction) => {
+          userDatadb?.transactions.forEach((transaction) => {
             const { type, price, holding } = transaction;
 
             if (type === "buy") {
-              profit = (lastPrice.current_price - price) * holding;
+              profit += (lastPrice?.current_price - price) * holding;
             } else if (type === "sell") {
-              profit = (price - lastPrice.current_price) * holding;
+              profit += (price - lastPrice?.current_price) * holding;
             }
           });
-          // console.log(profit);
+          console.log(profit);
           // console.log(userDatadb);
           const totalAmount = lastPrice?.current_price * userDatadb?.holding;
           const filter = coinDataApi?.filter(
