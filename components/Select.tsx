@@ -11,6 +11,7 @@ interface SelectCoinProps {
     name: string;
     fiatSymbol: string;
     fiatName: string;
+    current_price: number;
   }>;
   selectValue: string;
   // setValue: React.Dispatch<React.SetStateAction<string>>;

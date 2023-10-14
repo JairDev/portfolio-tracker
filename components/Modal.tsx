@@ -38,11 +38,25 @@ interface ChildModalProps {
   coinName: string;
   setOpenParent: React.Dispatch<React.SetStateAction<boolean>>;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  coinData: Array<{
+    id: string;
+    name: string;
+    fiatSymbol: string;
+    fiatName: string;
+    current_price: number;
+  }>;
 }
 
 interface BasicModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  coinData: Array<{
+    id: string;
+    name: string;
+    fiatSymbol: string;
+    fiatName: string;
+    current_price: number;
+  }>;
 }
 const INTERVAL = 60000;
 
@@ -89,9 +103,7 @@ function ChildModal({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const coinNameToLowerCase = coinName.toLowerCase();
-    const lastPrice = find.current_price;
-    // const lastPrice = 2222;
-    console.log(lastPrice);
+    const lastPrice = find?.current_price;
 
     const form = {
       name: coinNameToLowerCase,
@@ -261,7 +273,7 @@ export default function BasicModal({
 }: BasicModalProps) {
   const { spacing } = useTheme();
   const [value, setValue] = useState("bitcoin");
-  // console.log(coinData);
+  console.log(coinData);
   const handleClose = () => {
     setOpen(false);
     setValue("");
