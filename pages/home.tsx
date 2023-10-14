@@ -127,7 +127,7 @@ export default function Home() {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              {/* {coinData &&
+              {coinData &&
                 coinData.slice(0, 3).map(
                   //@ts-ignore
                   ({
@@ -156,7 +156,7 @@ export default function Home() {
                       />
                     </Grid>
                   )
-                )} */}
+                )}
             </Grid>
           </Grid>
         </Box>
@@ -296,7 +296,7 @@ export default function Home() {
           </Box>
         </Grid>
 
-        {/* <CryptoNewsData /> */}
+        <CryptoNewsData />
       </main>
     </div>
   );
