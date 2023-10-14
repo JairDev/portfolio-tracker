@@ -64,6 +64,7 @@ export default function Home() {
   });
   // const coinData = testData;
   const loading = !coinData;
+  console.log(error);
   return (
     <div>
       <Head>
