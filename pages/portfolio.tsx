@@ -26,7 +26,9 @@ import fetchJson from "lib/fetchJson";
 import calculateProfit from "lib/calculateProfit";
 import holdingAmount from "lib/holdingAmount";
 import calculateAvgPrice from "lib/calculateAvgPrice";
+import { Transactions } from "lib/types";
 interface UserDataTypes {
+  transactions: Array<Transactions>;
   _id: string;
   name: string;
   avgPrice: number;
@@ -83,7 +85,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   useEffect(() => {
     if (coins) {
       const getLastPrice = async () => {
-        const resultUserData = coins.map(async (userDatadb, i) => {
+        const resultUserData = coins.map(async (userDatadb) => {
           const lastPrice: any = coinDataApi?.find(
             (coin: { id: string }) => coin.id === userDatadb.name
           );

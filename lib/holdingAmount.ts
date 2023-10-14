@@ -1,4 +1,8 @@
-export default function holdingAmount(transactionArray = []) {
+import { Transactions } from "./types";
+
+export default function holdingAmount(
+  transactionArray: Array<Transactions> = []
+) {
   let holdingTotal = 0;
   transactionArray.map((transaction) => {
     const { type, holding } = transaction;

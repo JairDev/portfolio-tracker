@@ -1,5 +1,7 @@
+import { Transactions } from "./types";
+
 export default function calculateProfit(
-  transactionArray = [],
+  transactionArray: Array<Transactions> = [],
   currentLastPrice: number
 ) {
   let profit = 0;

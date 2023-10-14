@@ -25,3 +25,10 @@ export interface CoinFilter {
   market_cap_rank?: number;
   image?: string;
 }
+
+export interface Transactions {
+  type: string;
+  price: number;
+  holding: number;
+  _id: string;
+}
