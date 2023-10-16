@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -60,10 +61,12 @@ export default function SelectCoin({
                 {coin.fiatSymbol} - {coin.fiatName}
               </MenuItem>
             ))} */}
-
           {data &&
             data.map((coin: { name: string; id: string }) => (
-              <MenuItem key={coin.name} value={coin.id}>
+              <MenuItem
+                key={isFiat ? coin.fiatSymbol : coin.name}
+                value={isFiat ? coin.fiatSymbol : coin.id}
+              >
                 {/* {coin.name} */}
                 {/* @ts-ignore */}
                 {isFiat ? `${coin.fiatSymbol} - ${coin.fiatName}` : coin.name}

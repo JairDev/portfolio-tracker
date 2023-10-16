@@ -38,7 +38,7 @@ export default function Converter() {
   const [isFiatData, setIsFiatData] = useState<boolean>(true);
   const [isCryptoSelect, setIsCryptoSelect] = useState<boolean>(false);
   const [isFiatSelect, setIsFiatSelect] = useState<boolean>(true);
-
+  console.log(fiatData);
   const { spacing } = useTheme();
 
   const handleChangecryptoName = (value: string) => {
@@ -139,8 +139,8 @@ export default function Converter() {
         >
           <Box sx={{ flex: "1" }}>
             <SelectCoin
-              // data={isCryptoData ? cryptoData : fiatData}
-              data={cryptoData}
+              data={isCryptoData ? cryptoData : fiatData}
+              // data={cryptoData}
               setValue={
                 isCryptoData ? handleChangecryptoName : handleChangeFiatName
               }
@@ -185,9 +185,9 @@ export default function Converter() {
           </Box>
           <Box sx={{ flex: "0 1 45%" }}>
             <SelectCoin
-              // data={isFiatData ? fiatData : cryptoData}
+              data={isFiatData ? fiatData : cryptoData}
               //@ts-ignore
-              data={fiatData}
+              // data={fiatData}
               setValue={
                 isFiatData ? handleChangeFiatName : handleChangecryptoName
               }
