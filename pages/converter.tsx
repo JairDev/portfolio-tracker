@@ -45,7 +45,7 @@ export default function Converter() {
     setcryptoName(value);
   };
   const handleChangeFiatName = (value: string) => {
-    setFiatName(value.toLowerCase());
+    setFiatName(value.toUpperCase());
   };
 
   const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
