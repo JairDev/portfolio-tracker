@@ -27,6 +27,7 @@ export default function Login() {
     initLogIn: startLogin,
   });
 
+  console.log(loading);
   const formik = useFormik({
     initialValues: {
       email: "",
