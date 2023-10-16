@@ -65,7 +65,7 @@ export default function SelectCoin({
             data.map((coin: { name: string; id: string }) => (
               <MenuItem
                 key={isFiat ? coin.fiatSymbol : coin.name}
-                value={isFiat ? coin.fiatSymbol : coin.name}
+                value={isFiat ? coin.fiatSymbol : coin.id}
               >
                 {/* {coin.name} */}
                 {/* @ts-ignore */}
