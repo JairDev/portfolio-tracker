@@ -82,7 +82,9 @@ export default function CryptoNewsData() {
               .map((article: ArticleData, i: number) => (
                 <Grid
                   key={article.title}
-                  xs={i === 0 ? 8 : 4}
+                  lg={i === 0 ? 8 : 4}
+                  xs={12}
+                  md={6}
                   sx={{ heigth: "100%" }}
                   item
                 >
