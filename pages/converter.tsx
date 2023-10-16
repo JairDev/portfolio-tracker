@@ -13,10 +13,17 @@ import formatCurrency from "lib/formatCurrency";
 import { useCryptoData } from "lib/useCryptoData";
 import { CURRENCY_FIAT_DATA } from "lib/apiUrl";
 
+const INTERVAL = 60000;
+
 export default function Converter() {
   const cryptoData = useCryptoData();
   const { data: supportedCurrencyData } = useSWR(
-    "https://api.coingecko.com/api/v3/simple/supported_vs_currencies"
+    "https://api.coingecko.com/api/v3/simple/supported_vs_currencies",
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshInterval: INTERVAL,
+    }
   );
   const [fiatData, setfiatData] = useState<
     Array<{ fiatSymbol: string; fiatName: string }>

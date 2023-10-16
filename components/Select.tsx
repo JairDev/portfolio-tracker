@@ -25,7 +25,8 @@ export default function SelectCoin({
   selectValue,
 }: SelectCoinProps) {
   const [coin, setCoin] = useState("");
-
+  console.log(data);
+  console.log(selectValue);
   const handleChange = (event: SelectChangeEvent) => {
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
@@ -37,7 +38,7 @@ export default function SelectCoin({
         <Select
           id="demo-simple-select"
           name="select-coin"
-          value={selectValue}
+          value={data.length > 0 ? selectValue : ""}
           onChange={handleChange}
           displayEmpty
           sx={{
