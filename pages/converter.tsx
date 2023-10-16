@@ -136,14 +136,14 @@ export default function Converter() {
           }}
         >
           <Box sx={{ flex: "1" }}>
-            <SelectCoin
+            {/* <SelectCoin
               data={isCryptoData ? cryptoData : fiatData}
               setValue={
                 isCryptoData ? handleChangecryptoName : handleChangeFiatName
               }
               isFiat={isCryptoData ? false : true}
               selectValue={isCryptoData ? cryptoName : fiatName}
-            />
+            /> */}
           </Box>
           <Box
             sx={{
@@ -182,7 +182,9 @@ export default function Converter() {
           </Box>
           <Box sx={{ flex: "0 1 45%" }}>
             <SelectCoin
-              data={isFiatData ? fiatData : cryptoData}
+              // data={isFiatData ? fiatData : cryptoData}
+              //@ts-ignore
+              data={fiatData}
               setValue={
                 isFiatData ? handleChangeFiatName : handleChangecryptoName
               }
