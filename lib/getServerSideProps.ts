@@ -10,7 +10,6 @@ export const withGetServerSideProps = async function ({
 }) {
   await dbConnect();
   let userSession = req?.session?.user;
-  // console.log("usersession", userSession?.token);
   if (userSession) {
     try {
       const res = await fetch(`https://${req.headers.host}/api/auth`, {
@@ -24,7 +23,6 @@ export const withGetServerSideProps = async function ({
 
       const userData = await res.json();
       const data = JSON.parse(JSON.stringify({ ...userData }));
-      // console.log(data);
       return {
         props: {
           data,
