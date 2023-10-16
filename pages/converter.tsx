@@ -28,6 +28,8 @@ export default function Converter() {
   const [fiatData, setfiatData] = useState<
     Array<{ fiatSymbol: string; fiatName: string }>
   >([]);
+  const [fiat, setFiat] = useState(fiatData);
+  const [crypto, setCrypto] = useState(cryptoData);
   const [currencyQuantity, setCurrencyQuantity] = useState<number>(100);
   const [cryptoName, setcryptoName] = useState<string>("bitcoin");
   const [fiatName, setFiatName] = useState<string>("USD");
@@ -136,14 +138,15 @@ export default function Converter() {
           }}
         >
           <Box sx={{ flex: "1" }}>
-            {/* <SelectCoin
-              data={isCryptoData ? cryptoData : fiatData}
+            <SelectCoin
+              // data={isCryptoData ? cryptoData : fiatData}
+              data={cryptoData}
               setValue={
                 isCryptoData ? handleChangecryptoName : handleChangeFiatName
               }
               isFiat={isCryptoData ? false : true}
               selectValue={isCryptoData ? cryptoName : fiatName}
-            /> */}
+            />
           </Box>
           <Box
             sx={{

@@ -26,7 +26,7 @@ export default function SelectCoin({
 }: SelectCoinProps) {
   const [coin, setCoin] = useState("");
   console.log(data);
-  console.log(selectValue);
+  // console.log(selectValue);
   const handleChange = (event: SelectChangeEvent) => {
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
@@ -53,18 +53,19 @@ export default function SelectCoin({
             },
           }}
         >
-          {data &&
+          {/* {data &&
             isFiat &&
             data.map((coin) => (
               <MenuItem key={coin.fiatSymbol} value={coin.fiatSymbol}>
                 {coin.fiatSymbol} - {coin.fiatName}
               </MenuItem>
-            ))}
+            ))} */}
 
           {data &&
             data.map((coin: { name: string; id: string }) => (
               <MenuItem key={coin.name} value={coin.id}>
-                {coin.name}
+                {/* {coin.name} */}
+                {isFiat ? `${coin.fiatSymbol} - ${coin.fiatName}` : coin.name}
               </MenuItem>
             ))}
         </Select>
