@@ -1,7 +1,5 @@
-//@ts-nocheck
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -19,6 +17,13 @@ interface SelectCoinProps {
   setValue: (value: string) => void;
   isFiat?: boolean;
 }
+
+type DataTypes = {
+  name: string;
+  id: string;
+  fiatSymbol: string;
+  fiatName: string;
+};
 export default function SelectCoin({
   data = [],
   setValue,
@@ -26,8 +31,6 @@ export default function SelectCoin({
   selectValue,
 }: SelectCoinProps) {
   const [coin, setCoin] = useState("");
-  console.log(data);
-  // console.log(selectValue);
   const handleChange = (event: SelectChangeEvent) => {
     setCoin(event.target.value as string);
     setValue(event.target.value as string);
@@ -54,21 +57,12 @@ export default function SelectCoin({
             },
           }}
         >
-          {/* {data &&
-            isFiat &&
-            data.map((coin) => (
-              <MenuItem key={coin.fiatSymbol} value={coin.fiatSymbol}>
-                {coin.fiatSymbol} - {coin.fiatName}
-              </MenuItem>
-            ))} */}
           {data &&
-            data.map((coin: { name: string; id: string }) => (
+            data.map((coin: DataTypes) => (
               <MenuItem
                 key={isFiat ? coin.fiatSymbol : coin.name}
                 value={isFiat ? coin.fiatSymbol : coin.id}
               >
-                {/* {coin.name} */}
-                {/* @ts-ignore */}
                 {isFiat ? `${coin.fiatSymbol} - ${coin.fiatName}` : coin.name}
               </MenuItem>
             ))}
