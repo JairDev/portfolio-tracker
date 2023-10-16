@@ -10,9 +10,10 @@ export const withGetServerSideProps = async function ({
 }) {
   await dbConnect();
   let userSession = req?.session?.user;
+  // console.log("usersession", userSession?.token);
   if (userSession) {
     try {
-      const res = await fetch(`http://${req.headers.host}/api/auth`, {
+      const res = await fetch(`https://${req.headers.host}/api/auth`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -23,7 +24,7 @@ export const withGetServerSideProps = async function ({
 
       const userData = await res.json();
       const data = JSON.parse(JSON.stringify({ ...userData }));
-      console.log(data);
+      // console.log(data);
       return {
         props: {
           data,

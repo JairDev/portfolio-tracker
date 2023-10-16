@@ -24,6 +24,7 @@ async function userAuthenticated(req: NextApiRequest, res: NextApiResponse) {
     coins: [],
   };
   const token = req.headers.authorization?.split(" ")[1] as string;
+  console.log("auth", token);
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
   }
