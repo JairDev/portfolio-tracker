@@ -128,11 +128,13 @@ export default function NavBarProfile() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
+              sx={{ top: "30px" }}
               PaperProps={{
                 style: {
                   width: "100%",
                   height: "100%",
                   maxWidth: "300px",
+                  top: "100px",
                   background: "transparent",
                 },
               }}
@@ -147,7 +149,6 @@ export default function NavBarProfile() {
                   width: "100%",
                   height: "80% ",
                   padding: spacing(6, 0),
-                  top: "70px",
                 },
               }}
             >
