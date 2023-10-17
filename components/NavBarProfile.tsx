@@ -257,6 +257,7 @@ export default function NavBarProfile() {
             onClose={handleCloseNavMenu}
             sx={{
               display: { xs: "block", md: "none" },
+              top: "30px",
             }}
             PaperProps={{
               style: {
