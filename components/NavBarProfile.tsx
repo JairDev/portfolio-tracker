@@ -68,13 +68,11 @@ export default function NavBarProfile() {
 
   if (loading) {
     return (
-      <Box>
+      <Box sx={{ width: "179px", display: "flex", justifyContent: "center" }}>
         <CircularProgress />
       </Box>
     );
-    // return null;
   }
-  // console.log(authenticated);
 
   if (!authenticated) {
     return (
@@ -191,7 +189,10 @@ export default function NavBarProfile() {
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Box sx={{ display: "flex" }}>
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+        <IconButton
+          onClick={handleOpenUserMenu}
+          sx={{ p: 0, display: { xs: "none", md: "block" } }}
+        >
           <Avatar alt={userEmail} src="/static/images/avatar/2.jpg" />
         </IconButton>
         <Menu
@@ -256,7 +257,45 @@ export default function NavBarProfile() {
             sx={{
               display: { xs: "block", md: "none" },
             }}
+            PaperProps={{
+              style: {
+                width: "100%",
+                height: "100%",
+                maxWidth: "300px",
+                background: "transparent",
+              },
+            }}
+            MenuListProps={{
+              style: {
+                background: "rgba(17, 1, 30, 1)",
+                borderRadius: "8px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                height: "80% ",
+                padding: spacing(6, 0),
+                top: "70px",
+              },
+            }}
           >
+            <Box
+              sx={{
+                alignItems: "center ",
+                display: { xs: "flex", md: "none" },
+              }}
+            >
+              <Typography
+                sx={{ fontSize: "18px", fontWeight: "500 ", padding: "16px " }}
+              >
+                Hola
+              </Typography>
+
+              <Typography textAlign="center" sx={{ paddingRight: "16px" }}>
+                {userEmail}
+              </Typography>
+            </Box>
             {pages.map((page) => (
               <MenuItem key={page.path} onClick={handleCloseNavMenu}>
                 <Link
@@ -269,6 +308,12 @@ export default function NavBarProfile() {
                 </Link>
               </MenuItem>
             ))}
+            <MenuItem
+              sx={{ marginTop: "8px", display: { xs: "flex", md: "none" } }}
+            >
+              <LogoutIcon />
+              <Button onClick={logOut} text="Cerrar sesión" />
+            </MenuItem>
           </Menu>
         </Box>
       </Box>
