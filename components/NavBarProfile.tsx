@@ -128,7 +128,7 @@ export default function NavBarProfile() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ top: "30px" }}
+              sx={{ top: "40px" }}
               PaperProps={{
                 style: {
                   width: "100%",
@@ -148,7 +148,7 @@ export default function NavBarProfile() {
                   alignItems: "center",
                   width: "100%",
                   height: "80% ",
-                  padding: spacing(6, 0),
+                  // padding: spacing(6, 0),
                 },
               }}
             >
@@ -166,6 +166,7 @@ export default function NavBarProfile() {
                 </MenuItem>
               ))}
               <Link
+                // onClick={handleCloseNavMenu}
                 component={NextLink}
                 underline="none"
                 color="text.primary"
@@ -257,7 +258,7 @@ export default function NavBarProfile() {
             onClose={handleCloseNavMenu}
             sx={{
               display: { xs: "block", md: "none" },
-              top: "30px",
+              top: "40px",
             }}
             PaperProps={{
               style: {
@@ -277,8 +278,7 @@ export default function NavBarProfile() {
                 alignItems: "center",
                 width: "100%",
                 height: "80% ",
-                padding: spacing(6, 0),
-                top: "70px",
+                // padding: spacing(6, 0),
               },
             }}
           >
