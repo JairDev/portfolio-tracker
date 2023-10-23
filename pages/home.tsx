@@ -88,9 +88,9 @@ export default function Home() {
               variant="subtitle1"
               sx={{ textAlign: "center", color: " #B6B6B6" }}
             >
-              Solo en CoinMarketApp, puede realizar un seguimiento de sus
-              ganancias y pérdidas y estar al tanto de las últimas noticias del
-              criptomundo.
+              Solo en CoinMarketTrack, puede realizar un seguimiento de sus
+              ganancias y pérdidas y estar al tanto de las últimas noticias
+              sobre criptomonedas.
             </Typography>
           </Box>
           <Box sx={{ marginTop: spacing(8) }}>
