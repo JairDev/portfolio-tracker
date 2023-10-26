@@ -9,6 +9,7 @@ import {
   CardMedia,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import Image from "next/image";
 
 interface ArticleCardProps {
   image: string;
@@ -25,7 +26,6 @@ export default function ArticleCard({
   toUrl,
 }: ArticleCardProps) {
   const { spacing } = useTheme();
-
   return (
     <Card
       sx={{
@@ -51,9 +51,10 @@ export default function ArticleCard({
             <Box>
               <CardMedia
                 component="img"
+                width="140"
                 height="140"
                 image={image}
-                alt="green iguana"
+                alt={title}
               />
               <Box sx={{ marginTop: spacing(2) }}>
                 <Typography
