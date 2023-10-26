@@ -9,42 +9,20 @@ body {
 }
 
 a {
-  /* color: inherit; */
   text-decoration: none;
 }
 
 * {
   box-sizing: border-box;
-  /* color: black; */
 }
-/* .MuiMenu-paper {
-  position: absolute;
-  background-color: goldenrod;
-  width: 200px;
-  top: 32px;
-  left: 380px;
-} */
 
 .MuiPaper-root.MuiMenu-paper {
   box-shadow: none;
-  /* color: rgba(0, 0, 0, 0.463); */
-  /* background: rgba(17, 1, 30, 0.882); */
 }
 
 .container {
-  /* border: 1px solid red; */
   background: #11011e;
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    /* color-scheme: dark; */
-  }
-  body {
-    /* color: white; */
-    /* background: black; */
-  }
 }

@@ -8,6 +8,11 @@ export const withGetServerSideProps = async function ({
   req: NextApiRequest;
   res: NextApiResponse;
 }) {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
+
   await dbConnect();
   let userSession = req?.session?.user;
   if (userSession) {
