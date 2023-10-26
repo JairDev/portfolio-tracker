@@ -7,7 +7,10 @@ export default function useUser({
   redirectIfFound = false,
   initLogIn = false,
 }) {
-  const { data: user, mutate: mutateUser } = useSWR("/api/user");
+  const { data: user, mutate: mutateUser } = useSWR("/api/user", {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
   const [calledPush, setCalledPush] = useState(false);
   useEffect(() => {
     if (!redirectTo || !user) return;

@@ -22,7 +22,11 @@ export default function CryptoNewsData() {
     "bitcoin"
   );
   const { data: cryptoNewsData } = useSWR(
-    `api/crypto-news-data?cryptoName=${coinNameValue}`
+    `api/crypto-news-data?cryptoName=${coinNameValue}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
   const loading = !cryptoNewsData;
 

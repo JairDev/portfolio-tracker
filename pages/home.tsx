@@ -53,14 +53,12 @@ type InputRef = {
   value: null;
 };
 
-const INTERVAL = 60000;
-
 export default function Home() {
   const { spacing } = useTheme();
   const { data: coinData, error } = useSWR(urlCoin, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    refreshInterval: INTERVAL,
+    focusThrottleInterval: 120000,
   });
   // const coinData = testData;
   const loading = !coinData;
