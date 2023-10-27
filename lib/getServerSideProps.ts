@@ -15,6 +15,7 @@ export const withGetServerSideProps = async function ({
 
   await dbConnect();
   let userSession = req?.session?.user;
+  console.log(userSession);
   if (userSession) {
     const protocol = req?.headers?.referer?.split("://")[0];
     try {

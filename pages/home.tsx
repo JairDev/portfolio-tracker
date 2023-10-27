@@ -215,6 +215,7 @@ export default function Home() {
         <Box
           sx={{
             paddingTop: spacing(18),
+            minHeight: "1000px",
           }}
         >
           <Box>{!loading && <Table data={coinData} />}</Box>

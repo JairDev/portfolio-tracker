@@ -11,6 +11,7 @@ import { useTheme } from "@mui/material/styles";
 import Link from "@mui/material/Link";
 
 import NavBarProfile from "./NavBarProfile";
+import { useRouter } from "next/router";
 
 const pages = [
   { link: "Portafolio", path: "portfolio" },
@@ -20,6 +21,7 @@ const pages = [
 ];
 
 export default function NavBar() {
+  const router = useRouter();
   const { palette, spacing } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -147,7 +149,11 @@ export default function NavBar() {
               <Link
                 component={NextLink}
                 underline="none"
-                href={page.path}
+                href={
+                  page.path === "#news" && router.pathname !== "/home"
+                    ? "/#news"
+                    : page.path
+                }
                 color="text.primary"
               >
                 {page.link}

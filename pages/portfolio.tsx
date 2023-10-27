@@ -77,7 +77,7 @@ export default function Porfolio({ data = [] }: { data: PortfolioProps }) {
   useEffect(() => {
     setMounted(true);
   }, []);
-
+  console.log(authenticated);
   const handleClickAddCoin = () => {
     setOpen(true);
   };
