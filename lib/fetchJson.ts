@@ -3,6 +3,7 @@ export default async function fetchJson<JSON = unknown>(
   options?: RequestInit
 ): Promise<JSON> {
   const res = await fetch(input, options);
+  console.log(res);
   // if (!res.ok) {
   //   const error = new Error(
   //     `An error occurred while fetching the data: ${res.statusText}`
